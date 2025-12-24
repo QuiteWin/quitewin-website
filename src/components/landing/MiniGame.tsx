@@ -220,8 +220,8 @@ const MiniGame = () => {
               />
             )}
 
-            {/* Draggable HUD */}
-            {(gameState === "playing" || gameState === "idle") && (
+            {/* Draggable HUD - only show during gameplay */}
+            {gameState === "playing" && (
               <motion.div
                 key={hudKey}
                 className="absolute w-16 h-12 rounded-lg cursor-grab active:cursor-grabbing z-30"
