@@ -3,6 +3,7 @@ import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
+import quitewinLogo from "@/assets/quitewin-logo.png";
 const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient orbs */}
@@ -52,6 +53,20 @@ const Hero = () => {
           duration: 0.8,
           ease: "easeOut"
         }}>
+            {/* Logo */}
+            <motion.div 
+              className="mb-8 flex justify-center lg:justify-start"
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+            >
+              <img 
+                src={quitewinLogo} 
+                alt="QuiteWin - Stealth AI" 
+                className="w-48 md:w-56 lg:w-64 h-auto drop-shadow-2xl"
+              />
+            </motion.div>
+
             {/* Badge */}
             <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple mb-8" initial={{
             opacity: 0,
