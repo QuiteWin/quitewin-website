@@ -5,6 +5,7 @@ import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
 import { useSilenceMode } from "./SilenceMode";
 import { useSessionCodename } from "@/hooks/useSessionCodename";
+import { useRandomAnimation } from "@/hooks/useRandomAnimation";
 import quitewinLogo from "@/assets/quitewin-logo.png";
 
 // Session Codename component inline
@@ -55,6 +56,13 @@ const SilenceMessage = () => {
   );
 };
 const Hero = () => {
+  const heroAnim = useRandomAnimation();
+  const badgeAnim = useRandomAnimation(0.2);
+  const subheadAnim = useRandomAnimation(0.8);
+  const taglineAnim = useRandomAnimation(0.9);
+  const ctaAnim = useRandomAnimation(1.1);
+  const rightPanelAnim = useRandomAnimation(0.5);
+
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient orbs */}
       <div className="absolute inset-0 overflow-hidden">
@@ -156,28 +164,10 @@ const Hero = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
           {/* Left content */}
-          <motion.div className="flex-1 text-center lg:text-left" initial={{
-          opacity: 0,
-          y: 30
-        }} animate={{
-          opacity: 1,
-          y: 0
-        }} transition={{
-          duration: 0.8,
-          ease: "easeOut"
-        }}>
+          <motion.div className="flex-1 text-center lg:text-left" initial={heroAnim.initial} animate={heroAnim.animate} transition={heroAnim.transition}>
 
             {/* Badge */}
-            <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple mb-8" initial={{
-            opacity: 0,
-            scale: 0.9
-          }} animate={{
-            opacity: 1,
-            scale: 1
-          }} transition={{
-            delay: 0.2,
-            duration: 0.5
-          }}>
+            <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple mb-8" initial={badgeAnim.initial} animate={badgeAnim.animate} transition={badgeAnim.transition}>
               <Shield className="w-4 h-4 text-neon-green" />
               <span className="text-sm font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
             </motion.div>
@@ -189,56 +179,23 @@ const Hero = () => {
             </div>
 
             {/* Subheadline */}
-            <motion.p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-4" initial={{
-            opacity: 0,
-            y: 20
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            delay: 0.8,
-            duration: 0.8
-          }}>
+            <motion.p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-4" initial={subheadAnim.initial} animate={subheadAnim.animate} transition={subheadAnim.transition}>
               The world's first <span className="text-neon-purple font-semibold">Hybrid AI </span> — stealth by design.
             </motion.p>
 
-            <motion.p className="text-lg text-muted-foreground/80 max-w-xl mb-6" initial={{
-            opacity: 0,
-            y: 20
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            delay: 0.9,
-            duration: 0.8
-          }}>
+            <motion.p className="text-lg text-muted-foreground/80 max-w-xl mb-6" initial={taglineAnim.initial} animate={taglineAnim.animate} transition={taglineAnim.transition}>
               Your silent superpower. AI that stays invisible.
             </motion.p>
 
             {/* Taglines */}
-            <motion.div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10" initial={{
-            opacity: 0
-          }} animate={{
-            opacity: 1
-          }} transition={{
-            delay: 1
-          }}>
+            <motion.div className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10" initial={taglineAnim.initial} animate={taglineAnim.animate} transition={{ ...taglineAnim.transition, delay: 1 }}>
               {["Private by default", "Powerful on demand", "A stealth HUD"].map(tag => <span key={tag} className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50">
                   {tag}
                 </span>)}
             </motion.div>
 
             {/* CTAs with MagnetButton */}
-            <motion.div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start" initial={{
-            opacity: 0,
-            y: 20
-          }} animate={{
-            opacity: 1,
-            y: 0
-          }} transition={{
-            delay: 1.1,
-            duration: 0.8
-          }}>
+            <motion.div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start" initial={ctaAnim.initial} animate={ctaAnim.animate} transition={ctaAnim.transition}>
               <MagnetButton strength={0.2}>
                 <motion.button className="btn-cyber-green flex items-center justify-center gap-3 text-lg" whileHover={{
                 scale: 1.02
@@ -263,16 +220,7 @@ const Hero = () => {
           </motion.div>
 
           {/* Right - Live Users Panel with Session above */}
-          <motion.div className="flex-shrink-0 flex flex-col items-end gap-3" initial={{
-          opacity: 0,
-          x: 50
-        }} animate={{
-          opacity: 1,
-          x: 0
-        }} transition={{
-          delay: 0.5,
-          duration: 0.8
-        }}>
+          <motion.div className="flex-shrink-0 flex flex-col items-end gap-3" initial={rightPanelAnim.initial} animate={rightPanelAnim.animate} transition={rightPanelAnim.transition}>
             {/* Session Codename above Live HUD */}
             <SessionCodename />
             
