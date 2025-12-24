@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, createContext, useContext } from "react";
 import { VolumeX, Volume2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface SilenceModeContextType {
   isSilenceMode: boolean;
@@ -61,17 +62,20 @@ export const SilenceModeProvider = ({ children }: { children: React.ReactNode })
 };
 
 // Silence Mode Toggle Button
-export const SilenceModeToggle = () => {
+export const SilenceModeToggle = ({ className }: { className?: string }) => {
   const { isSilenceMode, toggleSilenceMode } = useSilenceMode();
 
   return (
     <motion.button
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors"
+      className={cn(
+        "flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors",
+        className
+      )}
       onClick={toggleSilenceMode}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ delay: 1.7 }}
     >
       <AnimatePresence mode="wait">
