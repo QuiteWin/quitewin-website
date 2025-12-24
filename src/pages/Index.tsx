@@ -10,6 +10,7 @@ import { IdleProvider } from "@/components/landing/IdleBehavior";
 import ModeBar from "@/components/landing/ModeBar";
 import LoadingScreen from "@/components/landing/LoadingScreen";
 import SectionLoader from "@/components/landing/SectionLoader";
+import useRandomTheme from "@/hooks/useRandomTheme";
 
 // Lazy load components - grouped by priority
 const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
@@ -63,6 +64,9 @@ BackgroundLayers.displayName = "BackgroundLayers";
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [showHeavyElements, setShowHeavyElements] = useState(false);
+  
+  // Apply random color theme on each page load
+  useRandomTheme();
 
   useEffect(() => {
     // Quick initial load
