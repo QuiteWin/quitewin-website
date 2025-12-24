@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Github, MessageCircle } from "lucide-react";
+import quitewinLogo from "@/assets/quitewin-logo.png";
 
 const Footer = () => {
   return (
@@ -16,9 +17,7 @@ const Footer = () => {
           >
             {/* Logo */}
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-neon-purple/20 flex items-center justify-center">
-                <span className="text-neon-purple font-bold text-lg">Q</span>
-              </div>
+              <img src={quitewinLogo} alt="QuiteWin Logo" className="w-8 h-8 rounded-lg object-contain" />
               <span className="font-bold text-xl text-foreground">QuiteWin</span>
             </div>
 
