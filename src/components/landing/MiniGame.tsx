@@ -42,19 +42,23 @@ const MiniGame = () => {
     setSafeZones(zones);
   }, []);
 
-  // Check if HUD is in safe zone
+  // Check if HUD is in safe zone (using center point for better detection)
   const isInSafeZone = useCallback(() => {
     const currentX = hudX.get();
     const currentY = hudY.get();
-    const hudWidth = 60;
-    const hudHeight = 40;
+    const hudWidth = 64;
+    const hudHeight = 48;
+    
+    // Use center of HUD for detection (more forgiving)
+    const hudCenterX = currentX + hudWidth / 2;
+    const hudCenterY = currentY + hudHeight / 2;
 
     return safeZones.some(
       (zone) =>
-        currentX >= zone.x &&
-        currentX + hudWidth <= zone.x + zone.width &&
-        currentY >= zone.y &&
-        currentY + hudHeight <= zone.y + zone.height
+        hudCenterX >= zone.x &&
+        hudCenterX <= zone.x + zone.width &&
+        hudCenterY >= zone.y &&
+        hudCenterY <= zone.y + zone.height
     );
   }, [hudX, hudY, safeZones]);
 
