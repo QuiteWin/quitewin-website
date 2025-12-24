@@ -76,17 +76,13 @@ const LogoLoop = () => {
             >
               {logo.icon}
             </motion.div>
-            <motion.span
-              className="text-xs font-mono text-muted-foreground"
-              animate={{
-                color:
-                  hoveredLogo === logo.name
-                    ? "hsl(263 70% 66%)"
-                    : "hsl(var(--muted-foreground))",
-              }}
+            <span
+              className={`text-xs font-mono transition-colors duration-200 ${
+                hoveredLogo === logo.name ? "text-neon-purple" : "text-muted-foreground"
+              }`}
             >
               {logo.name}
-            </motion.span>
+            </span>
           </motion.div>
         ))}
       </motion.div>
