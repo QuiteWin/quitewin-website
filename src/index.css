@@ -217,7 +217,18 @@
     background: linear-gradient(
       135deg,
       hsl(var(--neon-green)) 0%,
-      hsl(160 84% 50%) 100%
+      hsl(var(--neon-cyan)) 100%
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-amber {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--neon-amber)) 0%,
+      hsl(var(--neon-pink)) 100%
     );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
