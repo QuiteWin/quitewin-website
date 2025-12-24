@@ -1,8 +1,22 @@
 import { motion } from "framer-motion";
 import { Github, MessageCircle } from "lucide-react";
+import { useMemo } from "react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
 
+const colorPairs = [
+  { accent: "text-red-500", base: "text-amber-400" },
+  { accent: "text-neon-purple", base: "text-neon-green" },
+  { accent: "text-neon-pink", base: "text-neon-cyan" },
+  { accent: "text-neon-amber", base: "text-neon-purple" },
+  { accent: "text-emerald-400", base: "text-rose-400" },
+  { accent: "text-cyan-400", base: "text-orange-400" },
+  { accent: "text-violet-400", base: "text-lime-400" },
+];
+
 const Footer = () => {
+  const colors = useMemo(() => {
+    return colorPairs[Math.floor(Math.random() * colorPairs.length)];
+  }, []);
   return (
     <footer className="py-16 border-t border-border/30 relative overflow-hidden">
       <div className="container mx-auto px-6">
@@ -44,7 +58,7 @@ const Footer = () => {
                   className="relative w-10 h-10 rounded-lg object-contain border border-amber-500/30 bg-background/50 backdrop-blur-sm" 
                 />
               </div>
-              <span className="font-bold text-xl"><span className="text-red-500">Q</span><span className="text-amber-400">uite</span><span className="text-red-500">W</span><span className="text-amber-400">in</span></span>
+              <span className="font-bold text-xl"><span className={colors.accent}>Q</span><span className={colors.base}>uite</span><span className={colors.accent}>W</span><span className={colors.base}>in</span></span>
             </div>
 
             {/* Social links */}
