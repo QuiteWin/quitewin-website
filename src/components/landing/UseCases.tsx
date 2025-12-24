@@ -128,8 +128,8 @@ const UseCases = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <motion.div
-                  className={`h-full glass-card-hover p-8 rounded-2xl ${colors.border} border`}
-                  whileHover={{ y: -5 }}
+                  className={`h-full glass-card p-8 rounded-2xl border border-border/50 hover:border-border`}
+                  whileHover={{ y: -5, scale: 1.02 }}
                   transition={{ duration: 0.2 }}
                 >
                   {/* Icon */}
