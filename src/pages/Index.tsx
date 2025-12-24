@@ -21,7 +21,7 @@ import { SilenceModeProvider } from "@/components/landing/SilenceMode";
 import EasterEggs from "@/components/landing/EasterEggs";
 import SystemSignalHUD from "@/components/landing/SystemSignalHUD";
 import ExitMoment from "@/components/landing/ExitMoment";
-import SessionCodename from "@/components/landing/SessionCodename";
+
 import { ObserverModeProvider } from "@/components/landing/ObserverMode";
 import { IdleProvider } from "@/components/landing/IdleBehavior";
 import TrustProof from "@/components/landing/TrustProof";
@@ -53,7 +53,7 @@ const Index = () => {
                 <Dock />
                 <StealthScore />
                 <SystemSignalHUD />
-                <SessionCodename />
+                
                 <SelfDestruct />
                 
                 {/* Grid pattern background */}
