@@ -37,7 +37,7 @@ const SelfDestruct = () => {
       {/* Trigger button - discreet */}
       {stage === "idle" && (
         <motion.button
-          className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono text-muted-foreground/50 hover:text-destructive/70 transition-colors"
+          className="fixed bottom-6 left-6 z-40 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono text-muted-foreground/50 hover:text-destructive/70 transition-colors"
           onClick={startSelfDestruct}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
