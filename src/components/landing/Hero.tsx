@@ -109,7 +109,7 @@ const Hero = () => {
             </defs>
             <text className="fill-amber-400/80 text-[8px] font-mono uppercase tracking-[0.3em]">
               <textPath href="#circlePath" startOffset="0%">
-                QuiteWin • Stealth AI • QuiteWin • Stealth AI • 
+                QuiteWin • Stealth AI • Hybrid AI • 
               </textPath>
             </text>
           </motion.svg>
