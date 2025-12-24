@@ -104,12 +104,7 @@ const Hero = () => {
           ease: "easeOut"
         }}>
             {/* Fixed Logo at Top Left */}
-            <motion.div 
-              className="fixed top-6 left-6 z-50"
-              initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
-              animate={{ opacity: 1, scale: 1, rotate: 0 }}
-              transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
-            >
+            <div className="fixed top-6 left-6 z-50">
               <div className="relative group cursor-pointer">
                 {/* Animated glow rings */}
                 <motion.div 
@@ -148,7 +143,7 @@ const Hero = () => {
                   />
                 </div>
               </div>
-            </motion.div>
+            </div>
 
             {/* Badge */}
             <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple mb-8" initial={{
