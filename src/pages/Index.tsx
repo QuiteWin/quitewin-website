@@ -1,4 +1,4 @@
-import { lazy, Suspense, useState, useEffect } from "react";
+import { lazy, Suspense, useState, useEffect, memo } from "react";
 import { AnimatePresence } from "framer-motion";
 import Hero from "@/components/landing/Hero";
 import ThemeToggle from "@/components/landing/ThemeToggle";
@@ -11,7 +11,10 @@ import ModeBar from "@/components/landing/ModeBar";
 import LoadingScreen from "@/components/landing/LoadingScreen";
 import SectionLoader from "@/components/landing/SectionLoader";
 
-// Lazy load below-fold and heavy components with prefetch hints
+// Lazy load components - grouped by priority
+const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
+
+// Below-fold sections
 const LogoLoop = lazy(() => import("@/components/landing/LogoLoop"));
 const VisibilityDemo = lazy(() => import("@/components/landing/VisibilityDemo"));
 const HybridToggle = lazy(() => import("@/components/landing/HybridToggle"));
@@ -26,9 +29,8 @@ const TrustProof = lazy(() => import("@/components/landing/TrustProof"));
 const PhilosophicalClose = lazy(() => import("@/components/landing/PhilosophicalClose"));
 const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
 
-// Lazy load heavy fixed elements
+// Heavy optional elements - load last
 const GhostCursor = lazy(() => import("@/components/landing/GhostCursor"));
-const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
 const Dock = lazy(() => import("@/components/landing/Dock"));
 const StealthScore = lazy(() => import("@/components/landing/StealthScore"));
 const SystemSignalHUD = lazy(() => import("@/components/landing/SystemSignalHUD"));
@@ -37,34 +39,46 @@ const EasterEggs = lazy(() => import("@/components/landing/EasterEggs"));
 const ExitMoment = lazy(() => import("@/components/landing/ExitMoment"));
 const SelfDestruct = lazy(() => import("@/components/landing/SelfDestruct"));
 
+// Memoized background component
+const BackgroundLayers = memo(() => (
+  <>
+    <div className="fixed inset-0 grid-pattern pointer-events-none" />
+    <div className="fixed inset-0 noise-overlay pointer-events-none" />
+    <div 
+      className="fixed top-0 left-0 w-full h-[50vh] pointer-events-none"
+      style={{
+        background: "radial-gradient(ellipse at top, hsl(var(--neon-purple) / 0.08) 0%, transparent 60%)"
+      }}
+    />
+    <div 
+      className="fixed bottom-0 left-0 w-full h-[30vh] pointer-events-none"
+      style={{
+        background: "radial-gradient(ellipse at bottom, hsl(var(--neon-green) / 0.05) 0%, transparent 60%)"
+      }}
+    />
+  </>
+));
+BackgroundLayers.displayName = "BackgroundLayers";
+
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showHeavyElements, setShowHeavyElements] = useState(false);
 
   useEffect(() => {
-    // Prefetch critical components
-    const prefetchComponents = async () => {
-      // Minimal loading time for smooth animation
-      const minLoadTime = new Promise(resolve => setTimeout(resolve, 1200));
-      
-      // Prefetch above-fold essentials
-      await Promise.all([
-        import("@/components/landing/LetterGlitch"),
-        import("@/components/landing/GhostCursor"),
-        minLoadTime
-      ]);
-      
+    // Quick initial load
+    const timer = setTimeout(() => {
       setIsLoading(false);
+    }, 800);
 
-      // Prefetch below-fold components after initial load
-      requestIdleCallback(() => {
-        import("@/components/landing/LogoLoop");
-        import("@/components/landing/VisibilityDemo");
-        import("@/components/landing/HybridToggle");
-        import("@/components/landing/Features");
-      });
+    // Delay heavy elements
+    const heavyTimer = setTimeout(() => {
+      setShowHeavyElements(true);
+    }, 2000);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(heavyTimer);
     };
-
-    prefetchComponents();
   }, []);
 
   return (
@@ -73,79 +87,68 @@ const Index = () => {
         <ObserverModeProvider>
           <IdleProvider>
             <PanicProvider>
-              {/* Loading Screen */}
+              {/* Centered Loading Screen */}
               <AnimatePresence mode="wait">
                 {isLoading && <LoadingScreen key="loading" />}
               </AnimatePresence>
 
               <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
-                {/* Ambient Background Layer - lazy loaded */}
+                {/* Optimized ambient background */}
                 <Suspense fallback={null}>
-                  <LetterGlitch opacity={0.07} glitchSpeed={60} />
+                  <LetterGlitch opacity={0.06} glitchSpeed={50} />
                 </Suspense>
                 
-                {/* Global Effects - lazy loaded */}
-                <Suspense fallback={null}>
-                  <GhostCursor />
-                  <ScreenShareScanner />
-                  <EasterEggs />
-                  <ExitMoment />
-                </Suspense>
+                {/* Heavy effects - delayed load */}
+                {showHeavyElements && (
+                  <Suspense fallback={null}>
+                    <GhostCursor />
+                    <ScreenShareScanner />
+                    <EasterEggs />
+                    <ExitMoment />
+                  </Suspense>
+                )}
                 
-                {/* Fixed UI Elements */}
+                {/* Essential UI Elements */}
                 <ThemeToggle />
                 <ModeBar />
-                <Suspense fallback={null}>
-                  <Dock />
-                  <StealthScore />
-                  <SystemSignalHUD />
-                  <SelfDestruct />
-                </Suspense>
                 
-                {/* Grid pattern background */}
-                <div className="fixed inset-0 grid-pattern pointer-events-none" />
+                {/* Secondary UI - delayed */}
+                {showHeavyElements && (
+                  <Suspense fallback={null}>
+                    <Dock />
+                    <StealthScore />
+                    <SystemSignalHUD />
+                    <SelfDestruct />
+                  </Suspense>
+                )}
                 
-                {/* Noise overlay */}
-                <div className="fixed inset-0 noise-overlay pointer-events-none" />
-                
-                {/* Gradient overlays */}
-                <div 
-                  className="fixed top-0 left-0 w-full h-[50vh] pointer-events-none"
-                  style={{
-                    background: "radial-gradient(ellipse at top, hsl(var(--neon-purple) / 0.08) 0%, transparent 60%)"
-                  }}
-                />
-                <div 
-                  className="fixed bottom-0 left-0 w-full h-[30vh] pointer-events-none"
-                  style={{
-                    background: "radial-gradient(ellipse at bottom, hsl(var(--neon-green) / 0.05) 0%, transparent 60%)"
-                  }}
-                />
+                {/* Static backgrounds - memoized */}
+                <BackgroundLayers />
 
-                {/* Content - lazy loaded sections */}
+                {/* Content sections */}
                 <div className="relative z-10">
                   <Hero />
                   <Suspense fallback={<SectionLoader />}>
                     <LogoLoop />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
                     <VisibilityDemo />
+                  </Suspense>
+                  <Suspense fallback={<SectionLoader />}>
                     <HybridToggle />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
                     <GhostDemo />
+                  </Suspense>
+                  <Suspense fallback={<SectionLoader />}>
                     <StealthTimeline />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
                     <Features />
+                  </Suspense>
+                  <Suspense fallback={<SectionLoader />}>
                     <MiniGame />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
                     <UseCases />
-                    <Comparison />
                   </Suspense>
                   <Suspense fallback={<SectionLoader />}>
+                    <Comparison />
                     <TrustProof />
+                  </Suspense>
+                  <Suspense fallback={<SectionLoader />}>
                     <Support />
                     <Footer />
                     <PhilosophicalClose />
