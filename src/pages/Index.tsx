@@ -115,7 +115,6 @@ const Index = () => {
                 {/* Secondary UI - delayed */}
                 {showHeavyElements && (
                   <Suspense fallback={null}>
-                    <Dock />
                     <StealthScore />
                     <SystemSignalHUD />
                     <SelfDestruct />
@@ -151,6 +150,7 @@ const Index = () => {
                   <Suspense fallback={<SectionLoader />}>
                     <Support />
                     <Footer />
+                    <Dock />
                     <PhilosophicalClose />
                   </Suspense>
                 </div>
