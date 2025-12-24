@@ -65,26 +65,36 @@ const MiniGame = () => {
     setScore(0);
     setTimeLeft(15);
     setIsCaught(false);
-    setScanPosition({ x: 0, direction: 1 });
 
     // Randomize HUD spawn (inside drag area; never behind score/time)
     const minX = 12;
     const maxX = 350 - 16 - 64; // container width - padding - hud width
     const minY = 56;
     const maxY = 288 - 16 - 48; // container height - padding - hud height
-    hudX.set(Math.floor(minX + Math.random() * (maxX - minX)));
+    const spawnX = Math.floor(minX + Math.random() * (maxX - minX));
+    hudX.set(spawnX);
     hudY.set(Math.floor(minY + Math.random() * (maxY - minY)));
+
+    // Start scan from opposite side of HUD spawn
+    const midPoint = (maxX + minX) / 2;
+    if (spawnX > midPoint) {
+      // HUD is on right, scan starts from left
+      setScanPosition({ x: 0, direction: 1 });
+    } else {
+      // HUD is on left, scan starts from right
+      setScanPosition({ x: 340, direction: -1 });
+    }
 
     generateSafeZones();
   }, [generateSafeZones, hudX, hudY]);
 
-  // Scan line movement
+  // Scan line movement (slower speed)
   useEffect(() => {
     if (gameState !== "playing") return;
 
     const interval = setInterval(() => {
       setScanPosition((prev) => {
-        const newX = prev.x + prev.direction * 8;
+        const newX = prev.x + prev.direction * 4; // Slower: 4 instead of 8
         const newDirection = newX >= 340 || newX <= 0 ? -prev.direction : prev.direction;
         return { x: Math.max(0, Math.min(340, newX)), direction: newDirection };
       });
