@@ -1,25 +1,6 @@
 import { motion } from "framer-motion";
-import { Download, Heart, Users, Zap, Shield } from "lucide-react";
-import { useEffect, useState } from "react";
-
-const CountUpNumber = ({ end, duration = 2000, suffix = "" }: { end: number; duration?: number; suffix?: string }) => {
-  const [count, setCount] = useState(0);
-  
-  useEffect(() => {
-    let startTime: number;
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      setCount(Math.floor(progress * end));
-      if (progress < 1) {
-        requestAnimationFrame(animate);
-      }
-    };
-    requestAnimationFrame(animate);
-  }, [end, duration]);
-  
-  return <span>{count.toLocaleString()}{suffix}</span>;
-};
+import { Download, Heart, Shield } from "lucide-react";
+import LiveUsers from "./LiveUsers";
 
 const Hero = () => {
   return (
@@ -29,7 +10,7 @@ const Hero = () => {
         <motion.div
           className="absolute top-1/4 left-1/4 w-[600px] h-[600px] rounded-full"
           style={{
-            background: "radial-gradient(circle, hsl(263 70% 66% / 0.15) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.15) 0%, transparent 70%)",
           }}
           animate={{
             x: [0, 50, 0],
@@ -44,7 +25,7 @@ const Hero = () => {
         <motion.div
           className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] rounded-full"
           style={{
-            background: "radial-gradient(circle, hsl(160 84% 39% / 0.1) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(var(--neon-green) / 0.1) 0%, transparent 70%)",
           }}
           animate={{
             x: [0, -40, 0],
@@ -59,7 +40,7 @@ const Hero = () => {
         <motion.div
           className="absolute top-1/2 right-1/3 w-[400px] h-[400px] rounded-full"
           style={{
-            background: "radial-gradient(circle, hsl(330 90% 66% / 0.08) 0%, transparent 70%)",
+            background: "radial-gradient(circle, hsl(var(--neon-pink) / 0.08) 0%, transparent 70%)",
           }}
           animate={{
             x: [0, 30, 0],
@@ -102,9 +83,11 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
-              <span className="text-gradient-hero">Your Silent</span>
+              <span className="text-gradient-hero">Visible to You.</span>
               <br />
-              <span className="text-foreground">Superpower.</span>
+              <span className="text-foreground">Invisible to</span>
+              <br />
+              <span className="text-foreground">Everyone Else.</span>
             </motion.h1>
 
             {/* Subheadline */}
@@ -114,24 +97,41 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
             >
-              The world's first <span className="text-neon-purple font-semibold">Hybrid AI HUD</span> — run 100% private or unlock cloud-level power.
+              The world's first <span className="text-neon-purple font-semibold">Hybrid AI HUD</span> — stealth by design.
             </motion.p>
 
             <motion.p
-              className="text-lg text-muted-foreground/80 max-w-xl mb-10"
+              className="text-lg text-muted-foreground/80 max-w-xl mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.8 }}
             >
-              Any hardware. Anywhere. AI that stays invisible.
+              Your silent superpower. AI that stays invisible.
             </motion.p>
+
+            {/* Taglines */}
+            <motion.div
+              className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+            >
+              {["Private by default", "Powerful on demand", "A stealth HUD"].map((tag, i) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
+                >
+                  {tag}
+                </span>
+              ))}
+            </motion.div>
 
             {/* CTAs */}
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.8 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
             >
               <motion.button
                 className="btn-cyber-green flex items-center justify-center gap-3 text-lg"
@@ -152,7 +152,7 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right - Live Stats Panel */}
+          {/* Right - Live Users Panel */}
           <motion.div
             className="flex-shrink-0"
             initial={{ opacity: 0, x: 50 }}
@@ -160,70 +160,10 @@ const Hero = () => {
             transition={{ delay: 0.5, duration: 0.8 }}
           >
             <motion.div
-              className="glass-card p-8 rounded-2xl min-w-[320px] animate-float"
-              style={{
-                boxShadow: "0 0 60px hsl(263 70% 66% / 0.15), inset 0 0 60px hsl(263 70% 66% / 0.05)",
-              }}
+              animate={{ y: [0, -10, 0] }}
+              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
             >
-              {/* Scan line effect */}
-              <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-                <div 
-                  className="absolute inset-0 opacity-5"
-                  style={{
-                    background: "linear-gradient(to bottom, transparent 0%, hsl(263 70% 66% / 0.3) 50%, transparent 100%)",
-                    animation: "scan-line 3s linear infinite",
-                  }}
-                />
-              </div>
-
-              <div className="relative z-10">
-                <div className="flex items-center gap-2 mb-6">
-                  <div className="w-2 h-2 rounded-full bg-neon-green pulse-green" />
-                  <span className="font-mono text-sm text-neon-green">LIVE STATUS</span>
-                </div>
-
-                <div className="space-y-6">
-                  {/* Live Visitors */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-green/10 flex items-center justify-center">
-                      <Users className="w-6 h-6 text-neon-green" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Live Visitors</p>
-                      <p className="text-2xl font-bold font-mono text-foreground">
-                        <CountUpNumber end={1204} />
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Queries Served */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-purple/10 flex items-center justify-center">
-                      <Zap className="w-6 h-6 text-neon-purple" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Queries Served</p>
-                      <p className="text-2xl font-bold font-mono text-foreground">
-                        <CountUpNumber end={1200000} suffix="+" duration={2500} />
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Privacy Mode */}
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-neon-pink/10 flex items-center justify-center">
-                      <Shield className="w-6 h-6 text-neon-pink" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-muted-foreground">Privacy Mode</p>
-                      <p className="text-lg font-bold font-mono text-neon-green flex items-center gap-2">
-                        ACTIVE
-                        <span className="w-2 h-2 rounded-full bg-neon-green blink" />
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <LiveUsers />
             </motion.div>
           </motion.div>
         </div>
@@ -240,7 +180,11 @@ const Hero = () => {
         }}
       >
         <div className="w-6 h-10 rounded-full border-2 border-muted-foreground/30 flex justify-center pt-2">
-          <div className="w-1 h-2 rounded-full bg-neon-purple" />
+          <motion.div
+            className="w-1 h-2 rounded-full bg-neon-purple"
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
         </div>
       </motion.div>
     </section>

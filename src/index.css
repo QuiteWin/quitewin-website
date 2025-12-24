@@ -62,6 +62,70 @@
   }
 }
 
+/* Light mode theme */
+.light-mode {
+  --background: 0 0% 98%;
+  --foreground: 240 10% 10%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 10%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 10%;
+
+  --primary: 263 70% 55%;
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 160 84% 35%;
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 240 5% 92%;
+  --muted-foreground: 240 5% 40%;
+
+  --accent: 330 80% 55%;
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84% 55%;
+  --destructive-foreground: 0 0% 100%;
+
+  --border: 240 5% 85%;
+  --input: 240 5% 85%;
+  --ring: 263 70% 55%;
+
+  /* Custom neon colors - softer for light mode */
+  --neon-purple: 263 70% 55%;
+  --neon-green: 160 84% 35%;
+  --neon-pink: 330 80% 55%;
+  --neon-amber: 38 92% 45%;
+  --neon-cyan: 190 90% 40%;
+
+  /* Glassmorphism */
+  --glass-bg: 0 0% 100%;
+  --glass-border: 240 5% 80%;
+
+  /* Grid pattern */
+  --grid-color: 240 5% 90%;
+}
+
+.light-mode .glass-card {
+  background: hsl(var(--glass-bg) / 0.7);
+  border: 1px solid hsl(var(--glass-border) / 0.5);
+  box-shadow: 0 8px 32px hsl(0 0% 0% / 0.08);
+}
+
+.light-mode .ghost-window {
+  background: hsl(var(--glass-bg) / 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid hsl(var(--neon-purple) / 0.2);
+  box-shadow: 
+    0 25px 50px -12px hsl(0 0% 0% / 0.15),
+    0 0 20px hsl(var(--neon-purple) / 0.08);
+}
+
+.light-mode .noise-overlay::before {
+  opacity: 0.015;
+}
+
 @layer base {
   * {
     @apply border-border;
