@@ -212,7 +212,7 @@ const MiniGame = () => {
             {/* Draggable HUD */}
             {(gameState === "playing" || gameState === "idle") && (
               <motion.div
-                className="absolute w-16 h-12 rounded-lg cursor-grab active:cursor-grabbing"
+                className="absolute w-16 h-12 rounded-lg cursor-grab active:cursor-grabbing z-10"
                 style={{
                   x: springX,
                   y: springY,
@@ -221,9 +221,9 @@ const MiniGame = () => {
                   boxShadow: "0 0 20px hsl(263 70% 66% / 0.3)",
                 }}
                 drag={gameState === "playing"}
-                dragConstraints={containerRef}
+                dragConstraints={{ top: 45, left: 10, right: 330, bottom: 230 }}
                 dragElastic={0.1}
-                whileDrag={{ scale: 1.1 }}
+                whileDrag={{ scale: 1.1, zIndex: 15 }}
                 onDrag={(_, info) => {
                   hudX.set(info.point.x - 30);
                   hudY.set(info.point.y - 20);
