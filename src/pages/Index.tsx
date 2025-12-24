@@ -8,12 +8,22 @@ import Comparison from "@/components/landing/Comparison";
 import Support from "@/components/landing/Support";
 import Footer from "@/components/landing/Footer";
 import ThemeToggle from "@/components/landing/ThemeToggle";
+import GhostCursor from "@/components/landing/GhostCursor";
+import LogoLoop from "@/components/landing/LogoLoop";
+import Dock from "@/components/landing/Dock";
+import MiniGame from "@/components/landing/MiniGame";
 
 const Index = () => {
   return (
     <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+      {/* Ghost Cursor (Night mode only) */}
+      <GhostCursor />
+      
       {/* Theme Toggle */}
       <ThemeToggle />
+      
+      {/* Mac-style Dock */}
+      <Dock />
       
       {/* Grid pattern background */}
       <div className="fixed inset-0 grid-pattern pointer-events-none" />
@@ -38,10 +48,12 @@ const Index = () => {
       {/* Content */}
       <div className="relative z-10">
         <Hero />
+        <LogoLoop />
         <VisibilityDemo />
         <HybridToggle />
         <GhostDemo />
         <Features />
+        <MiniGame />
         <UseCases />
         <Comparison />
         <Support />

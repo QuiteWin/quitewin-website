@@ -7,7 +7,7 @@ const GhostDemo = () => {
   const [isMinimized, setIsMinimized] = useState(false);
 
   return (
-    <section className="py-24 relative overflow-hidden min-h-[800px]">
+    <section id="ghost-demo" className="py-24 relative overflow-hidden min-h-[800px]">
       {/* Background demo content */}
       <div className="container mx-auto px-6 relative">
         <motion.div
