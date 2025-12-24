@@ -34,7 +34,7 @@ export const TrustModeToggle = () => {
 
   return (
     <motion.button
-      className="fixed top-6 left-[calc(50%-11rem)] z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors"
+      className="fixed top-6 left-[calc(50%-12rem)] z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors whitespace-nowrap"
       onClick={toggleTrustMode}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
