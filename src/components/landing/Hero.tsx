@@ -53,18 +53,51 @@ const Hero = () => {
           duration: 0.8,
           ease: "easeOut"
         }}>
-            {/* Logo */}
+            {/* Fixed Logo at Top Left */}
             <motion.div 
-              className="mb-8 flex justify-center lg:justify-start"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+              className="fixed top-6 left-6 z-50"
+              initial={{ opacity: 0, scale: 0.5, rotate: -180 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              transition={{ delay: 0.1, duration: 0.8, ease: "easeOut" }}
             >
-              <img 
-                src={quitewinLogo} 
-                alt="QuiteWin - Stealth AI" 
-                className="w-48 md:w-56 lg:w-64 h-auto drop-shadow-2xl"
-              />
+              <div className="relative group cursor-pointer">
+                {/* Animated glow rings */}
+                <motion.div 
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: "conic-gradient(from 0deg, hsl(var(--neon-purple)), hsl(var(--neon-green)), hsl(var(--neon-pink)), hsl(var(--neon-amber)), hsl(var(--neon-purple)))",
+                    filter: "blur(8px)",
+                  }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div 
+                  className="absolute -inset-1 rounded-full opacity-60"
+                  style={{
+                    background: "conic-gradient(from 180deg, hsl(var(--neon-green)), hsl(var(--neon-purple)), hsl(var(--neon-pink)), hsl(var(--neon-green)))",
+                    filter: "blur(12px)",
+                  }}
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+                />
+                {/* Pulsing outer glow */}
+                <motion.div 
+                  className="absolute -inset-2 rounded-full"
+                  style={{
+                    background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.4) 0%, transparent 70%)",
+                  }}
+                  animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* Logo container */}
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-background/80 backdrop-blur-sm">
+                  <img 
+                    src={quitewinLogo} 
+                    alt="QuiteWin - Stealth AI" 
+                    className="w-full h-full object-cover scale-150"
+                  />
+                </div>
+              </div>
             </motion.div>
 
             {/* Badge */}
