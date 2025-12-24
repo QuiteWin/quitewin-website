@@ -1,37 +1,31 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 
 interface LetterGlitchProps {
   opacity?: number;
   glitchSpeed?: number;
 }
 
-const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) => {
+const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 60 }: LetterGlitchProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
   const lastFrameTime = useRef<number>(0);
+  const gridRef = useRef<{ char: string; progress: number; speed: number }[][]>([]);
   const [isVisible, setIsVisible] = useState(true);
-  const [isLowPerf, setIsLowPerf] = useState(false);
-  const [isIdle, setIsIdle] = useState(false);
-  const [scrollSpeed, setScrollSpeed] = useState(0);
-  const [cursorStill, setCursorStill] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(true);
   
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%&*<>[]{}";
-  const gridRef = useRef<{ char: string; targetChar: string; progress: number; speed: number }[][]>([]);
+  // Memoize chars to prevent recreation
+  const chars = useMemo(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*", []);
   
-  // Detect low-performance devices
-  useEffect(() => {
-    const checkPerformance = () => {
-      const isLow = 
-        navigator.hardwareConcurrency <= 2 ||
-        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      setIsLowPerf(isLow);
-    };
-    checkPerformance();
+  // Detect if we should disable for performance
+  const shouldDisable = useMemo(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      navigator.hardwareConcurrency <= 2
+    );
   }, []);
 
-  // Tab visibility
+  // Tab visibility - minimal listener
   useEffect(() => {
     const handleVisibility = () => setIsVisible(!document.hidden);
     document.addEventListener("visibilitychange", handleVisibility);
@@ -49,111 +43,68 @@ const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) =
     return () => observer.disconnect();
   }, []);
 
-  // Idle detection
+  // Main animation - heavily optimized
   useEffect(() => {
-    let idleTimer: NodeJS.Timeout;
-    const resetIdle = () => {
-      setIsIdle(false);
-      clearTimeout(idleTimer);
-      idleTimer = setTimeout(() => setIsIdle(true), 8000);
-    };
-    
-    window.addEventListener('mousemove', resetIdle);
-    window.addEventListener('keydown', resetIdle);
-    window.addEventListener('scroll', resetIdle);
-    resetIdle();
-    
-    return () => {
-      clearTimeout(idleTimer);
-      window.removeEventListener('mousemove', resetIdle);
-      window.removeEventListener('keydown', resetIdle);
-      window.removeEventListener('scroll', resetIdle);
-    };
-  }, []);
-
-  // Scroll speed detection
-  useEffect(() => {
-    let lastScroll = 0;
-    let scrollTimer: NodeJS.Timeout;
-    
-    const handleScroll = () => {
-      const currentScroll = window.scrollY;
-      const speed = Math.abs(currentScroll - lastScroll);
-      setScrollSpeed(Math.min(speed / 50, 1));
-      lastScroll = currentScroll;
-      
-      clearTimeout(scrollTimer);
-      scrollTimer = setTimeout(() => setScrollSpeed(0), 150);
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      clearTimeout(scrollTimer);
-    };
-  }, []);
-
-  // Cursor still detection
-  useEffect(() => {
-    let stillTimer: NodeJS.Timeout;
-    
-    const handleMove = () => {
-      setCursorStill(false);
-      clearTimeout(stillTimer);
-      stillTimer = setTimeout(() => setCursorStill(true), 3000);
-    };
-    
-    window.addEventListener('mousemove', handleMove);
-    return () => {
-      window.removeEventListener('mousemove', handleMove);
-      clearTimeout(stillTimer);
-    };
-  }, []);
-
-  // Initialize grid
-  const initGrid = useCallback((canvas: HTMLCanvasElement) => {
-    const cellSize = isLowPerf ? 24 : 16;
-    const cols = Math.ceil(canvas.width / cellSize);
-    const rows = Math.ceil(canvas.height / cellSize);
-    
-    gridRef.current = Array.from({ length: rows }, () =>
-      Array.from({ length: cols }, () => ({
-        char: chars[Math.floor(Math.random() * chars.length)],
-        targetChar: chars[Math.floor(Math.random() * chars.length)],
-        progress: Math.random(),
-        speed: 0.002 + Math.random() * 0.008
-      }))
-    );
-  }, [isLowPerf, chars]);
-
-  // Main animation
-  useEffect(() => {
-    if (isLowPerf && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      return; // Completely disable on reduced motion preference
-    }
+    if (shouldDisable || !isVisible) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
     
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { alpha: true });
     if (!ctx) return;
 
+    // Use smaller cell size and lower density
+    const cellSize = 32;
+    const targetFPS = 15;
+    const frameInterval = 1000 / targetFPS;
+
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initGrid(canvas);
+      const dpr = Math.min(window.devicePixelRatio, 1); // Cap DPR at 1 for performance
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      canvas.style.width = `${window.innerWidth}px`;
+      canvas.style.height = `${window.innerHeight}px`;
+      ctx.scale(dpr, dpr);
+      
+      // Initialize sparse grid
+      const cols = Math.ceil(window.innerWidth / cellSize);
+      const rows = Math.ceil(window.innerHeight / cellSize);
+      
+      gridRef.current = [];
+      for (let y = 0; y < rows; y++) {
+        const row: { char: string; progress: number; speed: number }[] = [];
+        for (let x = 0; x < cols; x++) {
+          // Only populate ~30% of cells for sparse effect
+          if (Math.random() > 0.7) {
+            row.push({
+              char: chars[Math.floor(Math.random() * chars.length)],
+              progress: Math.random(),
+              speed: 0.005 + Math.random() * 0.01
+            });
+          } else {
+            row.push({ char: '', progress: 0, speed: 0 });
+          }
+        }
+        gridRef.current.push(row);
+      }
     };
     
     resize();
-    window.addEventListener('resize', resize);
+    
+    // Debounced resize
+    let resizeTimeout: NodeJS.Timeout;
+    const handleResize = () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(resize, 250);
+    };
+    window.addEventListener('resize', handleResize);
 
-    const cellSize = isLowPerf ? 28 : 20;
-    const targetFPS = isLowPerf ? 12 : 24;
-    const frameInterval = 1000 / targetFPS;
+    // Pre-calculate color
+    const baseOpacity = opacity;
 
     const animate = (timestamp: number) => {
-      // Skip animation entirely when not visible
       if (!isVisible) {
+        animationRef.current = requestAnimationFrame(animate);
         return;
       }
 
@@ -166,52 +117,40 @@ const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) =
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Calculate dynamic speed multiplier
-      let speedMultiplier = 1;
-      if (isIdle) speedMultiplier = 0.3;
-      if (cursorStill) speedMultiplier *= 0.5;
-      if (scrollSpeed > 0) speedMultiplier = 1 + scrollSpeed * 0.5;
-      
-      // Calculate dynamic opacity
-      let dynamicOpacity = opacity;
-      if (cursorStill) dynamicOpacity *= 0.6;
-      if (isIdle) dynamicOpacity *= 0.7;
-
-      // Theme-based colors
-      const baseColor = isDarkMode 
-        ? `hsla(260, 30%, 60%, ${dynamicOpacity})`
-        : `hsla(260, 20%, 40%, ${dynamicOpacity * 0.6})`;
-      
-      ctx.font = `${cellSize * 0.7}px "JetBrains Mono", monospace`;
+      ctx.font = `${cellSize * 0.6}px "JetBrains Mono", monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
-      gridRef.current.forEach((row, y) => {
-        row.forEach((cell, x) => {
-          // Update progress
-          cell.progress += cell.speed * speedMultiplier * (glitchSpeed / 80);
+      const grid = gridRef.current;
+      const charArray = chars;
+      const dark = isDarkMode;
+
+      for (let y = 0; y < grid.length; y++) {
+        const row = grid[y];
+        for (let x = 0; x < row.length; x++) {
+          const cell = row[x];
+          if (!cell.char) continue;
+          
+          cell.progress += cell.speed * (glitchSpeed / 60);
           
           if (cell.progress >= 1) {
             cell.progress = 0;
-            cell.char = cell.targetChar;
-            cell.targetChar = chars[Math.floor(Math.random() * chars.length)];
-            cell.speed = 0.002 + Math.random() * 0.008;
+            cell.char = charArray[Math.floor(Math.random() * charArray.length)];
           }
           
-          // Subtle variation in opacity per character
           const charOpacity = 0.3 + Math.sin(cell.progress * Math.PI) * 0.7;
           
-          ctx.fillStyle = isDarkMode
-            ? `hsla(260, 30%, 60%, ${dynamicOpacity * charOpacity})`
-            : `hsla(260, 20%, 40%, ${dynamicOpacity * charOpacity * 0.6})`;
+          ctx.fillStyle = dark
+            ? `hsla(260, 30%, 60%, ${baseOpacity * charOpacity})`
+            : `hsla(260, 20%, 40%, ${baseOpacity * charOpacity * 0.5})`;
           
           ctx.fillText(
             cell.char,
             x * cellSize + cellSize / 2,
             y * cellSize + cellSize / 2
           );
-        });
-      });
+        }
+      }
 
       animationRef.current = requestAnimationFrame(animate);
     };
@@ -219,24 +158,24 @@ const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) =
     animationRef.current = requestAnimationFrame(animate);
 
     return () => {
-      window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimeout);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-  }, [isVisible, isLowPerf, isIdle, scrollSpeed, cursorStill, isDarkMode, opacity, glitchSpeed, initGrid, chars]);
+  }, [isVisible, shouldDisable, isDarkMode, opacity, glitchSpeed, chars]);
 
-  if (isLowPerf && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return null;
-  }
+  if (shouldDisable) return null;
 
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none will-change-transform"
+      className="fixed inset-0 pointer-events-none"
       style={{
         zIndex: 0,
         mixBlendMode: isDarkMode ? 'screen' : 'multiply',
-        opacity: isDarkMode ? 1 : 0.8,
+        opacity: isDarkMode ? 1 : 0.7,
         contain: 'strict',
+        willChange: 'auto',
       }}
       aria-hidden="true"
     />
