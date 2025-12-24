@@ -90,11 +90,11 @@ const Hero = () => {
                   transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                 />
                 {/* Logo container */}
-                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-white/20 bg-background/80 backdrop-blur-sm">
+                <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-amber-500/40 bg-background/50 backdrop-blur-sm shadow-lg shadow-amber-500/20">
                   <img 
                     src={quitewinLogo} 
                     alt="QuiteWin - Stealth AI" 
-                    className="w-full h-full object-cover scale-150"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
