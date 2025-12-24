@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Coffee, Heart, Sparkles } from "lucide-react";
 import MagnetButton from "./MagnetButton";
-
+import TextScramble from "./TextScramble";
 const Support = () => {
   return (
     <section id="support" className="py-24 relative overflow-hidden">
@@ -22,10 +22,12 @@ const Support = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient-hero">Keep the Ghost Alive</span>
+            <span className="text-gradient-hero">
+              <TextScramble delay={100} scrambleOnHover>Keep the Ghost Alive</TextScramble>
+            </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Indie-built. No VC. No trackers. Just passion and code.
+            <TextScramble delay={200}>Indie-built. No VC. No trackers. Just passion and code.</TextScramble>
           </p>
         </motion.div>
 
@@ -73,12 +75,12 @@ const Support = () => {
 
               {/* Title */}
               <h3 className="text-2xl font-bold text-center mb-2 text-foreground">
-                Buy Me a Coffee
+                <TextScramble delay={300} scrambleOnHover>Buy Me a Coffee</TextScramble>
               </h3>
 
               {/* Subtitle */}
               <p className="text-muted-foreground text-center mb-6">
-                Every coffee fuels another feature. Support independent development.
+                <TextScramble delay={400}>Every coffee fuels another feature. Support independent development.</TextScramble>
               </p>
 
               {/* Stats */}

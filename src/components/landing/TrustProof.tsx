@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import TextScramble from "./TextScramble";
 
 const TrustProof = () => {
   return (
@@ -12,12 +13,18 @@ const TrustProof = () => {
           transition={{ duration: 1 }}
         >
           <p className="text-muted-foreground text-lg leading-relaxed">
-            Used in situations where visibility matters.
+            <TextScramble delay={100}>Used in situations where visibility matters.</TextScramble>
           </p>
           <div className="mt-6 space-y-1">
-            <p className="text-sm text-muted-foreground/50 font-mono">No logos.</p>
-            <p className="text-sm text-muted-foreground/50 font-mono">No testimonials.</p>
-            <p className="text-sm text-muted-foreground/50 font-mono">No names.</p>
+            <p className="text-sm text-muted-foreground/50 font-mono">
+              <TextScramble delay={300}>No logos.</TextScramble>
+            </p>
+            <p className="text-sm text-muted-foreground/50 font-mono">
+              <TextScramble delay={400}>No testimonials.</TextScramble>
+            </p>
+            <p className="text-sm text-muted-foreground/50 font-mono">
+              <TextScramble delay={500}>No names.</TextScramble>
+            </p>
           </div>
         </motion.div>
       </div>
