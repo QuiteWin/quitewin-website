@@ -27,6 +27,7 @@ import { IdleProvider } from "@/components/landing/IdleBehavior";
 import TrustProof from "@/components/landing/TrustProof";
 import SelfDestruct from "@/components/landing/SelfDestruct";
 import PhilosophicalClose from "@/components/landing/PhilosophicalClose";
+import LetterGlitch from "@/components/landing/LetterGlitch";
 
 const Index = () => {
   return (
@@ -36,6 +37,9 @@ const Index = () => {
           <IdleProvider>
             <PanicProvider>
               <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+                {/* Ambient Background Layer */}
+                <LetterGlitch opacity={0.07} glitchSpeed={60} />
+                
                 {/* Global Effects */}
                 <GhostCursor />
                 <ScreenShareScanner />
