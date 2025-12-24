@@ -1,9 +1,10 @@
 import { motion } from "framer-motion";
 import { Coffee, Heart, Sparkles } from "lucide-react";
+import MagnetButton from "./MagnetButton";
 
 const Support = () => {
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section id="support" className="py-24 relative overflow-hidden">
       {/* Background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
@@ -99,14 +100,16 @@ const Support = () => {
               </div>
 
               {/* CTA Button */}
-              <motion.button
-                className="w-full btn-cyber-amber flex items-center justify-center gap-3"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Coffee className="w-5 h-5" />
-                Support Development
-              </motion.button>
+              <MagnetButton strength={0.15} className="w-full">
+                <motion.button
+                  className="w-full btn-cyber-amber flex items-center justify-center gap-3"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Coffee className="w-5 h-5" />
+                  Support Development
+                </motion.button>
+              </MagnetButton>
 
               {/* Trust badge */}
               <p className="text-center text-xs text-muted-foreground/60 mt-4">

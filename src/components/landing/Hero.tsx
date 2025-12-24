@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
+import MagnetButton from "./MagnetButton";
+import FallingText from "./FallingText";
 
 const Hero = () => {
   return (
@@ -76,26 +78,30 @@ const Hero = () => {
               </span>
             </motion.div>
 
-            {/* Main headline */}
-            <motion.h1
-              className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3, duration: 0.8 }}
-            >
-              <span className="text-gradient-hero">Visible to You.</span>
-              <br />
-              <span className="text-foreground">Invisible to</span>
-              <br />
-              <span className="text-foreground">Everyone Else.</span>
-            </motion.h1>
+            {/* Main headline with FallingText */}
+            <div className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+              <FallingText
+                text="Visible to You."
+                highlightWords={["Visible"]}
+                className="text-gradient-hero justify-center lg:justify-start"
+                trigger="inView"
+                delay={0.3}
+              />
+              <FallingText
+                text="Invisible to Everyone Else."
+                highlightWords={["Invisible"]}
+                className="text-foreground justify-center lg:justify-start mt-2"
+                trigger="inView"
+                delay={0.5}
+              />
+            </div>
 
             {/* Subheadline */}
             <motion.p
               className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              transition={{ delay: 0.8, duration: 0.8 }}
             >
               The world's first <span className="text-neon-purple font-semibold">Hybrid AI HUD</span> — stealth by design.
             </motion.p>
@@ -104,7 +110,7 @@ const Hero = () => {
               className="text-lg text-muted-foreground/80 max-w-xl mb-6"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
             >
               Your silent superpower. AI that stays invisible.
             </motion.p>
@@ -114,9 +120,9 @@ const Hero = () => {
               className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.7 }}
+              transition={{ delay: 1 }}
             >
-              {["Private by default", "Powerful on demand", "A stealth HUD"].map((tag, i) => (
+              {["Private by default", "Powerful on demand", "A stealth HUD"].map((tag) => (
                 <span
                   key={tag}
                   className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
@@ -126,29 +132,33 @@ const Hero = () => {
               ))}
             </motion.div>
 
-            {/* CTAs */}
+            {/* CTAs with MagnetButton */}
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
+              transition={{ delay: 1.1, duration: 0.8 }}
             >
-              <motion.button
-                className="btn-cyber-green flex items-center justify-center gap-3 text-lg"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Download className="w-5 h-5" />
-                Download Beta
-              </motion.button>
-              <motion.button
-                className="btn-cyber-amber flex items-center justify-center gap-3 text-lg"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <Heart className="w-5 h-5" />
-                Fuel the Dev
-              </motion.button>
+              <MagnetButton strength={0.2}>
+                <motion.button
+                  className="btn-cyber-green flex items-center justify-center gap-3 text-lg"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Download className="w-5 h-5" />
+                  Download Beta
+                </motion.button>
+              </MagnetButton>
+              <MagnetButton strength={0.2}>
+                <motion.button
+                  className="btn-cyber-amber flex items-center justify-center gap-3 text-lg"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Heart className="w-5 h-5" />
+                  Fuel the Dev
+                </motion.button>
+              </MagnetButton>
             </motion.div>
           </motion.div>
 
@@ -159,12 +169,14 @@ const Hero = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.8 }}
           >
-            <motion.div
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-            >
-              <LiveUsers />
-            </motion.div>
+            <MagnetButton strength={0.1}>
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <LiveUsers />
+              </motion.div>
+            </MagnetButton>
           </motion.div>
         </div>
       </div>

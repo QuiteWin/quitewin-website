@@ -6,7 +6,7 @@ const VisibilityDemo = () => {
   const [viewMode, setViewMode] = useState<"my-view" | "screen-share">("my-view");
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section id="visibility-demo" className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div
           className="text-center mb-12"
