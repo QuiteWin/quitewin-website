@@ -106,7 +106,7 @@ const Dock = () => {
 
   return (
     <motion.div
-      className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 hidden md:block"
+      className="fixed bottom-[120px] left-1/2 -translate-x-1/2 z-50 hidden md:block"
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1, duration: 0.5, type: "spring" }}
