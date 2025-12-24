@@ -57,15 +57,16 @@ const MiniGame = () => {
   }, [hudX, hudY, safeZones]);
 
   // Start game
-  const startGame = () => {
+  const startGame = useCallback(() => {
     setGameState("playing");
     setScore(0);
     setTimeLeft(15);
     setIsCaught(false);
+    setScanPosition({ x: 0, direction: 1 });
     hudX.set(150);
     hudY.set(100);
     generateSafeZones();
-  };
+  }, [generateSafeZones, hudX, hudY]);
 
   // Scan line movement
   useEffect(() => {
@@ -257,7 +258,7 @@ const MiniGame = () => {
 
               {gameState === "won" && (
                 <motion.div
-                  className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90"
+                  className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90 z-20"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
@@ -266,7 +267,7 @@ const MiniGame = () => {
                   <p className="text-muted-foreground">Score: {score}</p>
                   <button
                     onClick={startGame}
-                    className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors"
+                    className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30"
                   >
                     <RefreshCw className="w-4 h-4" />
                     Play Again
@@ -276,7 +277,7 @@ const MiniGame = () => {
 
               {gameState === "lost" && (
                 <motion.div
-                  className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90"
+                  className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90 z-20"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                 >
@@ -292,7 +293,7 @@ const MiniGame = () => {
                   <p className="text-muted-foreground">Score: {score}</p>
                   <button
                     onClick={startGame}
-                    className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors"
+                    className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30"
                   >
                     <RefreshCw className="w-4 h-4" />
                     Try Again
