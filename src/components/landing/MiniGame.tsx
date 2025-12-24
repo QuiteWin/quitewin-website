@@ -63,8 +63,15 @@ const MiniGame = () => {
     setTimeLeft(15);
     setIsCaught(false);
     setScanPosition({ x: 0, direction: 1 });
-    hudX.set(150);
-    hudY.set(100);
+
+    // Randomize HUD spawn (never behind score/time area)
+    const minX = 10;
+    const maxX = 330;
+    const minY = 45;
+    const maxY = 230;
+    hudX.set(Math.floor(minX + Math.random() * (maxX - minX)));
+    hudY.set(Math.floor(minY + Math.random() * (maxY - minY)));
+
     generateSafeZones();
   }, [generateSafeZones, hudX, hudY]);
 
