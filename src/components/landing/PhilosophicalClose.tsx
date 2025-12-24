@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import TextScramble from "./TextScramble";
 
 const PhilosophicalClose = () => {
   return (
@@ -13,10 +12,10 @@ const PhilosophicalClose = () => {
           transition={{ duration: 2, ease: "easeOut" }}
         >
           <p className="text-2xl md:text-3xl text-muted-foreground leading-relaxed font-light">
-            <TextScramble delay={200} speed={60}>Privacy isn't a feature.</TextScramble>
+            Privacy isn't a feature.
           </p>
           <p className="text-2xl md:text-3xl text-foreground leading-relaxed font-light mt-2">
-            <TextScramble delay={600} speed={60}>It's a stance.</TextScramble>
+            It's a stance.
           </p>
         </motion.div>
       </div>

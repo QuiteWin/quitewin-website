@@ -3,7 +3,7 @@ import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
-import TextScramble from "./TextScramble";
+
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -74,7 +74,7 @@ const Hero = () => {
             >
               <Shield className="w-4 h-4 text-neon-green" />
               <span className="text-sm font-mono text-muted-foreground">
-                <TextScramble delay={200}>v2.0 Beta • Privacy-First AI</TextScramble>
+                v2.0 Beta • Privacy-First AI
               </span>
             </motion.div>
 
@@ -103,9 +103,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
             >
-              <TextScramble delay={800}>The world's first</TextScramble>{" "}
-              <span className="text-neon-purple font-semibold"><TextScramble delay={900}>Hybrid AI HUD</TextScramble></span>{" "}
-              <TextScramble delay={1000}>— stealth by design.</TextScramble>
+              The world's first <span className="text-neon-purple font-semibold">Hybrid AI HUD</span> — stealth by design.
             </motion.p>
 
             <motion.p
@@ -114,7 +112,7 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.9, duration: 0.8 }}
             >
-              <TextScramble delay={1100}>Your silent superpower. AI that stays invisible.</TextScramble>
+              Your silent superpower. AI that stays invisible.
             </motion.p>
 
             {/* Taglines */}
