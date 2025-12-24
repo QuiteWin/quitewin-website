@@ -44,7 +44,7 @@ const Footer = () => {
                   className="relative w-10 h-10 rounded-lg object-contain border border-amber-500/30 bg-background/50 backdrop-blur-sm" 
                 />
               </div>
-              <span className="font-bold text-xl text-foreground">QuiteWin</span>
+              <span className="font-bold text-xl"><span className="text-amber-400">Quite</span><span className="text-red-500">Win</span></span>
             </div>
 
             {/* Social links */}
