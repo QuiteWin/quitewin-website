@@ -93,6 +93,27 @@ const Hero = () => {
       {/* Fixed Logo at Top Left - Outside animated container */}
       <div className="fixed top-6 left-6 z-50">
         <div className="relative group cursor-pointer">
+          {/* Revolving brand name */}
+          <motion.svg
+            className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)]"
+            viewBox="0 0 100 100"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+          >
+            <defs>
+              <path
+                id="circlePath"
+                d="M 50, 50 m -37, 0 a 37,37 0 1,1 74,0 a 37,37 0 1,1 -74,0"
+                fill="none"
+              />
+            </defs>
+            <text className="fill-amber-400/80 text-[8px] font-mono uppercase tracking-[0.3em]">
+              <textPath href="#circlePath" startOffset="0%">
+                QuiteWin • Stealth AI • QuiteWin • Stealth AI • 
+              </textPath>
+            </text>
+          </motion.svg>
+          
           {/* Animated glow rings */}
           <motion.div 
             className="absolute inset-0 rounded-full"
