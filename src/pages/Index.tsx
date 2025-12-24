@@ -20,63 +20,80 @@ import { TrustModeProvider, TrustModeToggle } from "@/components/landing/TrustMo
 import { SilenceModeProvider, SilenceModeToggle } from "@/components/landing/SilenceMode";
 import EasterEggs from "@/components/landing/EasterEggs";
 import SystemSignalHUD from "@/components/landing/SystemSignalHUD";
+import ExitMoment from "@/components/landing/ExitMoment";
+import SessionCodename from "@/components/landing/SessionCodename";
+import { ObserverModeProvider, ObserverModeToggle } from "@/components/landing/ObserverMode";
+import { IdleProvider } from "@/components/landing/IdleBehavior";
+import TrustProof from "@/components/landing/TrustProof";
+import SelfDestruct from "@/components/landing/SelfDestruct";
+import PhilosophicalClose from "@/components/landing/PhilosophicalClose";
 
 const Index = () => {
   return (
     <TrustModeProvider>
       <SilenceModeProvider>
-        <PanicProvider>
-          <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
-            {/* Global Effects */}
-            <GhostCursor />
-            <ScreenShareScanner />
-            <EasterEggs />
-            
-            {/* Fixed UI Elements */}
-            <ThemeToggle />
-            <TrustModeToggle />
-            <SilenceModeToggle />
-            <Dock />
-            <StealthScore />
-            <SystemSignalHUD />
-            
-            {/* Grid pattern background */}
-            <div className="fixed inset-0 grid-pattern pointer-events-none" />
-            
-            {/* Noise overlay */}
-            <div className="fixed inset-0 noise-overlay pointer-events-none" />
-            
-            {/* Gradient overlays */}
-            <div 
-              className="fixed top-0 left-0 w-full h-[50vh] pointer-events-none"
-              style={{
-                background: "radial-gradient(ellipse at top, hsl(var(--neon-purple) / 0.08) 0%, transparent 60%)"
-              }}
-            />
-            <div 
-              className="fixed bottom-0 left-0 w-full h-[30vh] pointer-events-none"
-              style={{
-                background: "radial-gradient(ellipse at bottom, hsl(var(--neon-green) / 0.05) 0%, transparent 60%)"
-              }}
-            />
+        <ObserverModeProvider>
+          <IdleProvider>
+            <PanicProvider>
+              <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+                {/* Global Effects */}
+                <GhostCursor />
+                <ScreenShareScanner />
+                <EasterEggs />
+                <ExitMoment />
+                
+                {/* Fixed UI Elements */}
+                <ThemeToggle />
+                <TrustModeToggle />
+                <SilenceModeToggle />
+                <ObserverModeToggle />
+                <Dock />
+                <StealthScore />
+                <SystemSignalHUD />
+                <SessionCodename />
+                <SelfDestruct />
+                
+                {/* Grid pattern background */}
+                <div className="fixed inset-0 grid-pattern pointer-events-none" />
+                
+                {/* Noise overlay */}
+                <div className="fixed inset-0 noise-overlay pointer-events-none" />
+                
+                {/* Gradient overlays */}
+                <div 
+                  className="fixed top-0 left-0 w-full h-[50vh] pointer-events-none"
+                  style={{
+                    background: "radial-gradient(ellipse at top, hsl(var(--neon-purple) / 0.08) 0%, transparent 60%)"
+                  }}
+                />
+                <div 
+                  className="fixed bottom-0 left-0 w-full h-[30vh] pointer-events-none"
+                  style={{
+                    background: "radial-gradient(ellipse at bottom, hsl(var(--neon-green) / 0.05) 0%, transparent 60%)"
+                  }}
+                />
 
-            {/* Content */}
-            <div className="relative z-10">
-              <Hero />
-              <LogoLoop />
-              <VisibilityDemo />
-              <HybridToggle />
-              <GhostDemo />
-              <StealthTimeline />
-              <Features />
-              <MiniGame />
-              <UseCases />
-              <Comparison />
-              <Support />
-              <Footer />
-            </div>
-          </main>
-        </PanicProvider>
+                {/* Content */}
+                <div className="relative z-10">
+                  <Hero />
+                  <LogoLoop />
+                  <VisibilityDemo />
+                  <HybridToggle />
+                  <GhostDemo />
+                  <StealthTimeline />
+                  <Features />
+                  <MiniGame />
+                  <UseCases />
+                  <Comparison />
+                  <TrustProof />
+                  <Support />
+                  <Footer />
+                  <PhilosophicalClose />
+                </div>
+              </main>
+            </PanicProvider>
+          </IdleProvider>
+        </ObserverModeProvider>
       </SilenceModeProvider>
     </TrustModeProvider>
   );

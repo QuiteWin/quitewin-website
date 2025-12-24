@@ -378,6 +378,24 @@
   border-color: hsl(var(--border) / 0.2);
 }
 
+/* Observer Mode Styles */
+.observer-mode .grid-pattern {
+  animation: grid-pulse 2s ease-in-out infinite;
+}
+
+@keyframes grid-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.observer-mode .glass-card {
+  border-color: hsl(var(--neon-purple) / 0.3);
+}
+
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
