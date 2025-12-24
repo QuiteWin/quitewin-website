@@ -8,7 +8,7 @@ interface IdleContextType {
 export const IdleContext = createContext<IdleContextType>({ isIdle: false });
 export const useIdleState = () => useContext(IdleContext);
 
-const IDLE_TIMEOUT = 20000; // 20 seconds
+const IDLE_TIMEOUT = 120000; // 2 minutes
 
 export const IdleProvider = ({ children }: { children: React.ReactNode }) => {
   const [isIdle, setIsIdle] = useState(false);
