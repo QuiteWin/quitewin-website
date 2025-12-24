@@ -147,13 +147,13 @@ const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) =
     resize();
     window.addEventListener('resize', resize);
 
-    const cellSize = isLowPerf ? 24 : 16;
-    const targetFPS = isLowPerf ? 15 : 30;
+    const cellSize = isLowPerf ? 28 : 20;
+    const targetFPS = isLowPerf ? 12 : 24;
     const frameInterval = 1000 / targetFPS;
 
     const animate = (timestamp: number) => {
+      // Skip animation entirely when not visible
       if (!isVisible) {
-        animationRef.current = requestAnimationFrame(animate);
         return;
       }
 
@@ -231,12 +231,12 @@ const LetterGlitch = ({ opacity = 0.08, glitchSpeed = 80 }: LetterGlitchProps) =
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none"
+      className="fixed inset-0 pointer-events-none will-change-transform"
       style={{
         zIndex: 0,
         mixBlendMode: isDarkMode ? 'screen' : 'multiply',
         opacity: isDarkMode ? 1 : 0.8,
-        transition: 'opacity 0.5s ease'
+        contain: 'strict',
       }}
       aria-hidden="true"
     />

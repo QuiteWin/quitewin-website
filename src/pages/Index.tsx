@@ -1,34 +1,41 @@
+import { lazy, Suspense } from "react";
 import Hero from "@/components/landing/Hero";
-import HybridToggle from "@/components/landing/HybridToggle";
-import VisibilityDemo from "@/components/landing/VisibilityDemo";
-import GhostDemo from "@/components/landing/GhostDemo";
-import Features from "@/components/landing/Features";
-import UseCases from "@/components/landing/UseCases";
-import Comparison from "@/components/landing/Comparison";
-import Support from "@/components/landing/Support";
-import Footer from "@/components/landing/Footer";
 import ThemeToggle from "@/components/landing/ThemeToggle";
-import GhostCursor from "@/components/landing/GhostCursor";
-import LogoLoop from "@/components/landing/LogoLoop";
-import Dock from "@/components/landing/Dock";
-import MiniGame from "@/components/landing/MiniGame";
-import StealthScore from "@/components/landing/StealthScore";
-import ScreenShareScanner from "@/components/landing/ScreenShareScanner";
 import { PanicProvider } from "@/components/landing/PanicMode";
-import StealthTimeline from "@/components/landing/StealthTimeline";
 import { TrustModeProvider } from "@/components/landing/TrustMode";
 import { SilenceModeProvider } from "@/components/landing/SilenceMode";
-import EasterEggs from "@/components/landing/EasterEggs";
-import SystemSignalHUD from "@/components/landing/SystemSignalHUD";
-import ExitMoment from "@/components/landing/ExitMoment";
-
 import { ObserverModeProvider } from "@/components/landing/ObserverMode";
 import { IdleProvider } from "@/components/landing/IdleBehavior";
-import TrustProof from "@/components/landing/TrustProof";
-import SelfDestruct from "@/components/landing/SelfDestruct";
-import PhilosophicalClose from "@/components/landing/PhilosophicalClose";
-import LetterGlitch from "@/components/landing/LetterGlitch";
 import ModeBar from "@/components/landing/ModeBar";
+
+// Lazy load below-fold and heavy components
+const LogoLoop = lazy(() => import("@/components/landing/LogoLoop"));
+const VisibilityDemo = lazy(() => import("@/components/landing/VisibilityDemo"));
+const HybridToggle = lazy(() => import("@/components/landing/HybridToggle"));
+const GhostDemo = lazy(() => import("@/components/landing/GhostDemo"));
+const Features = lazy(() => import("@/components/landing/Features"));
+const UseCases = lazy(() => import("@/components/landing/UseCases"));
+const Comparison = lazy(() => import("@/components/landing/Comparison"));
+const Support = lazy(() => import("@/components/landing/Support"));
+const Footer = lazy(() => import("@/components/landing/Footer"));
+const StealthTimeline = lazy(() => import("@/components/landing/StealthTimeline"));
+const TrustProof = lazy(() => import("@/components/landing/TrustProof"));
+const PhilosophicalClose = lazy(() => import("@/components/landing/PhilosophicalClose"));
+const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
+
+// Lazy load heavy fixed elements
+const GhostCursor = lazy(() => import("@/components/landing/GhostCursor"));
+const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
+const Dock = lazy(() => import("@/components/landing/Dock"));
+const StealthScore = lazy(() => import("@/components/landing/StealthScore"));
+const SystemSignalHUD = lazy(() => import("@/components/landing/SystemSignalHUD"));
+const ScreenShareScanner = lazy(() => import("@/components/landing/ScreenShareScanner"));
+const EasterEggs = lazy(() => import("@/components/landing/EasterEggs"));
+const ExitMoment = lazy(() => import("@/components/landing/ExitMoment"));
+const SelfDestruct = lazy(() => import("@/components/landing/SelfDestruct"));
+
+// Fallback component for lazy loading
+const LazyFallback = () => null;
 
 const Index = () => {
   return (
@@ -38,23 +45,28 @@ const Index = () => {
           <IdleProvider>
             <PanicProvider>
               <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
-                {/* Ambient Background Layer */}
-                <LetterGlitch opacity={0.07} glitchSpeed={60} />
+                {/* Ambient Background Layer - lazy loaded */}
+                <Suspense fallback={<LazyFallback />}>
+                  <LetterGlitch opacity={0.07} glitchSpeed={60} />
+                </Suspense>
                 
-                {/* Global Effects */}
-                <GhostCursor />
-                <ScreenShareScanner />
-                <EasterEggs />
-                <ExitMoment />
+                {/* Global Effects - lazy loaded */}
+                <Suspense fallback={<LazyFallback />}>
+                  <GhostCursor />
+                  <ScreenShareScanner />
+                  <EasterEggs />
+                  <ExitMoment />
+                </Suspense>
                 
                 {/* Fixed UI Elements */}
                 <ThemeToggle />
                 <ModeBar />
-                <Dock />
-                <StealthScore />
-                <SystemSignalHUD />
-                
-                <SelfDestruct />
+                <Suspense fallback={<LazyFallback />}>
+                  <Dock />
+                  <StealthScore />
+                  <SystemSignalHUD />
+                  <SelfDestruct />
+                </Suspense>
                 
                 {/* Grid pattern background */}
                 <div className="fixed inset-0 grid-pattern pointer-events-none" />
@@ -76,22 +88,24 @@ const Index = () => {
                   }}
                 />
 
-                {/* Content */}
+                {/* Content - lazy loaded sections */}
                 <div className="relative z-10">
                   <Hero />
-                  <LogoLoop />
-                  <VisibilityDemo />
-                  <HybridToggle />
-                  <GhostDemo />
-                  <StealthTimeline />
-                  <Features />
-                  <MiniGame />
-                  <UseCases />
-                  <Comparison />
-                  <TrustProof />
-                  <Support />
-                  <Footer />
-                  <PhilosophicalClose />
+                  <Suspense fallback={<LazyFallback />}>
+                    <LogoLoop />
+                    <VisibilityDemo />
+                    <HybridToggle />
+                    <GhostDemo />
+                    <StealthTimeline />
+                    <Features />
+                    <MiniGame />
+                    <UseCases />
+                    <Comparison />
+                    <TrustProof />
+                    <Support />
+                    <Footer />
+                    <PhilosophicalClose />
+                  </Suspense>
                 </div>
               </main>
             </PanicProvider>
