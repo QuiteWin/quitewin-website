@@ -7,7 +7,7 @@ const comparisonData = [
   { feature: "Privacy-First", quitewin: true, competitor: false },
   { feature: "Free Tier", quitewin: true, competitor: true },
   { feature: "Local AI Models", quitewin: true, competitor: false },
-  { feature: "Vision/Screenshot", quitewin: true, competitor: true },
+  { feature: "Screenshot", quitewin: true, competitor: true },
   { feature: "Adaptive Audio", quitewin: true, competitor: false },
   { feature: "Cross-Platform", quitewin: true, competitor: true },
 ];
