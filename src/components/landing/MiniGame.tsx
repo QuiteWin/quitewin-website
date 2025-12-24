@@ -19,8 +19,10 @@ const MiniGame = () => {
   const [scanPosition, setScanPosition] = useState({ x: 0, direction: 1 });
   const [safeZones, setSafeZones] = useState<SafeZone[]>([]);
   const [isCaught, setIsCaught] = useState(false);
-  
+  const [hudKey, setHudKey] = useState(0);
+
   const containerRef = useRef<HTMLDivElement>(null);
+  const dragAreaRef = useRef<HTMLDivElement>(null);
   const hudX = useMotionValue(150);
   const hudY = useMotionValue(100);
   const springX = useSpring(hudX, { damping: 20, stiffness: 200 });
@@ -58,17 +60,18 @@ const MiniGame = () => {
 
   // Start game
   const startGame = useCallback(() => {
+    setHudKey((k) => k + 1);
     setGameState("playing");
     setScore(0);
     setTimeLeft(15);
     setIsCaught(false);
     setScanPosition({ x: 0, direction: 1 });
 
-    // Randomize HUD spawn (never behind score/time area)
-    const minX = 10;
-    const maxX = 330;
-    const minY = 45;
-    const maxY = 230;
+    // Randomize HUD spawn (inside drag area; never behind score/time)
+    const minX = 12;
+    const maxX = 350 - 16 - 64; // container width - padding - hud width
+    const minY = 56;
+    const maxY = 288 - 16 - 48; // container height - padding - hud height
     hudX.set(Math.floor(minX + Math.random() * (maxX - minX)));
     hudY.set(Math.floor(minY + Math.random() * (maxY - minY)));
 
@@ -174,11 +177,12 @@ const MiniGame = () => {
             ref={containerRef}
             className="relative h-72 rounded-2xl glass-card overflow-hidden"
             style={{
-              boxShadow: gameState === "playing" 
-                ? "0 0 40px hsl(330 90% 66% / 0.2)" 
-                : "none",
+              boxShadow:
+                gameState === "playing" ? "0 0 40px hsl(330 90% 66% / 0.2)" : "none",
             }}
           >
+            {/* Drag area (excludes the score/time HUD row) */}
+            <div ref={dragAreaRef} className="absolute inset-0 top-14 left-3 right-3 bottom-3" />
             {/* Safe Zones */}
             <AnimatePresence>
               {gameState === "playing" &&
@@ -219,7 +223,8 @@ const MiniGame = () => {
             {/* Draggable HUD */}
             {(gameState === "playing" || gameState === "idle") && (
               <motion.div
-                className="absolute w-16 h-12 rounded-lg cursor-grab active:cursor-grabbing z-10"
+                key={hudKey}
+                className="absolute w-16 h-12 rounded-lg cursor-grab active:cursor-grabbing z-30"
                 style={{
                   x: springX,
                   y: springY,
@@ -228,13 +233,11 @@ const MiniGame = () => {
                   boxShadow: "0 0 20px hsl(263 70% 66% / 0.3)",
                 }}
                 drag={gameState === "playing"}
-                dragConstraints={{ top: 45, left: 10, right: 330, bottom: 230 }}
+                dragConstraints={dragAreaRef}
                 dragElastic={0.1}
-                whileDrag={{ scale: 1.1, zIndex: 15 }}
-                onDrag={(_, info) => {
-                  hudX.set(info.point.x - 30);
-                  hudY.set(info.point.y - 20);
-                }}
+                dragMomentum={true}
+                dragTransition={{ power: 0.2, timeConstant: 120 }}
+                whileDrag={{ scale: 1.1, zIndex: 40 }}
               >
                 <div className="w-full h-full flex items-center justify-center">
                   <span className="text-[8px] font-mono text-neon-purple">QuiteWin</span>
