@@ -15,9 +15,35 @@ const Footer = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
           >
-            {/* Logo */}
-            <div className="flex items-center gap-2">
-              <img src={quitewinLogo} alt="QuiteWin Logo" className="w-8 h-8 rounded-lg object-contain" />
+            {/* Logo with glow effect */}
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                {/* Animated glow ring */}
+                <motion.div 
+                  className="absolute inset-0 rounded-lg"
+                  style={{
+                    background: "conic-gradient(from 0deg, hsl(var(--neon-purple)), hsl(var(--neon-green)), hsl(var(--neon-pink)), hsl(var(--neon-amber)), hsl(var(--neon-purple)))",
+                    filter: "blur(4px)",
+                  }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                />
+                {/* Pulsing outer glow */}
+                <motion.div 
+                  className="absolute -inset-1 rounded-lg"
+                  style={{
+                    background: "radial-gradient(circle, hsl(var(--neon-purple) / 0.3) 0%, transparent 70%)",
+                  }}
+                  animate={{ scale: [1, 1.15, 1], opacity: [0.4, 0.7, 0.4] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                />
+                {/* Logo */}
+                <img 
+                  src={quitewinLogo} 
+                  alt="QuiteWin Logo" 
+                  className="relative w-10 h-10 rounded-lg object-contain border border-amber-500/30 bg-background/50 backdrop-blur-sm" 
+                />
+              </div>
               <span className="font-bold text-xl text-foreground">QuiteWin</span>
             </div>
 
