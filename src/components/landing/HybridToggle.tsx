@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Shield, Zap, Wifi, WifiOff } from "lucide-react";
 import { useState } from "react";
+import LatencyVisualizer from "./LatencyVisualizer";
 
 const HybridToggle = () => {
   const [isPowerMode, setIsPowerMode] = useState(false);
@@ -59,7 +60,8 @@ const HybridToggle = () => {
 
             <div className="relative z-10">
               {/* Toggle Switch */}
-              <div className="flex items-center justify-center gap-6 mb-12">
+              <div className="flex flex-col items-center mb-12">
+                <div className="flex items-center justify-center gap-6">
                 <span
                   className={`font-semibold text-lg transition-colors duration-300 ${
                     !isPowerMode ? "text-neon-green" : "text-muted-foreground"
@@ -125,6 +127,8 @@ const HybridToggle = () => {
                 >
                   Power
                 </span>
+                </div>
+                <LatencyVisualizer isPowerMode={isPowerMode} />
               </div>
 
               {/* Mode Content */}
