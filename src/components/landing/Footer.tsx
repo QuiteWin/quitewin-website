@@ -84,7 +84,7 @@ const Footer = () => {
           </p>
           
           <p className="text-center text-xs text-muted-foreground/40 mt-4">
-            © 2024 QuiteWin. Open source. Privacy-first.
+            © 2026 QuiteWin. Open source. Privacy-first.
           </p>
         </motion.div>
       </div>
