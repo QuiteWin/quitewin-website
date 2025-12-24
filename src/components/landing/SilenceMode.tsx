@@ -66,7 +66,7 @@ export const SilenceModeToggle = () => {
 
   return (
     <motion.button
-      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors"
+      className="fixed top-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors whitespace-nowrap"
       onClick={toggleSilenceMode}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
