@@ -111,7 +111,7 @@ const UseCases = () => {
         {/* Horizontal scroll container */}
         <div
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide"
+          className="flex gap-6 overflow-x-auto pt-2 pb-4 snap-x snap-mandatory scrollbar-hide -mt-2"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
           {useCases.map((useCase, index) => {
