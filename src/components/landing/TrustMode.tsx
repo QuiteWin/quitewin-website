@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, createContext, useContext } from "react";
 import { Code, Sparkles } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface TrustModeContextType {
   isTrustMode: boolean;
@@ -29,17 +30,20 @@ export const TrustModeProvider = ({ children }: { children: React.ReactNode }) =
 };
 
 // Trust Mode Toggle Button
-export const TrustModeToggle = () => {
+export const TrustModeToggle = ({ className }: { className?: string }) => {
   const { isTrustMode, toggleTrustMode } = useTrustMode();
 
   return (
     <motion.button
-      className="fixed top-6 left-[calc(50%-10rem)] z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors whitespace-nowrap"
+      className={cn(
+        "flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors",
+        className
+      )}
       onClick={toggleTrustMode}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ delay: 1.5 }}
     >
       <AnimatePresence mode="wait">

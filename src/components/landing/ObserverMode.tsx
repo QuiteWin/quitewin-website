@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, createContext, useContext } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface ObserverModeContextType {
   isObserverMode: boolean;
@@ -112,17 +113,20 @@ export const ObserverModeProvider = ({ children }: { children: React.ReactNode }
 };
 
 // Observer Mode Toggle Button
-export const ObserverModeToggle = () => {
+export const ObserverModeToggle = ({ className }: { className?: string }) => {
   const { isObserverMode, toggleObserverMode } = useObserverMode();
 
   return (
     <motion.button
-      className="fixed top-6 left-[calc(50%+4.5rem)] z-50 flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors whitespace-nowrap"
+      className={cn(
+        "flex items-center gap-2 px-3 py-2 rounded-lg glass-card text-xs font-mono transition-colors",
+        className
+      )}
       onClick={toggleObserverMode}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      initial={{ opacity: 0, x: -50 }}
-      animate={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{ delay: 1.9 }}
     >
       <AnimatePresence mode="wait">

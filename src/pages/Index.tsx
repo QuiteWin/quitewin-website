@@ -16,18 +16,19 @@ import StealthScore from "@/components/landing/StealthScore";
 import ScreenShareScanner from "@/components/landing/ScreenShareScanner";
 import { PanicProvider } from "@/components/landing/PanicMode";
 import StealthTimeline from "@/components/landing/StealthTimeline";
-import { TrustModeProvider, TrustModeToggle } from "@/components/landing/TrustMode";
-import { SilenceModeProvider, SilenceModeToggle } from "@/components/landing/SilenceMode";
+import { TrustModeProvider } from "@/components/landing/TrustMode";
+import { SilenceModeProvider } from "@/components/landing/SilenceMode";
 import EasterEggs from "@/components/landing/EasterEggs";
 import SystemSignalHUD from "@/components/landing/SystemSignalHUD";
 import ExitMoment from "@/components/landing/ExitMoment";
 import SessionCodename from "@/components/landing/SessionCodename";
-import { ObserverModeProvider, ObserverModeToggle } from "@/components/landing/ObserverMode";
+import { ObserverModeProvider } from "@/components/landing/ObserverMode";
 import { IdleProvider } from "@/components/landing/IdleBehavior";
 import TrustProof from "@/components/landing/TrustProof";
 import SelfDestruct from "@/components/landing/SelfDestruct";
 import PhilosophicalClose from "@/components/landing/PhilosophicalClose";
 import LetterGlitch from "@/components/landing/LetterGlitch";
+import ModeBar from "@/components/landing/ModeBar";
 
 const Index = () => {
   return (
@@ -48,9 +49,7 @@ const Index = () => {
                 
                 {/* Fixed UI Elements */}
                 <ThemeToggle />
-                <TrustModeToggle />
-                <SilenceModeToggle />
-                <ObserverModeToggle />
+                <ModeBar />
                 <Dock />
                 <StealthScore />
                 <SystemSignalHUD />
