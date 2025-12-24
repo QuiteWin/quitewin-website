@@ -6,9 +6,9 @@ const SessionCodename = () => {
 
   return (
     <motion.div
-      className="fixed top-20 left-6 z-40 hidden md:block"
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
+      className="fixed top-16 left-1/2 -translate-x-1/2 z-40 hidden md:block"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 2, duration: 0.5 }}
     >
       <div className="glass-card rounded-lg px-3 py-2">
