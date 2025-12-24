@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
-import { Code2, Headphones, Focus, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import { Code2, Headphones, Focus, ShieldCheck } from "lucide-react";
 
 const useCases = [
   {
@@ -60,60 +59,26 @@ const getColorClasses = (color: string) => {
 };
 
 const UseCases = () => {
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const scrollAmount = 400;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -scrollAmount : scrollAmount,
-        behavior: "smooth",
-      });
-    }
-  };
-
   return (
     <section className="py-24 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <motion.div
-          className="flex items-end justify-between mb-12"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-gradient-hero">Use Cases</span>
-            </h2>
-            <p className="text-xl text-muted-foreground max-w-xl">
-              AI that stays invisible. Here's when it matters.
-            </p>
-          </div>
-
-          {/* Navigation arrows */}
-          <div className="hidden md:flex items-center gap-2">
-            <button
-              onClick={() => scroll("left")}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:neon-glow-purple transition-all"
-            >
-              <ChevronLeft className="w-5 h-5 text-muted-foreground" />
-            </button>
-            <button
-              onClick={() => scroll("right")}
-              className="w-10 h-10 rounded-full glass-card flex items-center justify-center hover:neon-glow-purple transition-all"
-            >
-              <ChevronRight className="w-5 h-5 text-muted-foreground" />
-            </button>
-          </div>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="text-gradient-hero">Use Cases</span>
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-xl mx-auto">
+            AI that stays invisible. Here's when it matters.
+          </p>
         </motion.div>
 
-        {/* Horizontal scroll container */}
-        <div
-          ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pt-2 pb-4 pr-6 snap-x snap-mandatory scrollbar-hide -mt-2"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
+        {/* Grid container */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {useCases.map((useCase, index) => {
             const colors = getColorClasses(useCase.color);
             const Icon = useCase.icon;
@@ -121,35 +86,34 @@ const UseCases = () => {
             return (
               <motion.div
                 key={useCase.title}
-                className="flex-shrink-0 w-[350px] snap-start"
-                initial={{ opacity: 0, x: 50 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
                 <motion.div
-                  className={`h-full glass-card p-8 rounded-2xl border border-border/50 hover:border-border`}
-                  whileHover={{ y: -5, scale: 1.02 }}
+                  className="h-full glass-card p-6 md:p-8 rounded-2xl border border-border/50 hover:border-border"
+                  whileHover={{ y: -5 }}
                   transition={{ duration: 0.2 }}
                 >
                   {/* Icon */}
-                  <div className={`w-14 h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-6`}>
-                    <Icon className={`w-7 h-7 ${colors.text}`} />
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-xl ${colors.bg} flex items-center justify-center mb-4 md:mb-6`}>
+                    <Icon className={`w-6 h-6 md:w-7 md:h-7 ${colors.text}`} />
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-xl font-bold text-foreground mb-4">
+                  <h3 className="text-lg md:text-xl font-bold text-foreground mb-3 md:mb-4">
                     {useCase.title}
                   </h3>
 
                   {/* Scenario */}
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                  <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
                     {useCase.scenario}
                   </p>
 
                   {/* Why QuiteWin */}
-                  <div className={`p-4 rounded-xl ${colors.bg} ${colors.border} border`}>
-                    <p className={`text-sm font-mono ${colors.text}`}>
+                  <div className={`p-3 md:p-4 rounded-xl ${colors.bg} ${colors.border} border`}>
+                    <p className={`text-xs md:text-sm font-mono ${colors.text}`}>
                       ✦ {useCase.why}
                     </p>
                   </div>
@@ -157,16 +121,6 @@ const UseCases = () => {
               </motion.div>
             );
           })}
-        </div>
-
-        {/* Mobile scroll indicator */}
-        <div className="flex justify-center gap-2 mt-6 md:hidden">
-          {useCases.map((_, index) => (
-            <div
-              key={index}
-              className="w-2 h-2 rounded-full bg-muted-foreground/30"
-            />
-          ))}
         </div>
       </div>
     </section>
