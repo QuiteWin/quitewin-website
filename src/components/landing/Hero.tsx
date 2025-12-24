@@ -171,9 +171,9 @@ const Hero = () => {
               <FallingText text="Visible to You." highlightWords={["Visible"]} className="text-gradient-hero justify-center lg:justify-start" trigger="inView" delay={0.3} />
               
               {/* Badge */}
-              <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple my-4" initial={badgeAnim.initial} animate={badgeAnim.animate} transition={badgeAnim.transition}>
-                <Shield className="w-4 h-4 text-neon-green" />
-                <span className="text-sm font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
+              <motion.div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full glass-card neon-border-purple my-3" initial={badgeAnim.initial} animate={badgeAnim.animate} transition={badgeAnim.transition}>
+                <Shield className="w-3 h-3 text-neon-green" />
+                <span className="text-xs font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
               </motion.div>
               
               <FallingText text="Invisible to Everyone Else." highlightWords={["Invisible"]} className="text-foreground justify-center lg:justify-start mt-2" trigger="inView" delay={0.5} />
