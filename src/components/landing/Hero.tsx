@@ -166,15 +166,16 @@ const Hero = () => {
           {/* Left content */}
           <motion.div className="flex-1 text-center lg:text-left" initial={heroAnim.initial} animate={heroAnim.animate} transition={heroAnim.transition}>
 
-            {/* Badge */}
-            <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple mb-8" initial={badgeAnim.initial} animate={badgeAnim.animate} transition={badgeAnim.transition}>
-              <Shield className="w-4 h-4 text-neon-green" />
-              <span className="text-sm font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
-            </motion.div>
-
             {/* Main headline with FallingText */}
             <div className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
               <FallingText text="Visible to You." highlightWords={["Visible"]} className="text-gradient-hero justify-center lg:justify-start" trigger="inView" delay={0.3} />
+              
+              {/* Badge */}
+              <motion.div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card neon-border-purple my-4" initial={badgeAnim.initial} animate={badgeAnim.animate} transition={badgeAnim.transition}>
+                <Shield className="w-4 h-4 text-neon-green" />
+                <span className="text-sm font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
+              </motion.div>
+              
               <FallingText text="Invisible to Everyone Else." highlightWords={["Invisible"]} className="text-foreground justify-center lg:justify-start mt-2" trigger="inView" delay={0.5} />
             </div>
 
