@@ -106,10 +106,10 @@ const Dock = () => {
 
   return (
     <motion.div
-      className="fixed bottom-[120px] left-1/2 -translate-x-1/2 z-50 hidden md:block"
-      initial={{ opacity: 0, y: 100 }}
+      className="w-full flex justify-center py-8 hidden md:flex"
+      initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 1, duration: 0.5, type: "spring" }}
+      transition={{ delay: 0.3, duration: 0.5, type: "spring" }}
     >
       <motion.div
         className="flex items-end gap-4 px-4 pb-3 pt-2 rounded-2xl glass-card"
