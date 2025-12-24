@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
+import TextScramble from "./TextScramble";
 
 const comparisonData = [
   { feature: "Offline Capable", quitewin: true, competitor: false },
@@ -24,10 +25,12 @@ const Comparison = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient-hero">Why QuiteWin?</span>
+            <span className="text-gradient-hero">
+              <TextScramble delay={100} scrambleOnHover>Why QuiteWin?</TextScramble>
+            </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Built for privacy. Built for developers. Built different.
+            <TextScramble delay={200}>Built for privacy. Built for developers. Built different.</TextScramble>
           </p>
         </motion.div>
 

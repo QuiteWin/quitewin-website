@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useRef } from "react";
 import { Code2, Headphones, Focus, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
+import TextScramble from "./TextScramble";
 
 const useCases = [
   {
@@ -84,10 +85,12 @@ const UseCases = () => {
         >
           <div>
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              <span className="text-gradient-hero">Use Cases</span>
+              <span className="text-gradient-hero">
+                <TextScramble delay={100} scrambleOnHover>Use Cases</TextScramble>
+              </span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-xl">
-              AI that stays invisible. Here's when it matters.
+              <TextScramble delay={200}>AI that stays invisible. Here's when it matters.</TextScramble>
             </p>
           </div>
 
@@ -139,7 +142,7 @@ const UseCases = () => {
 
                   {/* Title */}
                   <h3 className="text-xl font-bold text-foreground mb-4">
-                    {useCase.title}
+                    <TextScramble delay={index * 100} scrambleOnHover>{useCase.title}</TextScramble>
                   </h3>
 
                   {/* Scenario */}

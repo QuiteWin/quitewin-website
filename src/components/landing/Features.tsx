@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { EyeOff, Image, Mic, Sparkles, Shield, Cpu } from "lucide-react";
 import { useRef } from "react";
+import TextScramble from "./TextScramble";
 
 const features = [
   {
@@ -161,13 +162,15 @@ const Features = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="text-gradient-hero">Built Different</span>
+            <span className="text-gradient-hero">
+              <TextScramble delay={100} scrambleOnHover>Built Different</TextScramble>
+            </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
-            Not another chatbot. A stealth HUD designed for developers.
+            <TextScramble delay={200}>Not another chatbot. A stealth HUD designed for developers.</TextScramble>
           </p>
           <p className="text-sm font-mono text-muted-foreground/60">
-            Private by default. Powerful on demand.
+            <TextScramble delay={300}>Private by default. Powerful on demand.</TextScramble>
           </p>
         </motion.div>
 
@@ -218,12 +221,12 @@ const Features = () => {
 
                       {/* Title */}
                       <h3 className="text-xl font-bold text-foreground mb-2">
-                        {feature.title}
+                        <TextScramble delay={index * 100} scrambleOnHover>{feature.title}</TextScramble>
                       </h3>
 
                       {/* Tagline */}
                       <p className={`text-sm font-mono ${colors.text} mb-3`}>
-                        "{feature.tagline}"
+                        "<TextScramble delay={index * 100 + 50}>{feature.tagline}</TextScramble>"
                       </p>
 
                       {/* Description */}
