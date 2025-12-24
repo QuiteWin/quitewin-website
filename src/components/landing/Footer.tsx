@@ -78,6 +78,12 @@ const Footer = () => {
             QuiteWin is a thinking assistant designed to enhance productivity and accessibility.
             Users are responsible for ethical usage in accordance with applicable laws and platform terms.
           </p>
+          
+          {/* Invisible Analytics Statement */}
+          <p className="text-center text-xs text-muted-foreground/40 mt-6 font-mono">
+            This page does not track you.
+          </p>
+          
           <p className="text-center text-xs text-muted-foreground/40 mt-4">
             © 2024 QuiteWin. Open source. Privacy-first.
           </p>
