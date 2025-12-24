@@ -1,9 +1,59 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
+import { useSilenceMode } from "./SilenceMode";
+import { useSessionCodename } from "@/hooks/useSessionCodename";
 import quitewinLogo from "@/assets/quitewin-logo.png";
+
+// Session Codename component inline
+const SessionCodename = () => {
+  const codename = useSessionCodename();
+
+  return (
+    <motion.div
+      className="hidden md:block"
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.7, duration: 0.5 }}
+    >
+      <div className="glass-card rounded-lg px-3 py-2">
+        <div className="text-[10px] font-mono text-muted-foreground/60 uppercase tracking-wider mb-0.5">
+          Session
+        </div>
+        <div className="text-xs font-mono text-neon-purple font-medium">
+          {codename}
+        </div>
+      </div>
+    </motion.div>
+  );
+};
+
+// Silence message component
+const SilenceMessage = () => {
+  const { isSilenceMode } = useSilenceMode();
+
+  return (
+    <AnimatePresence>
+      {isSilenceMode && (
+        <motion.div
+          className="hidden md:block"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 10 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="glass-card rounded-lg px-4 py-3">
+            <p className="text-sm font-mono text-muted-foreground">
+              No explanation needed.
+            </p>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
 const Hero = () => {
   return <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Animated background gradient orbs */}
@@ -195,8 +245,8 @@ const Hero = () => {
             </motion.div>
           </motion.div>
 
-          {/* Right - Live Users Panel */}
-          <motion.div className="flex-shrink-0" initial={{
+          {/* Right - Live Users Panel with Session above */}
+          <motion.div className="flex-shrink-0 flex flex-col items-end gap-3" initial={{
           opacity: 0,
           x: 50
         }} animate={{
@@ -206,6 +256,9 @@ const Hero = () => {
           delay: 0.5,
           duration: 0.8
         }}>
+            {/* Session Codename above Live HUD */}
+            <SessionCodename />
+            
             <MagnetButton strength={0.1}>
               <motion.div animate={{
               y: [0, -10, 0]
@@ -217,6 +270,9 @@ const Hero = () => {
                 <LiveUsers />
               </motion.div>
             </MagnetButton>
+            
+            {/* Silence message placeholder - actual message comes from SilenceMode context */}
+            <SilenceMessage />
           </motion.div>
         </div>
       </div>
