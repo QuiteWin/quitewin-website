@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useCallback } from 'react';
+import React, { memo, useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { usePreferences } from '@/hooks/usePreferences';
 import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
@@ -96,33 +96,41 @@ SecretKeyCombo.displayName = 'SecretKeyCombo';
 
 // Triple-click logo reveals glitch
 export const TripleClickReveal = memo(({ children }: { children: React.ReactNode }) => {
-  const [clickCount, setClickCount] = useState(0);
   const [revealed, setRevealed] = useState(false);
   const { prefersReducedMotion } = useAmbientIntelligence();
+  const clickCountRef = useRef(0);
+  const resetTimerRef = useRef<number | null>(null);
   
-  const handleClick = useCallback(() => {
-    setClickCount(prev => {
-      const newCount = prev + 1;
-      if (newCount >= 3) {
-        setRevealed(true);
-        setTimeout(() => setRevealed(false), 1500);
-        return 0;
-      }
-      return newCount;
-    });
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
     
-    // Reset count after delay
-    setTimeout(() => setClickCount(0), 500);
+    // Clear existing reset timer
+    if (resetTimerRef.current) {
+      clearTimeout(resetTimerRef.current);
+    }
+    
+    clickCountRef.current += 1;
+    
+    if (clickCountRef.current >= 3) {
+      setRevealed(true);
+      clickCountRef.current = 0;
+      setTimeout(() => setRevealed(false), 1500);
+    } else {
+      // Reset count after 600ms of no clicks
+      resetTimerRef.current = window.setTimeout(() => {
+        clickCountRef.current = 0;
+      }, 600);
+    }
   }, []);
   
   return (
-    <div onClick={handleClick} className="relative">
+    <div onClick={handleClick} className="relative cursor-pointer">
       {children}
       
       <AnimatePresence>
         {revealed && !prefersReducedMotion && (
           <motion.div
-            className="absolute inset-0 pointer-events-none"
+            className="absolute inset-0 pointer-events-none z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -135,8 +143,8 @@ export const TripleClickReveal = memo(({ children }: { children: React.ReactNode
               }}
               animate={{
                 rotate: [0, 360],
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0],
+                scale: [1, 2, 1],
+                opacity: [0.8, 1, 0],
               }}
               transition={{ duration: 1.5 }}
             />
