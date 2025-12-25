@@ -2,9 +2,12 @@ import { memo, useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useSpring, AnimatePresence } from 'framer-motion';
 import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
 
-type GhostState = 'hidden' | 'appearing' | 'roaming' | 'sitting' | 'peeking' | 'following' | 'waving' | 'sleeping' | 'celebrating';
-type GhostMood = 'neutral' | 'happy' | 'sleepy' | 'excited' | 'surprised' | 'shy' | 'curious' | 'celebrating';
+export type GhostState = 'hidden' | 'appearing' | 'roaming' | 'sitting' | 'peeking' | 'following' | 'waving' | 'sleeping' | 'celebrating';
+export type GhostMood = 'neutral' | 'happy' | 'sleepy' | 'excited' | 'surprised' | 'shy' | 'curious' | 'celebrating';
 
+interface BabyGhostProps {
+  onStateChange?: (state: GhostState, mood: GhostMood, position: { x: number; y: number }) => void;
+}
 const ROAM_POSITIONS = [
   // Top area
   { x: 0.1, y: 0.1 },
@@ -37,7 +40,7 @@ const PEEK_POSITIONS = [
   { x: 100, y: -15, rotate: 180 },  // Top edge
 ];
 
-export const BabyGhost = memo(() => {
+export const BabyGhost = memo(({ onStateChange }: BabyGhostProps) => {
   const { mouseX, mouseY, prefersReducedMotion, isIdle } = useAmbientIntelligence();
   
   const [ghostState, setGhostState] = useState<GhostState>('hidden');
@@ -322,6 +325,13 @@ export const BabyGhost = memo(() => {
     window.addEventListener('click', handleSpecialClick);
     return () => window.removeEventListener('click', handleSpecialClick);
   }, [x, y]);
+  
+  // Notify parent of state changes
+  useEffect(() => {
+    if (onStateChange) {
+      onStateChange(ghostState, mood, position);
+    }
+  }, [ghostState, mood, position, onStateChange]);
   
   if (prefersReducedMotion || !isVisible) return null;
   

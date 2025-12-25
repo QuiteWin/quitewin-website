@@ -41,7 +41,7 @@ const PhilosophicalClose = lazy(() => import("@/components/landing/Philosophical
 const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
 
 // Heavy optional elements - load last
-const BabyGhost = lazy(() => import("@/components/landing/BabyGhost"));
+const GhostRobotDuo = lazy(() => import("@/components/landing/GhostRobotDuo"));
 const GhostCursor = lazy(() => import("@/components/landing/GhostCursor"));
 const Dock = lazy(() => import("@/components/landing/Dock"));
 const StealthScore = lazy(() => import("@/components/landing/StealthScore"));
@@ -136,7 +136,7 @@ const Index = () => {
                   {/* Heavy effects - delayed load */}
                   {showHeavyElements && (
                     <Suspense fallback={null}>
-                      <BabyGhost />
+                      <GhostRobotDuo />
                       <GhostCursor />
                       <ScreenShareScanner />
                       <EasterEggs />
