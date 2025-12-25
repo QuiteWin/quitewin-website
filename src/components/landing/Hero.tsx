@@ -3,7 +3,7 @@ import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
-import ScrambledText from "./ScrambledText";
+
 import { useSilenceMode } from "./SilenceMode";
 import { useSessionCodename } from "@/hooks/useSessionCodename";
 import { useRandomAnimation } from "@/hooks/useRandomAnimation";
@@ -225,9 +225,9 @@ const Hero = () => {
               animate={subheadAnim.animate}
               transition={subheadAnim.transition}
             >
-              <ScrambledText as="span" className="inline">The world's first</ScrambledText>{" "}
+              The world's first{" "}
               <span className="text-neon-purple font-semibold">Hybrid AI</span>{" "}
-              <ScrambledText as="span" className="inline">— stealth by design.</ScrambledText>
+              — stealth by design.
             </motion.p>
 
             <motion.p
@@ -236,7 +236,7 @@ const Hero = () => {
               animate={taglineAnim.animate}
               transition={taglineAnim.transition}
             >
-              <ScrambledText as="span" className="inline">Your silent superpower. AI that stays invisible.</ScrambledText>
+              Your silent superpower. AI that stays invisible.
             </motion.p>
 
             {/* Taglines */}

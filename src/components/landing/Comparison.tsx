@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
-import ScrambledText from "./ScrambledText";
+
 
 const comparisonData = [
   { feature: "Offline Capable", quitewin: true, competitor: false },
@@ -28,7 +28,7 @@ const Comparison = () => {
             <span className="text-gradient-hero">Why QuiteWin?</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            <ScrambledText as="span" className="inline">Built for privacy. Built for developers. Built different.</ScrambledText>
+            Built for privacy. Built for developers. Built different.
           </p>
         </motion.div>
 
