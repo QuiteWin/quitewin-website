@@ -6,13 +6,27 @@ type GhostState = 'hidden' | 'appearing' | 'roaming' | 'sitting' | 'peeking' | '
 type GhostMood = 'neutral' | 'happy' | 'sleepy' | 'excited' | 'surprised' | 'shy' | 'curious' | 'celebrating';
 
 const ROAM_POSITIONS = [
-  { x: 0.1, y: 0.2 },
-  { x: 0.85, y: 0.15 },
-  { x: 0.7, y: 0.5 },
-  { x: 0.15, y: 0.7 },
-  { x: 0.5, y: 0.3 },
-  { x: 0.9, y: 0.8 },
-  { x: 0.3, y: 0.85 },
+  // Top area
+  { x: 0.1, y: 0.1 },
+  { x: 0.5, y: 0.08 },
+  { x: 0.85, y: 0.12 },
+  // Upper middle
+  { x: 0.15, y: 0.25 },
+  { x: 0.7, y: 0.3 },
+  { x: 0.4, y: 0.35 },
+  // Middle
+  { x: 0.1, y: 0.5 },
+  { x: 0.5, y: 0.45 },
+  { x: 0.85, y: 0.55 },
+  // Lower middle
+  { x: 0.2, y: 0.65 },
+  { x: 0.6, y: 0.7 },
+  { x: 0.9, y: 0.6 },
+  // Bottom area
+  { x: 0.1, y: 0.85 },
+  { x: 0.4, y: 0.9 },
+  { x: 0.75, y: 0.88 },
+  { x: 0.95, y: 0.8 },
 ];
 
 const PEEK_POSITIONS = [
@@ -435,9 +449,8 @@ export const BabyGhost = memo(() => {
                 )}
                 {mood === 'celebrating' && (
                   <motion.g key="celebrating-mouth" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-                    <ellipse cx="20" cy="30" rx="5" ry="4" className="fill-gray-700" />
-                    <ellipse cx="20" cy="29" rx="3" ry="2" className="fill-pink-400/70" />
-                    <motion.path d="M16 28 L18 26 L20 28 L22 26 L24 28" fill="none" stroke="#fff" strokeWidth="0.5" strokeLinecap="round" />
+                    <ellipse cx="20" cy="35" rx="5" ry="3.5" className="fill-gray-700" />
+                    <ellipse cx="20" cy="34" rx="3" ry="1.5" className="fill-pink-400/70" />
                   </motion.g>
                 )}
               </AnimatePresence>
