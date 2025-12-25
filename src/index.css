@@ -417,3 +417,22 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Focus mode transitions */
+.focus-mode-active {
+  transition: filter 1s ease, opacity 1s ease;
+}
+
+.focus-mode-active .glass-card {
+  border-color: hsl(var(--border) / 0.2);
+}
+
+/* Ambient breathing animation */
+@keyframes ambient-breathe {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.02); }
+}
+
+.ambient-breathe {
+  animation: ambient-breathe 8s ease-in-out infinite;
+}

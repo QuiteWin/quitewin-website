@@ -7,13 +7,23 @@ import { TrustModeProvider } from "@/components/landing/TrustMode";
 import { SilenceModeProvider } from "@/components/landing/SilenceMode";
 import { ObserverModeProvider } from "@/components/landing/ObserverMode";
 import { IdleProvider } from "@/components/landing/IdleBehavior";
+import { AmbientProvider } from "@/components/landing/AmbientProvider";
 import ModeBar from "@/components/landing/ModeBar";
 import LoadingScreen from "@/components/landing/LoadingScreen";
 import SectionLoader from "@/components/landing/SectionLoader";
 import useRandomTheme from "@/hooks/useRandomTheme";
 
+// Premium interaction components
+import { CursorGlow } from "@/components/landing/CursorAwareness";
+import { FloatingAccents } from "@/components/landing/DepthParallax";
+import { FocusModeOverlay, FocusIndicator } from "@/components/landing/FocusMode";
+import { PageBreath, SectionPulse } from "@/components/landing/SignatureMoment";
+import { SecretKeyCombo } from "@/components/landing/PremiumEasterEggs";
+import { SmartMicrocopy, ScrollWhisper } from "@/components/landing/SmartMicrocopy";
+
 // Lazy load components - grouped by priority
 const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
+const AmbientSound = lazy(() => import("@/components/landing/AmbientSound").then(m => ({ default: m.AmbientSound })));
 
 // Below-fold sections
 const LogoLoop = lazy(() => import("@/components/landing/LogoLoop"));
@@ -40,7 +50,7 @@ const EasterEggs = lazy(() => import("@/components/landing/EasterEggs"));
 const ExitMoment = lazy(() => import("@/components/landing/ExitMoment"));
 const SelfDestruct = lazy(() => import("@/components/landing/SelfDestruct"));
 
-// Memoized background component
+// Memoized background component with parallax support
 const BackgroundLayers = memo(() => (
   <>
     <div className="fixed inset-0 grid-pattern pointer-events-none" />
@@ -86,84 +96,114 @@ const Index = () => {
   }, []);
 
   return (
-    <TrustModeProvider>
-      <SilenceModeProvider>
-        <ObserverModeProvider>
-          <IdleProvider>
-            <PanicProvider>
-              {/* Centered Loading Screen */}
-              <AnimatePresence mode="wait">
-                {isLoading && <LoadingScreen key="loading" />}
-              </AnimatePresence>
+    <AmbientProvider>
+      <TrustModeProvider>
+        <SilenceModeProvider>
+          <ObserverModeProvider>
+            <IdleProvider>
+              <PanicProvider>
+                {/* Centered Loading Screen */}
+                <AnimatePresence mode="wait">
+                  {isLoading && <LoadingScreen key="loading" />}
+                </AnimatePresence>
 
-              <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
-                {/* Optimized ambient background */}
-                <Suspense fallback={null}>
-                  <LetterGlitch opacity={0.06} glitchSpeed={50} />
-                </Suspense>
-                
-                {/* Heavy effects - delayed load */}
-                {showHeavyElements && (
+                <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+                  {/* Signature page breath effect */}
+                  <PageBreath />
+                  <SectionPulse />
+                  
+                  {/* Cursor awareness glow */}
+                  <CursorGlow />
+                  
+                  {/* Focus mode overlay */}
+                  <FocusModeOverlay />
+                  
+                  {/* Floating parallax accents */}
+                  <FloatingAccents />
+                  
+                  {/* Scroll whisper text */}
+                  <ScrollWhisper />
+                  
+                  {/* Secret key combo easter egg */}
+                  <SecretKeyCombo />
+                  
+                  {/* Optimized ambient background */}
                   <Suspense fallback={null}>
-                    <GhostCursor />
-                    <ScreenShareScanner />
-                    <EasterEggs />
-                    <ExitMoment />
+                    <LetterGlitch opacity={0.06} glitchSpeed={50} />
                   </Suspense>
-                )}
-                
-                {/* Essential UI Elements */}
-                <ThemeToggle />
-                <ModeBar />
-                
-                {/* Secondary UI - delayed */}
-                {showHeavyElements && (
-                  <Suspense fallback={null}>
-                    <StealthScore />
-                    <SystemSignalHUD />
-                    <SelfDestruct />
-                  </Suspense>
-                )}
-                
-                {/* Static backgrounds - memoized */}
-                <BackgroundLayers />
+                  
+                  {/* Heavy effects - delayed load */}
+                  {showHeavyElements && (
+                    <Suspense fallback={null}>
+                      <GhostCursor />
+                      <ScreenShareScanner />
+                      <EasterEggs />
+                      <ExitMoment />
+                      <AmbientSound />
+                    </Suspense>
+                  )}
+                  
+                  {/* Essential UI Elements */}
+                  <ThemeToggle />
+                  <ModeBar />
+                  
+                  {/* Focus indicator */}
+                  <FocusIndicator />
+                  
+                  {/* Smart microcopy - top right */}
+                  <div className="fixed top-4 right-24 z-50 hidden md:block">
+                    <SmartMicrocopy />
+                  </div>
+                  
+                  {/* Secondary UI - delayed */}
+                  {showHeavyElements && (
+                    <Suspense fallback={null}>
+                      <StealthScore />
+                      <SystemSignalHUD />
+                      <SelfDestruct />
+                    </Suspense>
+                  )}
+                  
+                  {/* Static backgrounds - memoized */}
+                  <BackgroundLayers />
 
-                {/* Content sections */}
-                <div className="relative z-10">
-                  <Hero />
-                  <Suspense fallback={<SectionLoader />}>
-                    <LogoLoop />
-                    <VisibilityDemo />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
-                    <HybridToggle />
-                    <GhostDemo />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
-                    <StealthTimeline />
-                    <Features />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
-                    <MiniGame />
-                    <UseCases />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
-                    <Comparison />
-                    <TrustProof />
-                  </Suspense>
-                  <Suspense fallback={<SectionLoader />}>
-                    <Support />
-                    <Footer />
-                    <Dock />
-                    <PhilosophicalClose />
-                  </Suspense>
-                </div>
-              </main>
-            </PanicProvider>
-          </IdleProvider>
-        </ObserverModeProvider>
-      </SilenceModeProvider>
-    </TrustModeProvider>
+                  {/* Content sections */}
+                  <div className="relative z-10">
+                    <Hero />
+                    <Suspense fallback={<SectionLoader />}>
+                      <LogoLoop />
+                      <VisibilityDemo />
+                    </Suspense>
+                    <Suspense fallback={<SectionLoader />}>
+                      <HybridToggle />
+                      <GhostDemo />
+                    </Suspense>
+                    <Suspense fallback={<SectionLoader />}>
+                      <StealthTimeline />
+                      <Features />
+                    </Suspense>
+                    <Suspense fallback={<SectionLoader />}>
+                      <MiniGame />
+                      <UseCases />
+                    </Suspense>
+                    <Suspense fallback={<SectionLoader />}>
+                      <Comparison />
+                      <TrustProof />
+                    </Suspense>
+                    <Suspense fallback={<SectionLoader />}>
+                      <Support />
+                      <Footer />
+                      <Dock />
+                      <PhilosophicalClose />
+                    </Suspense>
+                  </div>
+                </main>
+              </PanicProvider>
+            </IdleProvider>
+          </ObserverModeProvider>
+        </SilenceModeProvider>
+      </TrustModeProvider>
+    </AmbientProvider>
   );
 };
 
