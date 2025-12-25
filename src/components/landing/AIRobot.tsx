@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-type RobotState = 'idle' | 'chasing' | 'waving' | 'talking' | 'helping' | 'encouraging' | 'sleeping' | 'dancing' | 'thinking';
-type RobotMood = 'neutral' | 'happy' | 'curious' | 'excited' | 'sleepy' | 'loving' | 'proud';
+type RobotState = 'idle' | 'chasing' | 'waving' | 'talking' | 'helping' | 'encouraging' | 'sleeping' | 'dancing' | 'thinking' | 'teaching' | 'protecting' | 'highFive' | 'playingCatch' | 'celebrating' | 'scanning' | 'stealth';
+type RobotMood = 'neutral' | 'happy' | 'curious' | 'excited' | 'sleepy' | 'loving' | 'proud' | 'protective' | 'playful' | 'stealthy';
 
 interface AIRobotProps {
   ghostPosition: { x: number; y: number };
@@ -17,6 +17,15 @@ const CHAT_BUBBLES = {
   loving: ['Best friend!', '💙', 'Love ya!', 'BFFs!'],
   curious: ['Hmm...', 'What\'s that?', '🤔', 'Interesting!'],
   sleepy: ['Zzz...', '*yawn*', 'So tired...', '😴'],
+  // Product-focused messages
+  stealth: ['🔒 Stealth ON', 'Invisible!', '👻 Hidden', 'No trace!'],
+  protect: ['🛡️ Protected!', 'Safe here!', 'Got your back!', 'Privacy 100%'],
+  teach: ['Tip: Alt+Tab!', 'Try panic key!', '✨ Boss coming?', 'Quick hide!'],
+  play: ['Catch!', '🎾', 'Your turn!', 'Got it!'],
+  highFive: ['✋ High five!', 'Yeah!', 'Team work!', '🙌'],
+  celebrate: ['🎉 QuietWin!', 'Stealth mode!', 'Privacy FTW!', 'You got this!'],
+  scan: ['Scanning...', 'All clear!', '🔍 Checking', 'Safe zone!'],
+  product: ['Buy now!', '50% off!', 'Try beta!', 'Join us!', 'Game time!'],
 };
 
 export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotProps) => {
@@ -64,19 +73,25 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
     if (!isVisible) return;
 
     if (ghostState === 'celebrating') {
-      setRobotState('dancing');
+      setRobotState('celebrating');
       setMood('excited');
-      showChat('encouraging');
+      showChat('celebrate');
     } else if (ghostState === 'sleeping') {
-      setRobotState('sleeping');
-      setMood('sleepy');
+      setRobotState('protecting');
+      setMood('protective');
+      showChat('protect');
     } else if (ghostState === 'hidden') {
-      setRobotState('thinking');
-      setMood('curious');
+      setRobotState('stealth');
+      setMood('stealthy');
+      showChat('stealth');
     } else if (ghostMood === 'shy') {
       setRobotState('encouraging');
       setMood('loving');
       showChat('encouraging');
+    } else if (ghostState === 'following') {
+      setRobotState('playingCatch');
+      setMood('playful');
+      showChat('play');
     }
   }, [ghostState, ghostMood, isVisible]);
 
@@ -87,11 +102,15 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
     const runStateMachine = () => {
       if (stateTimerRef.current) clearTimeout(stateTimerRef.current);
 
-      const behaviors: RobotState[] = ['idle', 'chasing', 'waving', 'talking', 'helping', 'thinking'];
+      // Extended behaviors with product focus
+      const behaviors: RobotState[] = [
+        'idle', 'chasing', 'waving', 'talking', 'helping', 'thinking',
+        'teaching', 'scanning', 'highFive', 'protecting', 'stealth'
+      ];
       const randomBehavior = behaviors[Math.floor(Math.random() * behaviors.length)];
       
       // Don't interrupt special states
-      if (robotState === 'dancing' || robotState === 'sleeping') {
+      if (robotState === 'dancing' || robotState === 'sleeping' || robotState === 'celebrating' || robotState === 'playingCatch') {
         stateTimerRef.current = window.setTimeout(runStateMachine, 3000);
         return;
       }
@@ -109,7 +128,7 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
           break;
         case 'talking':
           setMood('happy');
-          showChat(Math.random() > 0.5 ? 'loving' : 'greeting');
+          showChat(Math.random() > 0.5 ? 'loving' : 'product');
           break;
         case 'helping':
           setMood('proud');
@@ -119,11 +138,31 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
           setMood('curious');
           showChat('curious');
           break;
+        case 'teaching':
+          setMood('proud');
+          showChat('teach');
+          break;
+        case 'scanning':
+          setMood('curious');
+          showChat('scan');
+          break;
+        case 'highFive':
+          setMood('playful');
+          showChat('highFive');
+          break;
+        case 'protecting':
+          setMood('protective');
+          showChat('protect');
+          break;
+        case 'stealth':
+          setMood('stealthy');
+          showChat('stealth');
+          break;
         default:
           setMood('neutral');
       }
 
-      stateTimerRef.current = window.setTimeout(runStateMachine, 4000 + Math.random() * 4000);
+      stateTimerRef.current = window.setTimeout(runStateMachine, 3000 + Math.random() * 3000);
     };
 
     runStateMachine();
@@ -137,7 +176,7 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
   useEffect(() => {
     if (!isVisible) return;
 
-    if (robotState === 'chasing') {
+    if (robotState === 'chasing' || robotState === 'playingCatch') {
       // Follow behind ghost with offset
       const offsetX = ghostPosition.x > window.innerWidth / 2 ? -80 : 80;
       const offsetY = ghostPosition.y > window.innerHeight / 2 ? -60 : 60;
@@ -145,11 +184,33 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
         x: Math.max(50, Math.min(window.innerWidth - 80, ghostPosition.x + offsetX)),
         y: Math.max(50, Math.min(window.innerHeight - 80, ghostPosition.y + offsetY)),
       });
-    } else if (robotState === 'helping') {
+    } else if (robotState === 'helping' || robotState === 'teaching' || robotState === 'highFive') {
       // Move close to ghost
       setPosition({
         x: Math.max(50, Math.min(window.innerWidth - 80, ghostPosition.x + 60)),
         y: Math.max(50, Math.min(window.innerHeight - 80, ghostPosition.y + 20)),
+      });
+    } else if (robotState === 'protecting') {
+      // Stay right next to ghost (protective stance)
+      setPosition({
+        x: Math.max(50, Math.min(window.innerWidth - 80, ghostPosition.x + 45)),
+        y: Math.max(50, Math.min(window.innerHeight - 80, ghostPosition.y)),
+      });
+    } else if (robotState === 'stealth' || robotState === 'scanning') {
+      // Move to a corner to scan
+      const corners = [
+        { x: 80, y: 80 },
+        { x: window.innerWidth - 100, y: 80 },
+        { x: 80, y: window.innerHeight - 100 },
+        { x: window.innerWidth - 100, y: window.innerHeight - 100 },
+      ];
+      const corner = corners[Math.floor(Math.random() * corners.length)];
+      setPosition(corner);
+    } else if (robotState === 'celebrating') {
+      // Jump around near ghost
+      setPosition({
+        x: Math.max(50, Math.min(window.innerWidth - 80, ghostPosition.x + (Math.random() > 0.5 ? 70 : -70))),
+        y: Math.max(50, Math.min(window.innerHeight - 80, ghostPosition.y + (Math.random() > 0.5 ? 50 : -50))),
       });
     } else if (robotState === 'idle' || robotState === 'thinking') {
       // Random position
@@ -178,17 +239,17 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
       className="fixed pointer-events-none z-40"
       initial={{ opacity: 0, scale: 0 }}
       animate={{ 
-        opacity: 1, 
-        scale: 1,
+        opacity: robotState === 'stealth' ? 0.5 : 1, 
+        scale: robotState === 'stealth' ? 0.8 : 1,
         x: position.x,
         y: position.y,
-        rotate: robotState === 'dancing' ? [0, -10, 10, -10, 0] : 0,
+        rotate: robotState === 'dancing' || robotState === 'celebrating' ? [0, -10, 10, -10, 0] : 0,
       }}
       transition={{ 
         type: 'spring', 
         stiffness: 100, 
         damping: 15,
-        rotate: { repeat: robotState === 'dancing' ? Infinity : 0, duration: 0.5 }
+        rotate: { repeat: (robotState === 'dancing' || robotState === 'celebrating') ? Infinity : 0, duration: 0.5 }
       }}
     >
       {/* Chat bubble */}
@@ -215,10 +276,16 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
         viewBox="0 0 50 60"
         className="drop-shadow-lg"
         animate={{
-          y: robotState === 'sleeping' ? [0, 2, 0] : robotState === 'dancing' ? [0, -5, 0] : [0, -3, 0],
+          y: robotState === 'sleeping' ? [0, 2, 0] : 
+             robotState === 'dancing' || robotState === 'celebrating' ? [0, -8, 0] : 
+             robotState === 'highFive' ? [0, -15, 0] :
+             robotState === 'playingCatch' ? [0, -5, 0, -3, 0] :
+             [0, -3, 0],
         }}
         transition={{
-          duration: robotState === 'dancing' ? 0.3 : 2,
+          duration: robotState === 'dancing' || robotState === 'celebrating' ? 0.3 : 
+                   robotState === 'highFive' ? 0.4 :
+                   robotState === 'playingCatch' ? 0.6 : 2,
           repeat: Infinity,
           ease: 'easeInOut',
         }}
@@ -238,9 +305,14 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
           cy="0"
           r="3"
           animate={{
-            fill: antennaGlow ? '#22d3ee' : '#94a3b8',
-            filter: antennaGlow ? 'drop-shadow(0 0 4px #22d3ee)' : 'none',
+            fill: antennaGlow ? '#22d3ee' : 
+                  robotState === 'scanning' ? ['#22d3ee', '#10b981', '#22d3ee'] :
+                  robotState === 'protecting' ? '#10b981' :
+                  robotState === 'stealth' ? '#8b5cf6' :
+                  '#94a3b8',
+            filter: antennaGlow || robotState === 'scanning' ? 'drop-shadow(0 0 6px #22d3ee)' : 'none',
           }}
+          transition={{ duration: robotState === 'scanning' ? 0.5 : 0.3, repeat: robotState === 'scanning' ? Infinity : 0 }}
         />
 
         {/* Head */}
@@ -279,7 +351,7 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
                   <line x1="17" y1="20" x2="23" y2="20" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
                   <line x1="27" y1="20" x2="33" y2="20" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" />
                 </>
-              ) : mood === 'excited' ? (
+              ) : mood === 'excited' || mood === 'playful' ? (
                 <>
                   <motion.text x="17" y="23" className="fill-cyan-400 text-[8px]" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.5 }}>★</motion.text>
                   <motion.text x="30" y="23" className="fill-cyan-400 text-[8px]" animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 0.5 }}>★</motion.text>
@@ -288,6 +360,18 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
                 <>
                   <motion.text x="17" y="23" className="fill-pink-400 text-[8px]">♥</motion.text>
                   <motion.text x="30" y="23" className="fill-pink-400 text-[8px]">♥</motion.text>
+                </>
+              ) : mood === 'protective' ? (
+                <>
+                  <motion.circle cx="20" cy="20" r="4" className="fill-emerald-400" animate={{ filter: 'drop-shadow(0 0 4px #10b981)' }} />
+                  <motion.circle cx="30" cy="20" r="4" className="fill-emerald-400" animate={{ filter: 'drop-shadow(0 0 4px #10b981)' }} />
+                  <circle cx="20" cy="19" r="1.5" className="fill-white/80" />
+                  <circle cx="30" cy="19" r="1.5" className="fill-white/80" />
+                </>
+              ) : mood === 'stealthy' ? (
+                <>
+                  <motion.circle cx="20" cy="20" r="4" className="fill-purple-400" animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 1 }} />
+                  <motion.circle cx="30" cy="20" r="4" className="fill-purple-400" animate={{ opacity: [1, 0.5, 1] }} transition={{ repeat: Infinity, duration: 1 }} />
                 </>
               ) : (
                 <>
@@ -315,7 +399,7 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
 
         {/* Mouth */}
         <AnimatePresence mode="wait">
-          {mood === 'happy' || mood === 'excited' ? (
+          {mood === 'happy' || mood === 'excited' || mood === 'playful' ? (
             <motion.path
               key="happy-mouth"
               d="M18 27 Q25 32 32 27"
@@ -342,6 +426,26 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
               stroke="#f472b6"
               strokeWidth="2"
               strokeLinecap="round"
+            />
+          ) : mood === 'protective' ? (
+            <motion.path
+              key="protective-mouth"
+              d="M18 27 L32 27"
+              fill="none"
+              stroke="#10b981"
+              strokeWidth="2"
+              strokeLinecap="round"
+            />
+          ) : mood === 'stealthy' ? (
+            <motion.path
+              key="stealthy-mouth"
+              d="M20 28 L30 28"
+              fill="none"
+              stroke="#8b5cf6"
+              strokeWidth="2"
+              strokeLinecap="round"
+              animate={{ opacity: [1, 0.5, 1] }}
+              transition={{ repeat: Infinity, duration: 1 }}
             />
           ) : (
             <motion.line
@@ -392,26 +496,45 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
         {/* Arms */}
         <motion.g
           animate={{
-            rotate: robotState === 'waving' ? [0, 20, 0, 20, 0] : 0,
+            rotate: robotState === 'waving' ? [0, 20, 0, 20, 0] : 
+                   robotState === 'highFive' ? [0, -45, -45, 0] :
+                   robotState === 'teaching' ? [0, 15, 0] : 0,
           }}
-          transition={{ repeat: robotState === 'waving' ? Infinity : 0, duration: 0.6 }}
+          transition={{ 
+            repeat: robotState === 'waving' ? Infinity : 0, 
+            duration: robotState === 'highFive' ? 0.8 : 0.6 
+          }}
           style={{ transformOrigin: '10px 42px' }}
         >
           <rect x="3" y="40" width="8" height="4" rx="2" className="fill-slate-500" />
         </motion.g>
         <motion.g
           animate={{
-            rotate: robotState === 'waving' ? [0, -20, 0, -20, 0] : 0,
+            rotate: robotState === 'waving' ? [0, -20, 0, -20, 0] : 
+                   robotState === 'highFive' ? [0, 45, 45, 0] :
+                   robotState === 'playingCatch' ? [0, -30, 30, 0] : 0,
           }}
-          transition={{ repeat: robotState === 'waving' ? Infinity : 0, duration: 0.6, delay: 0.1 }}
+          transition={{ 
+            repeat: robotState === 'waving' || robotState === 'playingCatch' ? Infinity : 0, 
+            duration: robotState === 'playingCatch' ? 0.8 : 0.6, 
+            delay: 0.1 
+          }}
           style={{ transformOrigin: '40px 42px' }}
         >
           <rect x="39" y="40" width="8" height="4" rx="2" className="fill-slate-500" />
         </motion.g>
 
         {/* Legs/wheels */}
-        <circle cx="18" cy="56" r="4" className="fill-slate-500" />
-        <circle cx="32" cy="56" r="4" className="fill-slate-500" />
+        <motion.circle 
+          cx="18" cy="56" r="4" className="fill-slate-500" 
+          animate={{ rotate: robotState === 'chasing' || robotState === 'playingCatch' ? [0, 360] : 0 }}
+          transition={{ repeat: Infinity, duration: 0.5, ease: 'linear' }}
+        />
+        <motion.circle 
+          cx="32" cy="56" r="4" className="fill-slate-500" 
+          animate={{ rotate: robotState === 'chasing' || robotState === 'playingCatch' ? [0, 360] : 0 }}
+          transition={{ repeat: Infinity, duration: 0.5, ease: 'linear' }}
+        />
         <circle cx="18" cy="56" r="2" className="fill-slate-700" />
         <circle cx="32" cy="56" r="2" className="fill-slate-700" />
       </motion.svg>
@@ -462,6 +585,89 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
               transition={{ repeat: Infinity, duration: 2, ease: 'linear' }}
             >
               ⚙️
+            </motion.span>
+          </motion.div>
+        )}
+        {robotState === 'teaching' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0 }}
+            className="absolute -top-6 left-1/2 -translate-x-1/2"
+          >
+            <motion.span className="text-lg" animate={{ y: [0, -3, 0] }} transition={{ repeat: Infinity, duration: 1 }}>
+              💡
+            </motion.span>
+          </motion.div>
+        )}
+        {robotState === 'protecting' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: [1, 1.2, 1] }}
+            exit={{ opacity: 0, scale: 0 }}
+            className="absolute -top-6 left-1/2 -translate-x-1/2"
+            transition={{ repeat: Infinity, duration: 1.5 }}
+          >
+            <span className="text-lg">🛡️</span>
+          </motion.div>
+        )}
+        {robotState === 'scanning' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute -top-6 left-1/2 -translate-x-1/2"
+          >
+            <motion.span className="text-lg" animate={{ rotate: [0, 360] }} transition={{ repeat: Infinity, duration: 1.5, ease: 'linear' }}>
+              🔍
+            </motion.span>
+          </motion.div>
+        )}
+        {robotState === 'stealth' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.5, 1, 0.5] }}
+            exit={{ opacity: 0 }}
+            className="absolute -top-6 left-1/2 -translate-x-1/2"
+            transition={{ repeat: Infinity, duration: 1 }}
+          >
+            <span className="text-lg">👻</span>
+          </motion.div>
+        )}
+        {robotState === 'highFive' && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: [1, 1.3, 1] }}
+            exit={{ opacity: 0, scale: 0 }}
+            className="absolute -top-8 left-1/2 -translate-x-1/2"
+          >
+            <span className="text-xl">✋</span>
+          </motion.div>
+        )}
+        {robotState === 'playingCatch' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1, x: [-10, 10, -10], y: [0, -5, 0] }}
+            exit={{ opacity: 0 }}
+            className="absolute -top-6 -right-6"
+            transition={{ repeat: Infinity, duration: 0.6 }}
+          >
+            <span className="text-sm">🎾</span>
+          </motion.div>
+        )}
+        {robotState === 'celebrating' && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute -top-8 left-1/2 -translate-x-1/2"
+          >
+            <motion.span 
+              className="text-xl"
+              animate={{ scale: [1, 1.3, 1], rotate: [0, 15, -15, 0] }}
+              transition={{ repeat: Infinity, duration: 0.5 }}
+            >
+              🎉
             </motion.span>
           </motion.div>
         )}
