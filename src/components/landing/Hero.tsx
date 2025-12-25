@@ -3,7 +3,6 @@ import { Download, Heart, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
-import { TripleClickReveal } from "./PremiumEasterEggs";
 
 import { useSilenceMode } from "./SilenceMode";
 import { useSessionCodename } from "@/hooks/useSessionCodename";
@@ -169,16 +168,17 @@ const Hero = () => {
             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.8, 0.5] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
           />
-          {/* Logo container - wrapped with triple-click easter egg */}
-          <TripleClickReveal>
-            <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-amber-500/40 bg-background/50 backdrop-blur-sm shadow-lg shadow-amber-500/20">
-              <img 
-                src={quitewinLogo} 
-                alt="QuiteWin - Stealth AI" 
-                className="w-full h-full object-cover"
-              />
-            </div>
-          </TripleClickReveal>
+          {/* Logo container - data attribute for easter egg targeting */}
+          <div 
+            data-easter-egg="logo"
+            className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-amber-500/40 bg-background/50 backdrop-blur-sm shadow-lg shadow-amber-500/20 cursor-pointer"
+          >
+            <img 
+              src={quitewinLogo} 
+              alt="QuiteWin - Stealth AI" 
+              className="w-full h-full object-cover"
+            />
+          </div>
         </div>
       </div>
 
