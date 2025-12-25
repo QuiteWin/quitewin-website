@@ -2,8 +2,8 @@ import { memo, useEffect, useState, useRef, useCallback } from 'react';
 import { motion, useSpring, AnimatePresence } from 'framer-motion';
 import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
 
-type GhostState = 'hidden' | 'appearing' | 'roaming' | 'sitting' | 'peeking' | 'following' | 'waving' | 'sleeping';
-type GhostMood = 'neutral' | 'happy' | 'sleepy' | 'excited' | 'surprised' | 'shy' | 'curious';
+type GhostState = 'hidden' | 'appearing' | 'roaming' | 'sitting' | 'peeking' | 'following' | 'waving' | 'sleeping' | 'celebrating';
+type GhostMood = 'neutral' | 'happy' | 'sleepy' | 'excited' | 'surprised' | 'shy' | 'curious' | 'celebrating';
 
 const ROAM_POSITIONS = [
   { x: 0.1, y: 0.2 },
@@ -34,8 +34,11 @@ export const BabyGhost = memo(() => {
   const [isBlinking, setIsBlinking] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   
+  const [isCelebrating, setIsCelebrating] = useState(false);
+  
   const stateTimerRef = useRef<number | null>(null);
   const followTimerRef = useRef<number | null>(null);
+  const celebrateTimerRef = useRef<number | null>(null);
   const lastClickTime = useRef(0);
   
   const springConfig = { stiffness: 30, damping: 15, mass: 1.5 };
@@ -259,11 +262,59 @@ export const BabyGhost = memo(() => {
     return () => window.removeEventListener('click', handleClick);
   }, [ghostState]);
   
+  // Celebrate when special buttons are clicked
+  useEffect(() => {
+    const handleSpecialClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest('button');
+      
+      if (!button) return;
+      
+      const buttonText = button.textContent?.toLowerCase() || '';
+      const isCelebrationButton = 
+        buttonText.includes('download') ||
+        buttonText.includes('fuel') ||
+        buttonText.includes('support') ||
+        buttonText.includes('donate') ||
+        buttonText.includes('beta');
+      
+      if (isCelebrationButton) {
+        // Clear any existing timers
+        if (stateTimerRef.current) clearTimeout(stateTimerRef.current);
+        if (celebrateTimerRef.current) clearTimeout(celebrateTimerRef.current);
+        
+        // Move ghost near the clicked button
+        const rect = button.getBoundingClientRect();
+        const celebratePos = {
+          x: rect.left + rect.width / 2 - 20,
+          y: rect.top - 50,
+        };
+        setPosition(celebratePos);
+        x.set(celebratePos.x);
+        y.set(celebratePos.y);
+        
+        setGhostState('celebrating');
+        setMood('celebrating');
+        setIsCelebrating(true);
+        
+        celebrateTimerRef.current = window.setTimeout(() => {
+          setIsCelebrating(false);
+          setGhostState('roaming');
+          setMood('happy');
+        }, 3000);
+      }
+    };
+    
+    window.addEventListener('click', handleSpecialClick);
+    return () => window.removeEventListener('click', handleSpecialClick);
+  }, [x, y]);
+  
   if (prefersReducedMotion || !isVisible) return null;
   
   const isHidden = ghostState === 'hidden';
-  const eyeScaleY = isBlinking ? 0.1 : mood === 'sleepy' ? 0.4 : mood === 'surprised' ? 1.3 : 1;
-  const eyeScaleX = mood === 'surprised' ? 1.2 : 1;
+  const isCelebratingState = ghostState === 'celebrating';
+  const eyeScaleY = isBlinking ? 0.1 : mood === 'sleepy' ? 0.4 : mood === 'surprised' || mood === 'celebrating' ? 1.3 : 1;
+  const eyeScaleX = mood === 'surprised' || mood === 'celebrating' ? 1.2 : 1;
 
   return (
     <AnimatePresence>
@@ -283,11 +334,12 @@ export const BabyGhost = memo(() => {
           <motion.div
             className="relative"
             animate={{
-              y: ghostState === 'sleeping' ? [0, -2, 0] : [0, -6, 0],
-              rotate: ghostState === 'waving' ? [-5, 5, -5] : mood === 'excited' ? [-3, 3, -3] : 0,
+              y: isCelebratingState ? [0, -15, 0, -10, 0] : ghostState === 'sleeping' ? [0, -2, 0] : [0, -6, 0],
+              rotate: isCelebratingState ? [-10, 10, -10, 10, 0] : ghostState === 'waving' ? [-5, 5, -5] : mood === 'excited' ? [-3, 3, -3] : 0,
+              scale: isCelebratingState ? [1, 1.2, 1, 1.15, 1] : 1,
             }}
             transition={{
-              duration: ghostState === 'sleeping' ? 3 : ghostState === 'waving' ? 0.3 : 2,
+              duration: isCelebratingState ? 0.5 : ghostState === 'sleeping' ? 3 : ghostState === 'waving' ? 0.3 : 2,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -381,6 +433,13 @@ export const BabyGhost = memo(() => {
                 {mood === 'shy' && (
                   <motion.path key="shy-mouth" d="M18 29 Q20 27 22 29" fill="none" stroke="#888" strokeWidth="1.5" strokeLinecap="round" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} />
                 )}
+                {mood === 'celebrating' && (
+                  <motion.g key="celebrating-mouth" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <ellipse cx="20" cy="30" rx="5" ry="4" className="fill-gray-700" />
+                    <ellipse cx="20" cy="29" rx="3" ry="2" className="fill-pink-400/70" />
+                    <motion.path d="M16 28 L18 26 L20 28 L22 26 L24 28" fill="none" stroke="#fff" strokeWidth="0.5" strokeLinecap="round" />
+                  </motion.g>
+                )}
               </AnimatePresence>
               
               {/* Sleeping Zzz */}
@@ -448,6 +507,43 @@ export const BabyGhost = memo(() => {
                 </motion.div>
                 <motion.div className="absolute -top-2 right-0" animate={{ scale: [0, 1, 0], rotate: [0, -180, -360] }} transition={{ duration: 0.8, repeat: Infinity, delay: 0.4 }}>
                   <span className="text-xs">✨</span>
+                </motion.div>
+              </>
+            )}
+            
+            {/* Celebration effects */}
+            {isCelebratingState && (
+              <>
+                {/* Confetti burst */}
+                <motion.div className="absolute -top-4 left-1/2" initial={{ scale: 0 }} animate={{ scale: [0, 1.5, 0], y: [0, -30], opacity: [1, 0] }} transition={{ duration: 1, repeat: Infinity, repeatDelay: 0.5 }}>
+                  <span className="text-lg">🎉</span>
+                </motion.div>
+                <motion.div className="absolute -top-2 -left-4" initial={{ scale: 0 }} animate={{ scale: [0, 1, 0], x: [-10, -25], y: [0, -20], rotate: [0, -30] }} transition={{ duration: 0.8, repeat: Infinity, delay: 0.2 }}>
+                  <span className="text-sm">⭐</span>
+                </motion.div>
+                <motion.div className="absolute -top-2 -right-4" initial={{ scale: 0 }} animate={{ scale: [0, 1, 0], x: [10, 25], y: [0, -20], rotate: [0, 30] }} transition={{ duration: 0.8, repeat: Infinity, delay: 0.3 }}>
+                  <span className="text-sm">🌟</span>
+                </motion.div>
+                <motion.div className="absolute top-0 -left-6" initial={{ scale: 0 }} animate={{ scale: [0, 1, 0], x: [-5, -20], y: [0, 10] }} transition={{ duration: 0.7, repeat: Infinity, delay: 0.1 }}>
+                  <span className="text-xs">💜</span>
+                </motion.div>
+                <motion.div className="absolute top-0 -right-6" initial={{ scale: 0 }} animate={{ scale: [0, 1, 0], x: [5, 20], y: [0, 10] }} transition={{ duration: 0.7, repeat: Infinity, delay: 0.4 }}>
+                  <span className="text-xs">💚</span>
+                </motion.div>
+                <motion.div className="absolute -top-6 left-0" initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 0], y: [0, -25], rotate: [0, 360] }} transition={{ duration: 1, repeat: Infinity, delay: 0.5 }}>
+                  <span className="text-sm">✨</span>
+                </motion.div>
+                <motion.div className="absolute -top-6 right-0" initial={{ scale: 0 }} animate={{ scale: [0, 1.2, 0], y: [0, -25], rotate: [0, -360] }} transition={{ duration: 1, repeat: Infinity, delay: 0.6 }}>
+                  <span className="text-sm">✨</span>
+                </motion.div>
+                {/* Thank you text */}
+                <motion.div 
+                  className="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <span className="text-xs font-mono text-neon-purple font-bold bg-background/80 px-2 py-1 rounded-full">Thank you!</span>
                 </motion.div>
               </>
             )}
