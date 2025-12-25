@@ -7,28 +7,32 @@ import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
 const SECRET_SEQUENCE = ['g', 'h', 'o', 's', 't'];
 
 export const SecretKeyCombo = memo(() => {
-  const [sequence, setSequence] = useState<string[]>([]);
   const [triggered, setTriggered] = useState(false);
   const { markEasterEggSeen } = usePreferences();
   const { prefersReducedMotion } = useAmbientIntelligence();
+  const sequenceRef = useRef<string[]>([]);
   
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Ignore if user is typing in an input
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) {
+        return;
+      }
+      
       const key = e.key.toLowerCase();
       
-      setSequence(prev => {
-        const newSeq = [...prev, key].slice(-SECRET_SEQUENCE.length);
+      // Only track letters
+      if (key.length === 1 && key >= 'a' && key <= 'z') {
+        sequenceRef.current = [...sequenceRef.current, key].slice(-SECRET_SEQUENCE.length);
         
         // Check if sequence matches
-        if (newSeq.join('') === SECRET_SEQUENCE.join('')) {
+        if (sequenceRef.current.join('') === SECRET_SEQUENCE.join('')) {
           setTriggered(true);
           markEasterEggSeen();
+          sequenceRef.current = [];
           setTimeout(() => setTriggered(false), 3000);
-          return [];
         }
-        
-        return newSeq;
-      });
+      }
     };
     
     window.addEventListener('keydown', handleKeyDown);
