@@ -6,22 +6,58 @@ interface Logo {
   icon: string;
 }
 
-const logos: Logo[] = [
-  { name: "Ollama", icon: "🦙" },
-  { name: "Gemini", icon: "✨" },
-  { name: "OpenAI", icon: "🤖" },
-  { name: "Zoom", icon: "📹" },
-  { name: "Teams", icon: "💬" },
-  { name: "Windows", icon: "🪟" },
-  { name: "macOS", icon: "🍎" },
-  { name: "Linux", icon: "🐧" },
+interface LogoGroup {
+  category: string;
+  logos: Logo[];
+}
+
+const logoGroups: LogoGroup[] = [
+  {
+    category: "Operating Systems",
+    logos: [
+      { name: "Windows", icon: "🪟" },
+      { name: "macOS", icon: "🍎" },
+      { name: "Linux", icon: "🐧" },
+    ],
+  },
+  {
+    category: "Meeting Apps",
+    logos: [
+      { name: "Google Meet", icon: "📞" },
+      { name: "Zoom", icon: "📹" },
+      { name: "Teams", icon: "💬" },
+    ],
+  },
+  {
+    category: "AI Models",
+    logos: [
+      { name: "Ollama", icon: "🦙" },
+      { name: "Gemini", icon: "✨" },
+      { name: "OpenAI", icon: "🤖" },
+      { name: "Grok", icon: "🧠" },
+    ],
+  },
 ];
+
+// Flatten groups into a single array with category labels
+const createLoopItems = () => {
+  const items: { type: "label" | "logo"; name: string; icon?: string }[] = [];
+  logoGroups.forEach((group) => {
+    items.push({ type: "label", name: group.category });
+    group.logos.forEach((logo) => {
+      items.push({ type: "logo", name: logo.name, icon: logo.icon });
+    });
+  });
+  return items;
+};
+
+const loopItems = createLoopItems();
 
 const LogoLoop = () => {
   const [isPaused, setIsPaused] = useState(false);
   const [hoveredLogo, setHoveredLogo] = useState<string | null>(null);
 
-  const duplicatedLogos = [...logos, ...logos];
+  const duplicatedItems = [...loopItems, ...loopItems];
 
   return (
     <section className="py-12 relative overflow-hidden">
@@ -36,13 +72,13 @@ const LogoLoop = () => {
       </div>
 
       <motion.div
-        className="flex gap-12 py-4"
+        className="flex items-center gap-8 py-4"
         animate={{
-          x: isPaused ? 0 : [0, -50 * logos.length * 8],
+          x: isPaused ? 0 : [0, -50 * loopItems.length * 4],
         }}
         transition={{
           x: {
-            duration: 30,
+            duration: 40,
             repeat: Infinity,
             ease: "linear",
           },
@@ -53,38 +89,49 @@ const LogoLoop = () => {
           setHoveredLogo(null);
         }}
       >
-        {duplicatedLogos.map((logo, index) => (
-          <motion.div
-            key={`${logo.name}-${index}`}
-            className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"
-            onMouseEnter={() => setHoveredLogo(logo.name)}
-            onMouseLeave={() => setHoveredLogo(null)}
-            animate={{
-              scale: hoveredLogo === logo.name ? 1.3 : 1,
-              y: hoveredLogo === logo.name ? -8 : 0,
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-          >
+        {duplicatedItems.map((item, index) =>
+          item.type === "label" ? (
             <motion.div
-              className="w-16 h-16 rounded-xl glass-card flex items-center justify-center text-3xl"
-              animate={{
-                boxShadow:
-                  hoveredLogo === logo.name
-                    ? "0 0 30px hsl(263 70% 66% / 0.4)"
-                    : "0 0 0px transparent",
-              }}
+              key={`label-${item.name}-${index}`}
+              className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg border border-neon-purple/30 bg-neon-purple/5"
             >
-              {logo.icon}
+              <span className="text-xs font-mono font-semibold text-neon-purple uppercase tracking-wider whitespace-nowrap">
+                {item.name}
+              </span>
             </motion.div>
-            <span
-              className={`text-xs font-mono transition-colors duration-200 ${
-                hoveredLogo === logo.name ? "text-neon-purple" : "text-muted-foreground"
-              }`}
+          ) : (
+            <motion.div
+              key={`${item.name}-${index}`}
+              className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"
+              onMouseEnter={() => setHoveredLogo(item.name)}
+              onMouseLeave={() => setHoveredLogo(null)}
+              animate={{
+                scale: hoveredLogo === item.name ? 1.3 : 1,
+                y: hoveredLogo === item.name ? -8 : 0,
+              }}
+              transition={{ type: "spring", stiffness: 300, damping: 20 }}
             >
-              {logo.name}
-            </span>
-          </motion.div>
-        ))}
+              <motion.div
+                className="w-16 h-16 rounded-xl glass-card flex items-center justify-center text-3xl"
+                animate={{
+                  boxShadow:
+                    hoveredLogo === item.name
+                      ? "0 0 30px hsl(var(--neon-purple) / 0.4)"
+                      : "0 0 0px transparent",
+                }}
+              >
+                {item.icon}
+              </motion.div>
+              <span
+                className={`text-xs font-mono transition-colors duration-200 ${
+                  hoveredLogo === item.name ? "text-neon-purple" : "text-muted-foreground"
+                }`}
+              >
+                {item.name}
+              </span>
+            </motion.div>
+          )
+        )}
       </motion.div>
     </section>
   );
