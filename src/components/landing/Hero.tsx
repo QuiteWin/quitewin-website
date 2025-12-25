@@ -249,7 +249,7 @@ const Hero = () => {
               animate={taglineAnim.animate}
               transition={{ ...taglineAnim.transition, delay: 1 }}
             >
-              {["Private by default", "Powerful on demand", "A stealth HUD"].map(tag => (
+              {["Private by default", "Powerful on demand", "A Stealth AI"].map(tag => (
                 <span
                   key={tag}
                   className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
