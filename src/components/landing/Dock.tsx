@@ -72,7 +72,7 @@ const DockIcon = ({
     >
       {/* Tooltip */}
       <motion.div
-        className="absolute -top-10 px-3 py-1.5 rounded-lg glass-card text-xs font-medium whitespace-nowrap pointer-events-none"
+        className="absolute -top-12 left-1/2 -translate-x-1/2 px-3 py-1.5 rounded-lg bg-background/95 backdrop-blur-md border border-border/50 text-xs font-medium whitespace-nowrap pointer-events-none z-50 shadow-lg"
         initial={{ opacity: 0, y: 10, scale: 0.8 }}
         animate={{
           opacity: isHovered ? 1 : 0,
