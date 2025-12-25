@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Code2, Headphones, Focus, ShieldCheck } from "lucide-react";
+import ScrambledText from "./ScrambledText";
 
 const useCases = [
   {
@@ -73,7 +74,7 @@ const UseCases = () => {
             <span className="text-gradient-hero">Use Cases</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-xl mx-auto">
-            AI that stays invisible. Here's when it matters.
+            <ScrambledText as="span" className="inline">AI that stays invisible. Here's when it matters.</ScrambledText>
           </p>
         </motion.div>
 
@@ -108,7 +109,7 @@ const UseCases = () => {
 
                   {/* Scenario */}
                   <p className="text-sm md:text-base text-muted-foreground mb-4 leading-relaxed">
-                    {useCase.scenario}
+                    <ScrambledText as="span" className="inline">{useCase.scenario}</ScrambledText>
                   </p>
 
                   {/* Why QuiteWin */}

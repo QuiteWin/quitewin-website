@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { Github, MessageCircle } from "lucide-react";
 import { useMemo } from "react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
+import ScrambledText from "./ScrambledText";
 
 const colorPairs = [
   { accent: "text-red-500", base: "text-amber-400" },
@@ -114,8 +115,7 @@ const Footer = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           <p className="text-center text-sm text-muted-foreground/60 max-w-2xl mx-auto">
-            QuiteWin is a thinking assistant designed to enhance productivity and accessibility.
-            Users are responsible for ethical usage in accordance with applicable laws and platform terms.
+            <ScrambledText as="span" className="inline">QuiteWin is a thinking assistant designed to enhance productivity and accessibility. Users are responsible for ethical usage in accordance with applicable laws and platform terms.</ScrambledText>
           </p>
           
           {/* Invisible Analytics Statement */}
