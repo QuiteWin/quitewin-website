@@ -18,8 +18,8 @@ import { CursorGlow } from "@/components/landing/CursorAwareness";
 import { FloatingAccents } from "@/components/landing/DepthParallax";
 import { FocusModeOverlay, FocusIndicator } from "@/components/landing/FocusMode";
 import { PageBreath, SectionPulse } from "@/components/landing/SignatureMoment";
-import { SecretKeyCombo } from "@/components/landing/PremiumEasterEggs";
 import { SmartMicrocopy, ScrollWhisper } from "@/components/landing/SmartMicrocopy";
+import { EasterEggSystem } from "@/components/landing/EasterEggSystem";
 
 // Lazy load components - grouped by priority
 const LetterGlitch = lazy(() => import("@/components/landing/LetterGlitch"));
@@ -124,8 +124,8 @@ const Index = () => {
                   {/* Scroll whisper text */}
                   <ScrollWhisper />
                   
-                  {/* Secret key combo easter egg */}
-                  <SecretKeyCombo />
+                  {/* Modular Easter Egg System */}
+                  <EasterEggSystem />
                   
                   {/* Optimized ambient background */}
                   <Suspense fallback={null}>
