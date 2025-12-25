@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { EyeOff, Image, Mic, Sparkles, Shield, Cpu } from "lucide-react";
 import { useRef } from "react";
+import ScrambledText from "./ScrambledText";
 
 const features = [
   {
@@ -164,10 +165,10 @@ const Features = () => {
             <span className="text-gradient-hero">Built Different</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
-            Not another chatbot. A stealth HUD designed for developers.
+            <ScrambledText as="span" className="inline">Not another chatbot. A stealth HUD designed for developers.</ScrambledText>
           </p>
           <p className="text-sm font-mono text-muted-foreground/60">
-            Private by default. Powerful on demand.
+            <ScrambledText as="span" className="inline">Private by default. Powerful on demand.</ScrambledText>
           </p>
         </motion.div>
 
@@ -228,7 +229,7 @@ const Features = () => {
 
                       {/* Description */}
                       <p className="text-muted-foreground text-sm leading-relaxed">
-                        {feature.description}
+                        <ScrambledText as="span" className="inline">{feature.description}</ScrambledText>
                       </p>
                     </div>
                   </motion.div>

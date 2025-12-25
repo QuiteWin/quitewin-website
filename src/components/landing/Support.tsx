@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Coffee, Heart, Sparkles } from "lucide-react";
 import MagnetButton from "./MagnetButton";
+import ScrambledText from "./ScrambledText";
 
 const Support = () => {
   return (
@@ -25,7 +26,7 @@ const Support = () => {
             <span className="text-gradient-hero">Keep the Ghost Alive</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Indie-built. No VC. No trackers. Just passion and code.
+            <ScrambledText as="span" className="inline">Indie-built. No VC. No trackers. Just passion and code.</ScrambledText>
           </p>
         </motion.div>
 
@@ -78,7 +79,7 @@ const Support = () => {
 
               {/* Subtitle */}
               <p className="text-muted-foreground text-center mb-6">
-                Every coffee fuels another feature. Support independent development.
+                <ScrambledText as="span" className="inline">Every coffee fuels another feature. Support independent development.</ScrambledText>
               </p>
 
               {/* Stats */}
