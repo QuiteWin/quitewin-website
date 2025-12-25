@@ -173,7 +173,7 @@ const MiniGame = () => {
       }}>
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-neon-amber font-mono text-sm mb-6">
             <Gamepad2 className="w-4 h-4" />
-            INTERACT   
+            INTERACT WITH ME   
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-gradient-hero">Stay Invisible</span>
