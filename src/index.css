@@ -47,6 +47,7 @@
     --neon-pink: 330 90% 66%;
     --neon-amber: 38 92% 50%;
     --neon-cyan: 190 95% 50%;
+    --neon-gold: 45 93% 58%;
 
     /* Glassmorphism */
     --glass-bg: 240 10% 8%;
@@ -98,6 +99,7 @@
   --neon-pink: 330 80% 55%;
   --neon-amber: 38 92% 45%;
   --neon-cyan: 190 90% 40%;
+  --neon-gold: 45 93% 50%;
 
   /* Glassmorphism */
   --glass-bg: 0 0% 100%;
