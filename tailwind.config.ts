@@ -57,6 +57,7 @@ export default {
           pink: "hsl(var(--neon-pink))",
           amber: "hsl(var(--neon-amber))",
           cyan: "hsl(var(--neon-cyan))",
+          gold: "hsl(var(--neon-gold))",
         },
       },
       borderRadius: {
