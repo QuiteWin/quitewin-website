@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, memo, useCallback } from "react";
+import { useInView } from "@/hooks/usePerformance";
 
 interface Logo {
   name: string;
@@ -53,14 +54,75 @@ const createLoopItems = () => {
 
 const loopItems = createLoopItems();
 
-const LogoLoop = () => {
+// Memoized logo item to prevent unnecessary re-renders
+const LogoItem = memo(({ 
+  item, 
+  isHovered, 
+  onHover, 
+  onLeave 
+}: { 
+  item: { type: "label" | "logo"; name: string; icon?: string };
+  isHovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+}) => {
+  if (item.type === "label") {
+    return (
+      <div className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg border border-neon-purple/30 bg-neon-purple/5">
+        <span className="text-xs font-mono font-semibold text-neon-purple uppercase tracking-wider whitespace-nowrap">
+          {item.name}
+        </span>
+      </div>
+    );
+  }
+  
+  return (
+    <div
+      className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer transition-transform duration-200"
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      style={{
+        transform: isHovered ? 'scale(1.2) translateY(-6px)' : 'scale(1) translateY(0)',
+      }}
+    >
+      <div
+        className="w-16 h-16 rounded-xl glass-card flex items-center justify-center text-3xl transition-shadow duration-200"
+        style={{
+          boxShadow: isHovered 
+            ? "0 0 20px hsl(var(--neon-purple) / 0.3)"
+            : "none",
+        }}
+      >
+        {item.icon}
+      </div>
+      <span
+        className={`text-xs font-mono transition-colors duration-200 ${
+          isHovered ? "text-neon-purple" : "text-muted-foreground"
+        }`}
+      >
+        {item.name}
+      </span>
+    </div>
+  );
+});
+
+LogoItem.displayName = 'LogoItem';
+
+const LogoLoop = memo(() => {
   const [isPaused, setIsPaused] = useState(false);
   const [hoveredLogo, setHoveredLogo] = useState<string | null>(null);
+  const [ref, isInView] = useInView({ rootMargin: '100px' });
 
   const duplicatedItems = [...loopItems, ...loopItems];
 
+  const handleMouseEnter = useCallback(() => setIsPaused(true), []);
+  const handleMouseLeave = useCallback(() => {
+    setIsPaused(false);
+    setHoveredLogo(null);
+  }, []);
+
   return (
-    <section className="py-12 relative overflow-hidden">
+    <section ref={ref as React.RefObject<HTMLElement>} className="py-12 relative overflow-hidden">
       {/* Fade edges */}
       <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none" />
       <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none" />
@@ -74,67 +136,33 @@ const LogoLoop = () => {
       <motion.div
         className="flex items-center gap-8 py-4"
         animate={{
-          x: isPaused ? 0 : [0, -50 * loopItems.length * 4],
+          x: isPaused || !isInView ? 0 : [0, -50 * loopItems.length * 4],
         }}
         transition={{
           x: {
-            duration: 40,
+            duration: 50, // Slower animation = less CPU
             repeat: Infinity,
             ease: "linear",
           },
         }}
-        onMouseEnter={() => setIsPaused(true)}
-        onMouseLeave={() => {
-          setIsPaused(false);
-          setHoveredLogo(null);
-        }}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        style={{ willChange: isInView ? 'transform' : 'auto' }}
       >
-        {duplicatedItems.map((item, index) =>
-          item.type === "label" ? (
-            <motion.div
-              key={`label-${item.name}-${index}`}
-              className="flex-shrink-0 flex items-center gap-2 px-4 py-2 rounded-lg border border-neon-purple/30 bg-neon-purple/5"
-            >
-              <span className="text-xs font-mono font-semibold text-neon-purple uppercase tracking-wider whitespace-nowrap">
-                {item.name}
-              </span>
-            </motion.div>
-          ) : (
-            <motion.div
-              key={`${item.name}-${index}`}
-              className="flex-shrink-0 flex flex-col items-center gap-2 cursor-pointer"
-              onMouseEnter={() => setHoveredLogo(item.name)}
-              onMouseLeave={() => setHoveredLogo(null)}
-              animate={{
-                scale: hoveredLogo === item.name ? 1.3 : 1,
-                y: hoveredLogo === item.name ? -8 : 0,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            >
-              <motion.div
-                className="w-16 h-16 rounded-xl glass-card flex items-center justify-center text-3xl"
-                animate={{
-                  boxShadow:
-                    hoveredLogo === item.name
-                      ? "0 0 30px hsl(var(--neon-purple) / 0.4)"
-                      : "0 0 0px transparent",
-                }}
-              >
-                {item.icon}
-              </motion.div>
-              <span
-                className={`text-xs font-mono transition-colors duration-200 ${
-                  hoveredLogo === item.name ? "text-neon-purple" : "text-muted-foreground"
-                }`}
-              >
-                {item.name}
-              </span>
-            </motion.div>
-          )
-        )}
+        {duplicatedItems.map((item, index) => (
+          <LogoItem
+            key={`${item.name}-${index}`}
+            item={item}
+            isHovered={hoveredLogo === item.name}
+            onHover={() => setHoveredLogo(item.name)}
+            onLeave={() => setHoveredLogo(null)}
+          />
+        ))}
       </motion.div>
     </section>
   );
-};
+});
+
+LogoLoop.displayName = 'LogoLoop';
 
 export default LogoLoop;

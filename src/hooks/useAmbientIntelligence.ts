@@ -1,4 +1,5 @@
-import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import { throttle } from './usePerformance';
 
 interface AmbientState {
   // Mouse tracking
@@ -26,6 +27,9 @@ interface AmbientState {
   
   // Reduced motion preference
   prefersReducedMotion: boolean;
+  
+  // Performance tier
+  performanceTier: 'high' | 'medium' | 'low';
 }
 
 const defaultState: AmbientState = {
@@ -41,6 +45,7 @@ const defaultState: AmbientState = {
   animationIntensity: 1,
   timeOfDay: 'afternoon',
   prefersReducedMotion: false,
+  performanceTier: 'medium',
 };
 
 export const AmbientContext = createContext<AmbientState>(defaultState);
@@ -55,7 +60,22 @@ export const useAmbientProvider = () => {
   const idleTimerRef = useRef<number | null>(null);
   const focusTimerRef = useRef<number | null>(null);
   const idleStartRef = useRef<number | null>(null);
-  const frameRef = useRef<number | null>(null);
+  const updateIntervalRef = useRef<number | null>(null);
+
+  // Detect performance tier once
+  const performanceTier = useMemo(() => {
+    if (typeof window === 'undefined') return 'medium';
+    
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReduced) return 'low' as const;
+    
+    const cores = navigator.hardwareConcurrency || 4;
+    const memory = (navigator as { deviceMemory?: number }).deviceMemory || 8;
+    
+    if (cores >= 8 && memory >= 8) return 'high' as const;
+    if (cores >= 4 && memory >= 4) return 'medium' as const;
+    return 'low' as const;
+  }, []);
 
   // Get time of day
   const getTimeOfDay = useCallback((): AmbientState['timeOfDay'] => {
@@ -69,7 +89,11 @@ export const useAmbientProvider = () => {
   // Check reduced motion preference
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setState(prev => ({ ...prev, prefersReducedMotion: mediaQuery.matches }));
+    setState(prev => ({ 
+      ...prev, 
+      prefersReducedMotion: mediaQuery.matches,
+      performanceTier,
+    }));
     
     const handler = (e: MediaQueryListEvent) => {
       setState(prev => ({ ...prev, prefersReducedMotion: e.matches }));
@@ -77,7 +101,7 @@ export const useAmbientProvider = () => {
     
     mediaQuery.addEventListener('change', handler);
     return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+  }, [performanceTier]);
 
   // Update time of day
   useEffect(() => {
@@ -89,9 +113,9 @@ export const useAmbientProvider = () => {
     return () => clearInterval(interval);
   }, [getTimeOfDay]);
 
-  // Mouse movement tracking
+  // THROTTLED Mouse movement tracking - 60ms throttle (~16fps for mouse)
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
+    const handleMouseMove = throttle((e: MouseEvent) => {
       const now = Date.now();
       const dx = e.clientX - lastMousePos.current.x;
       const dy = e.clientY - lastMousePos.current.y;
@@ -122,15 +146,15 @@ export const useAmbientProvider = () => {
       focusTimerRef.current = window.setTimeout(() => {
         setState(prev => ({ ...prev, isFocusMode: true }));
       }, 7000);
-    };
+    }, 60); // Throttle to ~16fps
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
 
-  // Scroll tracking
+  // THROTTLED Scroll tracking - 100ms throttle (~10fps for scroll)
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       const now = Date.now();
       const scrollY = window.scrollY;
       const dy = scrollY - lastScrollPos.current.y;
@@ -167,13 +191,13 @@ export const useAmbientProvider = () => {
           }, 2000);
         }
       }, 5000);
-    };
+    }, 100); // Throttle to ~10fps
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Update idle duration and animation intensity
+  // Update idle duration and animation intensity - use setInterval instead of RAF
   useEffect(() => {
     const updateLoop = () => {
       setState(prev => {
@@ -203,13 +227,13 @@ export const useAmbientProvider = () => {
           animationIntensity: prev.animationIntensity + (intensity - prev.animationIntensity) * 0.05,
         };
       });
-      
-      frameRef.current = requestAnimationFrame(updateLoop);
     };
     
-    frameRef.current = requestAnimationFrame(updateLoop);
+    // Use setInterval at 200ms (5fps) instead of RAF for intensity updates
+    updateIntervalRef.current = window.setInterval(updateLoop, 200);
+    
     return () => {
-      if (frameRef.current) cancelAnimationFrame(frameRef.current);
+      if (updateIntervalRef.current) clearInterval(updateIntervalRef.current);
     };
   }, []);
 
