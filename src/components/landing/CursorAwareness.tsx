@@ -1,6 +1,7 @@
-import { memo, useRef, useEffect, useState } from 'react';
+import { memo, useRef, useEffect } from 'react';
 import { motion, useSpring } from 'framer-motion';
 import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
+import { useInView } from '@/hooks/usePerformance';
 
 interface CursorAwareProps {
   children: React.ReactNode;
@@ -16,16 +17,18 @@ export const CursorAware = memo(({
   strength = 0.02,
   className = '' 
 }: CursorAwareProps) => {
-  const { mouseX, mouseY, prefersReducedMotion, animationIntensity } = useAmbientIntelligence();
+  const { mouseX, mouseY, prefersReducedMotion, animationIntensity, performanceTier } = useAmbientIntelligence();
   const ref = useRef<HTMLDivElement>(null);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [containerRef, isInView] = useInView({ rootMargin: '50px' });
   
-  const springConfig = { stiffness: 150, damping: 25 };
+  const springConfig = { stiffness: 100, damping: 20 };
   const x = useSpring(0, springConfig);
   const y = useSpring(0, springConfig);
   
+  const shouldAnimate = isInView && !prefersReducedMotion && performanceTier !== 'low';
+  
   useEffect(() => {
-    if (prefersReducedMotion || !ref.current) {
+    if (!shouldAnimate || !ref.current) {
       x.set(0);
       y.set(0);
       return;
@@ -47,22 +50,32 @@ export const CursorAware = memo(({
       x.set(0);
       y.set(0);
     }
-  }, [mouseX, mouseY, radius, strength, prefersReducedMotion, animationIntensity, x, y]);
+  }, [mouseX, mouseY, radius, strength, animationIntensity, x, y, shouldAnimate]);
   
   return (
-    <motion.div ref={ref} style={{ x, y }} className={className}>
-      {children}
-    </motion.div>
+    <div ref={containerRef as React.RefObject<HTMLDivElement>}>
+      <motion.div 
+        ref={ref} 
+        style={{ 
+          x, 
+          y,
+          willChange: shouldAnimate ? 'transform' : 'auto',
+        }} 
+        className={className}
+      >
+        {children}
+      </motion.div>
+    </div>
   );
 });
 
 CursorAware.displayName = 'CursorAware';
 
-// Global cursor awareness indicator (subtle glow that follows cursor)
+// Global cursor awareness indicator - SIMPLIFIED
 export const CursorGlow = memo(() => {
-  const { mouseX, mouseY, prefersReducedMotion, isIdle, isFocusMode, animationIntensity } = useAmbientIntelligence();
+  const { mouseX, mouseY, prefersReducedMotion, isIdle, isFocusMode, animationIntensity, performanceTier } = useAmbientIntelligence();
   
-  const springConfig = { stiffness: 100, damping: 30 };
+  const springConfig = { stiffness: 80, damping: 25 };
   const x = useSpring(mouseX, springConfig);
   const y = useSpring(mouseY, springConfig);
   
@@ -71,10 +84,10 @@ export const CursorGlow = memo(() => {
     y.set(mouseY);
   }, [mouseX, mouseY, x, y]);
   
-  if (prefersReducedMotion) return null;
+  // Skip on reduced motion or low-end devices
+  if (prefersReducedMotion || performanceTier === 'low') return null;
   
-  const opacity = isIdle ? 0.05 : isFocusMode ? 0.1 : 0.15;
-  const scale = isIdle ? 0.8 : 1;
+  const opacity = isIdle ? 0.03 : isFocusMode ? 0.06 : 0.1;
   
   return (
     <motion.div
@@ -84,18 +97,16 @@ export const CursorGlow = memo(() => {
         y,
         translateX: '-50%',
         translateY: '-50%',
+        willChange: 'transform',
       }}
     >
-      <motion.div
-        className="w-[300px] h-[300px] rounded-full"
+      <div
+        className="w-[250px] h-[250px] rounded-full"
         style={{
-          background: 'radial-gradient(circle, hsl(var(--neon-purple) / 0.08) 0%, transparent 70%)',
-        }}
-        animate={{
+          background: 'radial-gradient(circle, hsl(var(--neon-purple) / 0.06) 0%, transparent 70%)',
           opacity: opacity * animationIntensity,
-          scale,
+          transition: 'opacity 0.3s ease-out',
         }}
-        transition={{ duration: 0.5 }}
       />
     </motion.div>
   );

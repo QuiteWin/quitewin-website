@@ -1,6 +1,7 @@
 import { memo, useRef, useEffect, useState } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import { motion, useSpring } from 'framer-motion';
 import { useAmbientIntelligence } from '@/hooks/useAmbientIntelligence';
+import { useInView } from '@/hooks/usePerformance';
 
 interface ParallaxLayerProps {
   depth: 'background' | 'content' | 'foreground';
@@ -21,9 +22,11 @@ const scrollMultipliers = {
 };
 
 export const ParallaxLayer = memo(({ depth, children, className = '' }: ParallaxLayerProps) => {
-  const { mouseX, mouseY, scrollY, prefersReducedMotion, animationIntensity } = useAmbientIntelligence();
+  const { mouseX, mouseY, scrollY, prefersReducedMotion, animationIntensity, performanceTier } = useAmbientIntelligence();
+  const [ref, isInView] = useInView({ rootMargin: '200px' });
   
-  const springConfig = { stiffness: 50, damping: 30 };
+  // Lighter spring config
+  const springConfig = { stiffness: 30, damping: 25 };
   
   const mouseMultiplier = depthMultipliers[depth];
   const scrollMultiplier = scrollMultipliers[depth];
@@ -31,21 +34,34 @@ export const ParallaxLayer = memo(({ depth, children, className = '' }: Parallax
   const centerX = typeof window !== 'undefined' ? window.innerWidth / 2 : 0;
   const centerY = typeof window !== 'undefined' ? window.innerHeight / 2 : 0;
   
-  const targetX = prefersReducedMotion ? 0 : (mouseX - centerX) * mouseMultiplier * animationIntensity;
-  const targetY = prefersReducedMotion ? 0 : (mouseY - centerY) * mouseMultiplier * animationIntensity + scrollY * scrollMultiplier;
+  // Only calculate when in view and not reduced motion
+  const shouldAnimate = isInView && !prefersReducedMotion && performanceTier !== 'low';
   
-  const x = useSpring(targetX, springConfig);
-  const y = useSpring(targetY, springConfig);
+  const targetX = shouldAnimate ? (mouseX - centerX) * mouseMultiplier * animationIntensity : 0;
+  const targetY = shouldAnimate ? (mouseY - centerY) * mouseMultiplier * animationIntensity + scrollY * scrollMultiplier : 0;
+  
+  const x = useSpring(0, springConfig);
+  const y = useSpring(0, springConfig);
   
   useEffect(() => {
-    x.set(targetX);
-    y.set(targetY);
-  }, [targetX, targetY, x, y]);
+    if (shouldAnimate) {
+      x.set(targetX);
+      y.set(targetY);
+    } else {
+      x.set(0);
+      y.set(0);
+    }
+  }, [targetX, targetY, x, y, shouldAnimate]);
 
   return (
     <motion.div
+      ref={ref as React.RefObject<HTMLDivElement>}
       className={`pointer-events-none ${className}`}
-      style={{ x, y }}
+      style={{ 
+        x, 
+        y,
+        willChange: shouldAnimate ? 'transform' : 'auto',
+      }}
     >
       {children}
     </motion.div>
@@ -54,74 +70,40 @@ export const ParallaxLayer = memo(({ depth, children, className = '' }: Parallax
 
 ParallaxLayer.displayName = 'ParallaxLayer';
 
-// Floating glow accents for foreground layer
+// Floating glow accents - SIMPLIFIED for performance
 export const FloatingAccents = memo(() => {
-  const { prefersReducedMotion, animationIntensity, isFocusMode } = useAmbientIntelligence();
+  const { prefersReducedMotion, isFocusMode, performanceTier } = useAmbientIntelligence();
+  const [ref, isInView] = useInView({ rootMargin: '100px' });
   
-  if (prefersReducedMotion) return null;
+  // Don't render on low-end devices or reduced motion
+  if (prefersReducedMotion || performanceTier === 'low') return null;
   
-  const opacity = isFocusMode ? 0.3 : 0.6;
-  const duration = 10 / animationIntensity;
+  const opacity = isFocusMode ? 0.2 : 0.4;
+  const shouldAnimate = isInView;
   
   return (
-    <ParallaxLayer depth="foreground" className="fixed inset-0 overflow-hidden">
-      {/* Top-left accent */}
-      <motion.div
-        className="absolute -top-20 -left-20 w-64 h-64 rounded-full"
+    <div ref={ref as React.RefObject<HTMLDivElement>} className="fixed inset-0 overflow-hidden pointer-events-none">
+      {/* Top-left accent - CSS animation instead of framer-motion for better perf */}
+      <div
+        className="absolute -top-20 -left-20 w-64 h-64 rounded-full animate-float-slow"
         style={{
-          background: 'radial-gradient(circle, hsl(var(--neon-purple) / 0.15) 0%, transparent 70%)',
-        }}
-        animate={{
-          x: [0, 30, 0],
-          y: [0, 20, 0],
-          scale: [1, 1.1, 1],
-          opacity: [opacity * 0.5, opacity, opacity * 0.5],
-        }}
-        transition={{
-          duration,
-          repeat: Infinity,
-          ease: 'easeInOut',
-        }}
-      />
-      
-      {/* Top-right accent */}
-      <motion.div
-        className="absolute -top-10 right-[20%] w-48 h-48 rounded-full"
-        style={{
-          background: 'radial-gradient(circle, hsl(var(--neon-cyan) / 0.1) 0%, transparent 70%)',
-        }}
-        animate={{
-          x: [0, -20, 0],
-          y: [0, 30, 0],
-          opacity: [opacity * 0.3, opacity * 0.7, opacity * 0.3],
-        }}
-        transition={{
-          duration: duration * 1.2,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 1,
+          background: 'radial-gradient(circle, hsl(var(--neon-purple) / 0.1) 0%, transparent 70%)',
+          opacity: shouldAnimate ? opacity * 0.5 : 0,
+          transition: 'opacity 0.5s ease-out',
         }}
       />
       
       {/* Bottom-right accent */}
-      <motion.div
-        className="absolute bottom-[30%] -right-10 w-56 h-56 rounded-full"
+      <div
+        className="absolute bottom-[30%] -right-10 w-56 h-56 rounded-full animate-float-slow"
         style={{
-          background: 'radial-gradient(circle, hsl(var(--neon-green) / 0.12) 0%, transparent 70%)',
-        }}
-        animate={{
-          x: [0, -25, 0],
-          y: [0, -15, 0],
-          opacity: [opacity * 0.4, opacity * 0.8, opacity * 0.4],
-        }}
-        transition={{
-          duration: duration * 0.9,
-          repeat: Infinity,
-          ease: 'easeInOut',
-          delay: 2,
+          background: 'radial-gradient(circle, hsl(var(--neon-green) / 0.08) 0%, transparent 70%)',
+          opacity: shouldAnimate ? opacity * 0.4 : 0,
+          transition: 'opacity 0.5s ease-out',
+          animationDelay: '2s',
         }}
       />
-    </ParallaxLayer>
+    </div>
   );
 });
 

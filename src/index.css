@@ -1,4 +1,15 @@
 @tailwind base;
+
+/* Performance-optimized animations */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-10px) translateX(5px); }
+}
+
+.animate-float-slow {
+  animation: float-slow 12s ease-in-out infinite;
+  will-change: transform;
+}
 @tailwind components;
 @tailwind utilities;
 
