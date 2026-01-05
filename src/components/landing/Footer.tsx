@@ -3,7 +3,6 @@ import { Github, MessageCircle } from "lucide-react";
 import { useMemo } from "react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
 
-
 const colorPairs = [
   { accent: "text-red-500", base: "text-amber-400" },
   { accent: "text-neon-purple", base: "text-neon-green" },
@@ -14,13 +13,50 @@ const colorPairs = [
   { accent: "text-violet-400", base: "text-lime-400" },
 ];
 
+const techSpecs = [
+  { category: "AI Providers", items: ["Ollama", "Groq", "Gemini 2.5", "OpenAI", "Anthropic"] },
+  { category: "Audio", items: ["Local Whisper", "System Audio"] },
+  { category: "OS Support", items: ["Windows", "macOS (Apple Silicon)", "Linux"] },
+];
+
 const Footer = () => {
   const colors = useMemo(() => {
     return colorPairs[Math.floor(Math.random() * colorPairs.length)];
   }, []);
+
   return (
     <footer className="py-16 border-t border-border/30 relative overflow-hidden">
       <div className="container mx-auto px-6">
+        {/* Technical Specifications */}
+        <motion.div
+          className="mb-12 pb-12 border-b border-border/20"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+        >
+          <h3 className="text-lg font-bold text-center mb-8 text-muted-foreground">
+            Technical Specifications
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {techSpecs.map((spec) => (
+              <div key={spec.category} className="glass-card p-4 rounded-xl text-center">
+                <h4 className="text-sm font-mono text-neon-purple mb-3">{spec.category}</h4>
+                <div className="flex flex-wrap justify-center gap-2">
+                  {spec.items.map((item) => (
+                    <span
+                      key={item}
+                      className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
+
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo & Links */}
           <motion.div
