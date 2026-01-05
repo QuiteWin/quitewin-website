@@ -36,6 +36,7 @@ const Comparison = lazy(() => import("@/components/landing/Comparison"));
 const Support = lazy(() => import("@/components/landing/Support"));
 const Footer = lazy(() => import("@/components/landing/Footer"));
 const StealthTimeline = lazy(() => import("@/components/landing/StealthTimeline"));
+const HowItWorks = lazy(() => import("@/components/landing/HowItWorks"));
 const TrustProof = lazy(() => import("@/components/landing/TrustProof"));
 const PhilosophicalClose = lazy(() => import("@/components/landing/PhilosophicalClose"));
 const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
@@ -183,6 +184,7 @@ const Index = () => {
                     <Suspense fallback={<SectionLoader />}>
                       <StealthTimeline />
                       <Features />
+                      <HowItWorks />
                     </Suspense>
                     <Suspense fallback={<SectionLoader />}>
                       <MiniGame />

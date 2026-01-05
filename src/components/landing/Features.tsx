@@ -1,49 +1,48 @@
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { EyeOff, Image, Mic, Sparkles, Shield, Cpu } from "lucide-react";
+import { Ghost, Brain, EyeOff, Zap, Lock, Eye } from "lucide-react";
 import { useRef } from "react";
-
 
 const features = [
   {
-    icon: EyeOff,
-    title: "Ghost Overlay",
-    tagline: "Invisible to Zoom & Teams.",
-    description: "OS-native screen protection using setContentProtection. Your AI stays hidden during any screen share.",
+    icon: Ghost,
+    title: "Auto-Ghost AI",
+    tagline: "Autonomous Typing",
+    description: "Our 'Ghost Mode' types AI responses directly into your editor with human-like rhythms. No more Alt-Tabbing. It mimics your speed, includes natural pauses, and even simulates minor typos for absolute realism.",
     color: "neon-purple",
   },
   {
-    icon: Image,
-    title: "Vision",
-    tagline: "Drag. Drop. Understand.",
-    description: "Drag & drop screenshots for instant multimodal analysis. Powered by LLaVA & Moondream models.",
+    icon: Brain,
+    title: "Smart RAG",
+    tagline: "Personalized Expert",
+    description: "QuiteWin learns you. Upload your resume, GitHub bio, and portfolios. Our RAG engine injects your personal context into every answer, ensuring responses match your real-world experience perfectly.",
     color: "neon-pink",
   },
   {
-    icon: Mic,
-    title: "Audio",
-    tagline: "Listens only to you.",
-    description: "Smart voice detection that ignores fans, keyboard noise, and background hum.",
+    icon: EyeOff,
+    title: "Ultimate Stealth Mode",
+    tagline: "Invisible to Everyone",
+    description: "Invisible to screen sharing. Cloaked from task managers. With 'Paranoid Stealth' and hardware-level invisibility, QuiteWin exists only for your eyes.",
     color: "neon-green",
   },
   {
-    icon: Shield,
-    title: "Privacy Shield",
-    tagline: "Your data never leaves.",
-    description: "100% local processing option. No cloud required. Your conversations, your hardware, your rules.",
+    icon: Zap,
+    title: "Parallel AI Race",
+    tagline: "Multi-Model Intelligence",
+    description: "Don't settle for one opinion. QuiteWin queries multiple models (LLaVA, Llama 3, Gemini, GPT-4o) simultaneously and delivers the highest-quality refined answer in milliseconds.",
     color: "neon-cyan",
   },
   {
-    icon: Cpu,
-    title: "Hybrid Engine",
-    tagline: "Best of both worlds.",
-    description: "Switch between local Ollama models and cloud APIs like Gemini/GPT with a single toggle.",
+    icon: Lock,
+    title: "Local-First Privacy",
+    tagline: "Your Data, Your Rules",
+    description: "Switch to Local Mode with Ollama support. Your data, transcriptions, and secrets never leave your machine. Maximum privacy for high-stakes sessions.",
     color: "neon-amber",
   },
   {
-    icon: Sparkles,
-    title: "Smart Context",
-    tagline: "It just understands.",
-    description: "Remembers your workflow, adapts to your style, and provides contextually relevant assistance.",
+    icon: Eye,
+    title: "Multi-Modal Vision & Audio",
+    tagline: "Sees & Hears Everything",
+    description: "Real-time screen OCR and high-accuracy Whisper transcription. It sees what you see and hears what you hear—context without compromise.",
     color: "neon-purple",
   },
 ];
