@@ -2,17 +2,15 @@ import { motion } from "framer-motion";
 import { Check, X } from "lucide-react";
 
 const comparisonData = [
-  { feature: "Auto-Typing Ghost Mode", quitewin: true, competitor: false, description: "Types responses automatically with human-like rhythm" },
-  { feature: "Hardware-Level Invisibility", quitewin: true, competitor: false, description: "Invisible to screen sharing and recordings" },
-  { feature: "Personalized RAG Engine", quitewin: true, competitor: false, description: "AI trained on your resume and experience" },
-  { feature: "Local-Private AI (Ollama)", quitewin: true, competitor: false, description: "100% offline processing option" },
-  { feature: "Multi-Model Racing", quitewin: true, competitor: false, description: "Queries multiple AI models simultaneously" },
-  { feature: "Real-time Transcription", quitewin: true, competitor: true, description: "Whisper-powered audio capture" },
-  { feature: "Screen Context OCR", quitewin: true, competitor: true, description: "Reads and understands your screen" },
-  { feature: "Manual Copy-Paste", quitewin: false, competitor: true, description: "Requires manual intervention" },
-  { feature: "Detectable UI", quitewin: false, competitor: true, description: "Visible in screen recordings" },
-  { feature: "Generic Answers", quitewin: false, competitor: true, description: "No personalization" },
-  { feature: "Cloud-Only Processing", quitewin: false, competitor: true, description: "Data leaves your device" },
+  { feature: "Auto-Typing Ghost Mode", quitewin: true, others: false, description: "Types responses automatically with human-like rhythm" },
+  { feature: "Hardware-Level Invisibility", quitewin: true, others: false, description: "Invisible to screen sharing and recordings" },
+  { feature: "Personalized RAG Engine", quitewin: true, others: false, description: "AI trained on your resume and experience" },
+  { feature: "Local-Private AI (Ollama)", quitewin: true, others: false, description: "100% offline processing option" },
+  { feature: "Multi-Model Racing", quitewin: true, others: false, description: "Queries multiple AI models simultaneously" },
+  { feature: "Real-time Transcription", quitewin: true, others: true, description: "Whisper-powered audio capture" },
+  { feature: "Screen Context OCR", quitewin: true, others: true, description: "Reads and understands your screen" },
+  { feature: "Zero Trace Operation", quitewin: true, others: false, description: "Doesn't hook into browser processes" },
+  { feature: "Humanized Typing Rhythm", quitewin: true, others: false, description: "Mimics natural typing with realistic pauses" },
 ];
 
 const Comparison = () => {
@@ -88,13 +86,13 @@ const Comparison = () => {
                     )}
                   </div>
                   <div className="col-span-3 flex justify-center items-center">
-                    {row.competitor ? (
-                      <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center">
-                        <Check className="w-5 h-5 text-destructive/50" />
+                    {row.others ? (
+                      <div className="w-8 h-8 rounded-full bg-muted/30 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-muted-foreground/50" />
                       </div>
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-muted/30 flex items-center justify-center">
-                        <X className="w-5 h-5 text-muted-foreground/30" />
+                      <div className="w-8 h-8 rounded-full bg-destructive/10 flex items-center justify-center">
+                        <X className="w-5 h-5 text-destructive/50" />
                       </div>
                     )}
                   </div>
