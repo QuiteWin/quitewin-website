@@ -239,7 +239,7 @@ const Hero = () => {
               animate={taglineAnim.animate}
               transition={taglineAnim.transition}
             >
-              Your silent superpower. AI that stays invisible.
+              The AI that sounds like you, works for you, and stays with you.
             </motion.p>
 
             {/* Taglines */}
@@ -249,7 +249,11 @@ const Hero = () => {
               animate={taglineAnim.animate}
               transition={{ ...taglineAnim.transition, delay: 1 }}
             >
-              {["Private by default", "Powerful on demand", "A Stealth AI"].map(tag => (
+              {[
+                "Your Silent Advantage",
+                "Beyond Intelligence",
+                "Total Autonomy"
+              ].map(tag => (
                 <span
                   key={tag}
                   className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
