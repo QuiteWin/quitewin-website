@@ -31,6 +31,10 @@ const VisibilityDemo = lazy(() => import("@/components/landing/VisibilityDemo"))
 const HybridToggle = lazy(() => import("@/components/landing/HybridToggle"));
 const GhostDemo = lazy(() => import("@/components/landing/GhostDemo"));
 const Features = lazy(() => import("@/components/landing/Features"));
+const USPs = lazy(() => import("@/components/landing/USPs"));
+const DailyDriver = lazy(() => import("@/components/landing/DailyDriver"));
+const FeatureBreakdown = lazy(() => import("@/components/landing/FeatureBreakdown"));
+const WhyBuy = lazy(() => import("@/components/landing/WhyBuy"));
 const UseCases = lazy(() => import("@/components/landing/UseCases"));
 const Comparison = lazy(() => import("@/components/landing/Comparison"));
 const Support = lazy(() => import("@/components/landing/Support"));
@@ -184,14 +188,18 @@ const Index = () => {
                     <Suspense fallback={<SectionLoader />}>
                       <StealthTimeline />
                       <Features />
+                      <USPs />
                       <HowItWorks />
                     </Suspense>
                     <Suspense fallback={<SectionLoader />}>
+                      <DailyDriver />
+                      <FeatureBreakdown />
                       <MiniGame />
                       <UseCases />
                     </Suspense>
                     <Suspense fallback={<SectionLoader />}>
                       <Comparison />
+                      <WhyBuy />
                       <TrustProof />
                     </Suspense>
                     <Suspense fallback={<SectionLoader />}>
