@@ -101,33 +101,6 @@ const Comparison = () => {
             </div>
           </div>
 
-          {/* Bottom Summary */}
-          <motion.div
-            className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5 }}
-          >
-            <div className="glass-card p-6 rounded-xl border border-destructive/20">
-              <h3 className="text-lg font-bold text-destructive mb-3">❌ The Others</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Manual copying required</li>
-                <li>• Detectable, visible UI</li>
-                <li>• Generic, impersonal answers</li>
-                <li>• Cloud-only processing</li>
-              </ul>
-            </div>
-            <div className="glass-card p-6 rounded-xl border border-neon-green/30 neon-glow-green">
-              <h3 className="text-lg font-bold text-neon-green mb-3">✓ QuiteWin</h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Auto-Typing Ghost Mode</li>
-                <li>• Hardware-level invisibility</li>
-                <li>• Personalized RAG Engine</li>
-                <li>• Local-Private AI option</li>
-              </ul>
-            </div>
-          </motion.div>
         </motion.div>
       </div>
     </section>
