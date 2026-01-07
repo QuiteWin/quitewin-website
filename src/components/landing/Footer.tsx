@@ -14,7 +14,8 @@ const colorPairs = [
 ];
 
 const techSpecs = [
-  { category: "AI Providers", items: ["Ollama", "Groq", "Gemini 2.5", "OpenAI", "Anthropic"] },
+  { category: "AI Providers", items: ["Ollama", "Groq", "Gemini 2.x", "OpenAI", "Anthropic"] },
+  { category: "Languages", items: ["50+ Supported", "English", "Spanish", "Mandarin", "Japanese", "German", "French"] },
   { category: "Audio", items: ["Local Whisper", "System Audio"] },
   { category: "OS Support", items: ["Windows", "macOS (Apple Silicon)", "Linux"] },
 ];

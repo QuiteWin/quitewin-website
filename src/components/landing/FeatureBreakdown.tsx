@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Zap, Eye, Mic, Command } from "lucide-react";
+import { Zap, Eye, Mic, Globe, Target } from "lucide-react";
 
 const features = [
   {
@@ -8,6 +8,20 @@ const features = [
     benefit: "Instant Accuracy",
     why: "Queries multiple models (Llama, Gemini, GPT) simultaneously to give you the perfect answer in <500ms.",
     color: "purple"
+  },
+  {
+    icon: Globe,
+    name: "Global Multilingual",
+    benefit: "Universal Mastery",
+    why: "Native-level transcription and response support for 50+ languages. Interview globally without language barriers.",
+    color: "cyan"
+  },
+  {
+    icon: Target,
+    name: "STAR Score Tracker",
+    benefit: "Behavioral Edge",
+    why: "Real-time analysis of Situation, Task, Action, and Result coverage for behavioral interviews.",
+    color: "pink"
   },
   {
     icon: Eye,
@@ -21,13 +35,6 @@ const features = [
     name: "Silent Whisper",
     benefit: "Zero Distraction",
     why: "High-accuracy transcription that handles heavy accents and technical jargon with ease.",
-    color: "pink"
-  },
-  {
-    icon: Command,
-    name: "Global Shortcuts",
-    benefit: "Total Control",
-    why: "Toggle invisibility, clear memory, or trigger ghost-typing with customizable, near-silent hotkeys.",
     color: "amber"
   }
 ];
@@ -37,7 +44,8 @@ const getColorClasses = (color: string) => {
     purple: { text: "text-neon-purple", bg: "bg-neon-purple/10", border: "border-neon-purple/30" },
     green: { text: "text-neon-green", bg: "bg-neon-green/10", border: "border-neon-green/30" },
     pink: { text: "text-neon-pink", bg: "bg-neon-pink/10", border: "border-neon-pink/30" },
-    amber: { text: "text-neon-amber", bg: "bg-neon-amber/10", border: "border-neon-amber/30" }
+    amber: { text: "text-neon-amber", bg: "bg-neon-amber/10", border: "border-neon-amber/30" },
+    cyan: { text: "text-neon-cyan", bg: "bg-neon-cyan/10", border: "border-neon-cyan/30" }
   };
   return colors[color] || colors.purple;
 };
