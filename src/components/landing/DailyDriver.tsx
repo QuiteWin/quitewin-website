@@ -53,11 +53,11 @@ const DailyDriver = () => {
           transition={{ duration: 0.6 }}
         >
           <span className="text-xs font-mono text-neon-green uppercase tracking-widest mb-4 block">
-            Beyond the Interview
+            The Pivot to Productivity
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Your{" "}
-            <span className="text-gradient-hero">Daily Driver</span>
+            Win the Job.{" "}
+            <span className="text-gradient-hero">Then Dominate the Role.</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             QuiteWin is your everyday professional growth engine
