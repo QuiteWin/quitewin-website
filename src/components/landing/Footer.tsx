@@ -143,6 +143,7 @@ const Footer = () => {
         </div>
 
         {/* Disclaimer */}
+        {/* Trust Signals & Disclaimer */}
         <motion.div
           className="mt-12 pt-8 border-t border-border/20"
           initial={{ opacity: 0 }}
@@ -150,8 +151,24 @@ const Footer = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
+          {/* Trust Signals */}
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
+            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+              Indie Built
+            </span>
+            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+              Privacy First
+            </span>
+            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+              No VCs
+            </span>
+            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+              Just Code
+            </span>
+          </div>
+          
           <p className="text-center text-sm text-muted-foreground/60 max-w-2xl mx-auto">
-            QuiteWin is a thinking assistant designed to enhance productivity and accessibility. Users are responsible for ethical usage in accordance with applicable laws and platform terms.
+            Built for Windows 11 & macOS. Support for Ollama, Groq, NVIDIA CUDA, and Apple Neural Engine.
           </p>
           
           {/* Invisible Analytics Statement */}
@@ -160,7 +177,7 @@ const Footer = () => {
           </p>
           
           <p className="text-center text-xs text-muted-foreground/40 mt-4">
-            © 2026 QuiteWin. Open source. Privacy-first.
+            © 2026 QuiteWin.
           </p>
         </motion.div>
       </div>

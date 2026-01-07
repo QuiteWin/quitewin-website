@@ -15,16 +15,20 @@ const VisibilityDemo = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
+          <span className="text-xs font-mono text-neon-purple uppercase tracking-widest mb-4 block">
+            The Reveal
+          </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="text-gradient-hero">What You See</span>
             <span className="text-foreground"> vs </span>
             <span className="text-gradient-green">What They See</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
-            OS-level screen protection in action.
+            <span className="text-neon-green font-semibold">OS-Level Invisibility.</span>{" "}
+            Engineered to be strictly invisible to Zoom, Teams, and Google Meet.
           </p>
           <p className="text-sm font-mono text-muted-foreground/60">
-            Visible to you. Invisible to everyone else.
+            If they can't see it, they can't detect it.
           </p>
         </motion.div>
 

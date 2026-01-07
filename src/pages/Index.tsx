@@ -44,6 +44,7 @@ const HowItWorks = lazy(() => import("@/components/landing/HowItWorks"));
 const TrustProof = lazy(() => import("@/components/landing/TrustProof"));
 const PhilosophicalClose = lazy(() => import("@/components/landing/PhilosophicalClose"));
 const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
+const SecurityLayers = lazy(() => import("@/components/landing/SecurityLayers"));
 
 // Heavy optional elements - load last
 const GhostRobotDuo = lazy(() => import("@/components/landing/GhostRobotDuo"));
@@ -174,34 +175,67 @@ const Index = () => {
                   {/* Static backgrounds - memoized */}
                   <BackgroundLayers />
 
-                  {/* Content sections */}
+                  {/* Content sections - Blueprint Order */}
                   <div className="relative z-10">
+                    {/* 1. Hero Section */}
                     <Hero />
+                    
+                    {/* Logo Loop / Partners */}
                     <Suspense fallback={<SectionLoader />}>
                       <LogoLoop />
+                    </Suspense>
+                    
+                    {/* 2. The Reveal - What You See vs What They See */}
+                    <Suspense fallback={<SectionLoader />}>
                       <VisibilityDemo />
                     </Suspense>
+                    
+                    {/* 3. The Big Four USPs */}
+                    <Suspense fallback={<SectionLoader />}>
+                      <USPs />
+                    </Suspense>
+                    
+                    {/* 4. Interactive Demo - Magnetic HUD */}
                     <Suspense fallback={<SectionLoader />}>
                       <HybridToggle />
                       <GhostDemo />
                     </Suspense>
-                    <Suspense fallback={<SectionLoader />}>
-                      <StealthTimeline />
-                      <Features />
-                      <USPs />
-                      <HowItWorks />
-                    </Suspense>
+                    
+                    {/* 5. Daily Driver - Productivity Pivot */}
                     <Suspense fallback={<SectionLoader />}>
                       <DailyDriver />
-                      <FeatureBreakdown />
-                      <MiniGame />
-                      <UseCases />
                     </Suspense>
+                    
+                    {/* 6. Five Layers of Protection */}
+                    <Suspense fallback={<SectionLoader />}>
+                      <SecurityLayers />
+                    </Suspense>
+                    
+                    {/* 7. Comparison - QuiteWin vs The Others */}
                     <Suspense fallback={<SectionLoader />}>
                       <Comparison />
+                    </Suspense>
+                    
+                    {/* 8. ROI / Why Buy */}
+                    <Suspense fallback={<SectionLoader />}>
                       <WhyBuy />
+                    </Suspense>
+                    
+                    {/* Additional sections */}
+                    <Suspense fallback={<SectionLoader />}>
+                      <FeatureBreakdown />
+                      <StealthTimeline />
+                      <Features />
+                      <HowItWorks />
+                    </Suspense>
+                    
+                    <Suspense fallback={<SectionLoader />}>
+                      <MiniGame />
+                      <UseCases />
                       <TrustProof />
                     </Suspense>
+                    
+                    {/* 9. Footer */}
                     <Suspense fallback={<SectionLoader />}>
                       <Support />
                       <Footer />

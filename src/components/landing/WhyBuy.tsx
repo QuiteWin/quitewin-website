@@ -43,7 +43,7 @@ const WhyBuy = () => {
   return (
     <section className="py-24 md:py-32 relative">
       <div className="container mx-auto px-6">
-        {/* Section header */}
+        {/* Section header with Number Counter Animation */}
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -52,14 +52,21 @@ const WhyBuy = () => {
           transition={{ duration: 0.6 }}
         >
           <span className="text-xs font-mono text-neon-amber uppercase tracking-widest mb-4 block">
-            The Investment
+            The ROI of Excellence
           </span>
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            Pays for Itself in{" "}
-            <span className="text-gradient-hero">One Session</span>
+            1 Successful Interview ={" "}
+            <motion.span 
+              className="text-gradient-hero"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+            >
+              $50,000+
+            </motion.span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            The ROI that transforms your career trajectory
+            Stop Grinding LeetCode in Fear. Start Winning with Confidence.
           </p>
         </motion.div>
 
@@ -115,8 +122,8 @@ const WhyBuy = () => {
               QuiteWin isn't about taking shortcuts—it's about removing the barriers between you and your best professional self. It handles the manual, the stressful, and the organizational, so you can focus on what matters: <span className="text-foreground font-medium">the conversation</span>.
             </p>
 
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            {/* CTA */}
+            <div className="flex justify-center">
               <MagnetButton strength={0.2}>
                 <motion.button
                   className="btn-shimmer flex items-center justify-center gap-3 text-lg"
@@ -124,17 +131,7 @@ const WhyBuy = () => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Download className="w-5 h-5" />
-                  Get Your Silent Advantage
-                </motion.button>
-              </MagnetButton>
-              <MagnetButton strength={0.2}>
-                <motion.button
-                  className="btn-cyber-amber flex items-center justify-center gap-3"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Heart className="w-5 h-5" />
-                  Support the Mission
+                  Unlock Beta Access Now
                 </motion.button>
               </MagnetButton>
             </div>

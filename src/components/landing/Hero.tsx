@@ -191,11 +191,11 @@ const Hero = () => {
             animate={heroAnim.animate}
             transition={heroAnim.transition}
           >
-            {/* Main headline with FallingText */}
+            {/* Main headline with FallingText - Terminal Glitch Effect */}
             <div className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
               <FallingText
-                text="Visible to You."
-                highlightWords={["Visible"]}
+                text="The Invisible Edge."
+                highlightWords={["Invisible"]}
                 className="text-gradient-hero justify-center lg:justify-start"
                 trigger="inView"
                 delay={0.3}
@@ -209,12 +209,12 @@ const Hero = () => {
                 transition={badgeAnim.transition}
               >
                 <Shield className="w-2.5 h-2.5 text-neon-green" />
-                <span className="text-[10px] font-mono text-muted-foreground">v1.0 Beta • Privacy-First AI</span>
+                <span className="text-[10px] font-mono text-muted-foreground">v1.0 Beta • Hybrid AI Copilot</span>
               </motion.div>
               
               <FallingText
-                text="Invisible to Everyone Else."
-                highlightWords={["Invisible"]}
+                text="Master Every Interview."
+                highlightWords={["Master"]}
                 className="text-foreground justify-center lg:justify-start mt-2"
                 trigger="inView"
                 delay={0.5}
@@ -229,41 +229,14 @@ const Hero = () => {
               transition={subheadAnim.transition}
             >
               The world's first{" "}
-              <span className="text-neon-purple font-semibold">Hybrid AI</span>{" "}
-              — stealth by design.
+              <span className="text-neon-purple font-semibold">Hybrid AI Copilot</span>.{" "}
+              Stealth by design, personalized by your experience, and powerful enough to secure your next{" "}
+              <span className="text-neon-green font-semibold">$200k+ role</span>.
             </motion.p>
 
-            <motion.p
-              className="text-lg text-muted-foreground/80 max-w-xl mb-6"
-              initial={taglineAnim.initial}
-              animate={taglineAnim.animate}
-              transition={taglineAnim.transition}
-            >
-              The AI that sounds like you, works for you, and stays with you.
-            </motion.p>
+            {/* Taglines - Removed, integrated into subheadline */}
 
-            {/* Taglines */}
-            <motion.div
-              className="flex flex-wrap gap-3 justify-center lg:justify-start mb-10"
-              initial={taglineAnim.initial}
-              animate={taglineAnim.animate}
-              transition={{ ...taglineAnim.transition, delay: 1 }}
-            >
-              {[
-                "Your Silent Advantage",
-                "Beyond Intelligence",
-                "Total Autonomy"
-              ].map(tag => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
-                >
-                  {tag}
-                </span>
-              ))}
-            </motion.div>
-
-            {/* CTAs with MagnetButton */}
+            {/* CTAs with MagnetButton - Primary Shimmer + Outline */}
             <motion.div
               className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
               initial={ctaAnim.initial}
@@ -272,22 +245,22 @@ const Hero = () => {
             >
               <MagnetButton strength={0.2}>
                 <motion.button
-                  className="btn-cyber-green flex items-center justify-center gap-3 text-lg"
+                  className="btn-shimmer flex items-center justify-center gap-3 text-lg"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <Download className="w-5 h-5" />
-                  Download Beta
+                  Get the Silent Advantage
                 </motion.button>
               </MagnetButton>
               <MagnetButton strength={0.2}>
                 <motion.button
-                  className="btn-cyber-amber flex items-center justify-center gap-3 text-lg"
+                  className="px-8 py-4 rounded-xl border-2 border-neon-purple/50 text-foreground hover:border-neon-purple hover:bg-neon-purple/10 transition-all duration-300 flex items-center justify-center gap-3 text-lg font-medium"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <Heart className="w-5 h-5" />
-                  Fuel the Dev
+                  Watch Stealth Demo
                 </motion.button>
               </MagnetButton>
             </motion.div>
