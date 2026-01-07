@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mic, FileText, Brain, BookOpen, Sparkles, Volume2, Eye, GraduationCap } from "lucide-react";
+import { Mic, FileText, Brain, BookOpen, Sparkles, Volume2, Eye, GraduationCap, Globe, Target } from "lucide-react";
 
 const benefits = [
   {
@@ -7,8 +7,9 @@ const benefits = [
     icon: Mic,
     color: "purple",
     items: [
-      { icon: FileText, title: "Live Transcription", desc: "Transform 60-minute meetings into searchable text" },
-      { icon: Sparkles, title: "One-Click Summarization", desc: "Generate action items and key takeaways instantly" }
+      { icon: FileText, title: "Live Transcription", desc: "Transform meetings into searchable text" },
+      { icon: Sparkles, title: "One-Click Summarization", desc: "Generate action items instantly" },
+      { icon: Globe, title: "Multilingual Captions", desc: "Real-time translation for global teams" }
     ]
   },
   {
@@ -16,7 +17,8 @@ const benefits = [
     icon: Volume2,
     color: "green",
     items: [
-      { icon: Mic, title: "Pronunciation Coach", desc: "Naturally train professional enunciation and confidence" },
+      { icon: Target, title: "STAR Score Analysis", desc: "See exactly how well you're covering Situation, Task, Action, and Result for behavioral questions" },
+      { icon: Mic, title: "Pronunciation Coach", desc: "Naturally train professional enunciation" },
       { icon: Eye, title: "Visual Feedback", desc: "See exactly how you are being heard in real-time" }
     ]
   },
@@ -26,7 +28,7 @@ const benefits = [
     color: "pink",
     items: [
       { icon: BookOpen, title: "Lecture Companion", desc: "Transcribe and chat with any technical video or lecture" },
-      { icon: Brain, title: "Skill Refinement", desc: "Compare your explanations with AI-refined answers to upgrade vocabulary" }
+      { icon: Brain, title: "Skill Refinement", desc: "Compare your explanations with AI-refined answers" }
     ]
   }
 ];

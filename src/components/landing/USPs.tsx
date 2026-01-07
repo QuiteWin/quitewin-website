@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Ghost, Shield, Brain, Lock, Eye, EyeOff, Keyboard, FileText, Zap } from "lucide-react";
+import { Ghost, Shield, Brain, Lock, Eye, EyeOff, Keyboard, FileText, Zap, Globe } from "lucide-react";
 import { useState } from "react";
 
 const usps = [
@@ -7,7 +7,7 @@ const usps = [
     icon: Shield,
     title: "Absolute Stealth Architecture",
     tagline: "Engineered for Cyber-Stealth",
-    copy: "Unlike generic browser extensions or visible overlay apps, QuiteWin is engineered for Cyber-Stealth.",
+    copy: "Unlike generic browser extensions, QuiteWin uses hardware-level cloaking.",
     points: [
       { icon: EyeOff, label: "Invisibility", desc: "Our UI uses hardware-level cloaking, making it undetectable to Zoom, Teams, and Google Meet." },
       { icon: Lock, label: "Zero Trace", desc: "It doesn't hook into browser processes, making it safe for high-security environments." }
@@ -18,10 +18,10 @@ const usps = [
     icon: Ghost,
     title: "Auto-Ghost AI",
     tagline: "Autonomous Typing",
-    copy: "The \"Holy Grail\" of AI assistance. No Alt-Tab. No Copy-Paste.",
+    copy: "QuiteWin types AI-generated code directly into your editor with humanized rhythms.",
     points: [
       { icon: Keyboard, label: "No Alt-Tab Required", desc: "QuiteWin types AI-generated code and text directly into your editor or browser." },
-      { icon: Eye, label: "Humanized Rhythm", desc: "It mimics your natural typing speed, pauses to simulate thought, and even includes realistic, self-corrected typos. It looks 100% human to anyone watching." }
+      { icon: Eye, label: "Humanized Rhythm", desc: "It mimics your natural typing speed, pauses to simulate thought, and even includes realistic, self-corrected typos." }
     ],
     color: "green"
   },
@@ -29,7 +29,7 @@ const usps = [
     icon: Brain,
     title: "Smart RAG",
     tagline: "Personalized Expert",
-    copy: "QuiteWin doesn't just give answers; it gives your answers.",
+    copy: "Upload your resume and GitHub. The AI uses your actual background to ensure answers align with your brand.",
     points: [
       { icon: FileText, label: "Context-Aware", desc: "Upload your resume, GitHub, and portfolios." },
       { icon: Brain, label: "Your Real-World Experience", desc: "The AI uses your actual background to answer questions, ensuring everything it says aligns perfectly with your resume and personal brand." }
@@ -38,12 +38,12 @@ const usps = [
   },
   {
     icon: Zap,
-    title: "Parallel AI Race",
-    tagline: "Deep Reasoning",
-    copy: "Don't settle for one model. Get the best answer, fast.",
+    title: "Hybrid Engine & Global Reach",
+    tagline: "Private when you want. Powerful when you need. Now Global.",
+    copy: "Ollama Powered: 100% Offline mode. Multilingual Support for 50+ languages.",
     points: [
-      { icon: Zap, label: "Multi-Model Queries", desc: "We query Llama 3, Gemini, and GPT-4o simultaneously to deliver the world's fastest, most refined response." },
-      { icon: Lock, label: "Local-First Privacy", desc: "Toggle 100% Offline Mode. Your audio, transcripts, and code stay on your GPU. Zero data leaks, zero cloud logs." }
+      { icon: Lock, label: "Ollama Powered", desc: "100% Offline mode. Your audio, transcripts, and code stay on your GPU. Zero data leaks, zero cloud logs." },
+      { icon: Globe, label: "Multilingual Support", desc: "Supports over 50 languages for truly global interview preparation and execution." }
     ],
     color: "amber"
   }

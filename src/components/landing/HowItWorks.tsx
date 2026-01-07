@@ -5,25 +5,25 @@ const steps = [
   {
     icon: RefreshCw,
     title: "Sync",
-    description: "Securely connect your local or cloud AI providers. Configure Ollama, Groq, Gemini, OpenAI, or Anthropic in seconds.",
+    description: "Connect local or cloud AI providers.",
     color: "neon-purple",
   },
   {
     icon: FileText,
     title: "Context",
-    description: "Upload your resume to create your 'Personalized Expert.' QuiteWin learns your skills, projects, and speaking style.",
+    description: "Upload your resume to create your 'Personalized Expert.'",
     color: "neon-green",
   },
   {
     icon: Headphones,
     title: "Engage",
-    description: "Start your interview. QuiteWin listens, captures screen context, and prepares the perfect response in real-time.",
+    description: "Start your interview. QuiteWin listens, capturing screen context and scoring your STAR responses in real-time.",
     color: "neon-pink",
   },
   {
     icon: Rocket,
     title: "Deploy",
-    description: "Watch as Auto-Ghost types the solution for you while you stay focused on the conversation. Seamless. Invisible. Winning.",
+    description: "Watch as Auto-Ghost types the solution or refine your answer based on AI-suggested STAR improvements.",
     color: "neon-amber",
   },
 ];
