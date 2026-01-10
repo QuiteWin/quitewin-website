@@ -74,16 +74,18 @@
   }
 }
 
-/* Light mode theme */
+/* Light mode theme - Frosted Glass Effect */
 .light-mode {
-  --background: 0 0% 98%;
-  --foreground: 240 10% 10%;
+  /* Translucent frosted background */
+  --background: 220 20% 96%;
+  --foreground: 240 10% 15%;
 
+  /* Semi-transparent cards with glass effect */
   --card: 0 0% 100%;
-  --card-foreground: 240 10% 10%;
+  --card-foreground: 240 10% 15%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 240 10% 10%;
+  --popover-foreground: 240 10% 15%;
 
   --primary: 263 70% 55%;
   --primary-foreground: 0 0% 100%;
@@ -91,8 +93,8 @@
   --secondary: 160 84% 35%;
   --secondary-foreground: 0 0% 100%;
 
-  --muted: 240 5% 92%;
-  --muted-foreground: 240 5% 40%;
+  --muted: 220 15% 92%;
+  --muted-foreground: 220 10% 40%;
 
   --accent: 330 80% 55%;
   --accent-foreground: 0 0% 100%;
@@ -100,43 +102,115 @@
   --destructive: 0 84% 55%;
   --destructive-foreground: 0 0% 100%;
 
-  --border: 240 5% 85%;
-  --input: 240 5% 85%;
+  --border: 220 20% 88%;
+  --input: 220 15% 90%;
   --ring: 263 70% 55%;
 
-  /* Custom neon colors - softer for light mode */
-  --neon-purple: 263 70% 55%;
-  --neon-green: 160 84% 35%;
-  --neon-pink: 330 80% 55%;
-  --neon-amber: 38 92% 45%;
-  --neon-cyan: 190 90% 40%;
-  --neon-gold: 45 93% 50%;
+  /* Custom neon colors - vibrant for light mode glass */
+  --neon-purple: 263 80% 60%;
+  --neon-green: 160 90% 38%;
+  --neon-pink: 330 85% 58%;
+  --neon-amber: 38 95% 50%;
+  --neon-cyan: 190 95% 45%;
+  --neon-gold: 45 95% 52%;
 
-  /* Glassmorphism */
-  --glass-bg: 0 0% 100%;
-  --glass-border: 240 5% 80%;
+  /* Glassmorphism - frosted translucent */
+  --glass-bg: 220 30% 98%;
+  --glass-border: 220 30% 85%;
 
-  /* Grid pattern */
-  --grid-color: 240 5% 90%;
+  /* Grid pattern - subtle */
+  --grid-color: 220 20% 88%;
 }
 
+/* Light mode body background with gradient mesh */
+.light-mode {
+  background: 
+    radial-gradient(ellipse at 20% 20%, hsl(263 70% 95% / 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, hsl(190 90% 95% / 0.5) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, hsl(330 80% 96% / 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, hsl(220 20% 97%) 0%, hsl(220 25% 94%) 100%);
+}
+
+/* Frosted glass cards in light mode */
 .light-mode .glass-card {
-  background: hsl(var(--glass-bg) / 0.7);
-  border: 1px solid hsl(var(--glass-border) / 0.5);
-  box-shadow: 0 8px 32px hsl(0 0% 0% / 0.08);
-}
-
-.light-mode .ghost-window {
-  background: hsl(var(--glass-bg) / 0.85);
-  backdrop-filter: blur(16px);
-  border: 1px solid hsl(var(--neon-purple) / 0.2);
+  background: hsl(0 0% 100% / 0.6);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid hsl(var(--glass-border) / 0.6);
   box-shadow: 
-    0 25px 50px -12px hsl(0 0% 0% / 0.15),
-    0 0 20px hsl(var(--neon-purple) / 0.08);
+    0 8px 32px hsl(220 50% 50% / 0.08),
+    0 2px 8px hsl(220 50% 50% / 0.05),
+    inset 0 1px 0 hsl(0 0% 100% / 0.8);
 }
 
+.light-mode .glass-card-hover:hover {
+  background: hsl(0 0% 100% / 0.75);
+  border-color: hsl(var(--neon-purple) / 0.4);
+  box-shadow: 
+    0 12px 40px hsl(263 70% 50% / 0.12),
+    0 4px 12px hsl(263 70% 50% / 0.08),
+    inset 0 1px 0 hsl(0 0% 100% / 0.9);
+}
+
+/* Frosted ghost window */
+.light-mode .ghost-window {
+  background: hsl(0 0% 100% / 0.7);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border: 1px solid hsl(var(--neon-purple) / 0.25);
+  box-shadow: 
+    0 25px 50px -12px hsl(263 60% 40% / 0.15),
+    0 0 30px hsl(var(--neon-purple) / 0.1),
+    inset 0 1px 0 hsl(0 0% 100% / 0.8);
+}
+
+/* Lighter noise overlay */
 .light-mode .noise-overlay::before {
-  opacity: 0.015;
+  opacity: 0.02;
+}
+
+/* Light mode grid pattern */
+.light-mode .grid-pattern {
+  background-image: 
+    linear-gradient(to right, hsl(var(--grid-color) / 0.4) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--grid-color) / 0.4) 1px, transparent 1px);
+}
+
+/* Light mode neon glows - softer */
+.light-mode .neon-glow-purple {
+  box-shadow: 
+    0 0 25px hsl(var(--neon-purple) / 0.25),
+    0 0 50px hsl(var(--neon-purple) / 0.12);
+}
+
+.light-mode .neon-glow-green {
+  box-shadow: 
+    0 0 25px hsl(var(--neon-green) / 0.25),
+    0 0 50px hsl(var(--neon-green) / 0.12);
+}
+
+/* Light mode buttons */
+.light-mode .btn-cyber-green {
+  box-shadow: 0 4px 20px hsl(var(--neon-green) / 0.25);
+}
+
+.light-mode .btn-cyber-green:hover {
+  box-shadow: 
+    0 8px 30px hsl(var(--neon-green) / 0.35),
+    0 0 50px hsl(var(--neon-green) / 0.2);
+}
+
+/* Light mode scrollbar */
+.light-mode::-webkit-scrollbar-track {
+  background: hsl(220 20% 95%);
+}
+
+.light-mode::-webkit-scrollbar-thumb {
+  background: hsl(220 15% 80%);
+}
+
+.light-mode::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--neon-purple) / 0.5);
 }
 
 @layer base {
