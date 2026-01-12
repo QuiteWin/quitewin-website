@@ -63,51 +63,51 @@ const USPs = () => {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   return (
-    <section className="py-24 md:py-32 relative">
-      <div className="container mx-auto px-6">
+    <section className="py-16 md:py-24 lg:py-32 relative">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Section header */}
         <motion.div
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-xs font-mono text-neon-amber uppercase tracking-widest mb-4 block">
+          <span className="text-xs font-mono text-neon-amber uppercase tracking-widest mb-3 md:mb-4 block">
             Holographic Mastery
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4">
             The{" "}
             <span className="text-gradient-hero">"Big Four"</span>{" "}
             USPs
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base md:text-lg max-w-2xl mx-auto px-2">
             What makes QuiteWin the career-defining advantage
           </p>
         </motion.div>
 
         {/* USP Cards Grid - 3D Tilt Glassmorphism */}
-        <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 lg:gap-8">
           {usps.map((usp, index) => {
             const colors = getColorClasses(usp.color);
             const Icon = usp.icon;
             const isHovered = hoveredCard === index;
             
-            return (
-              <motion.div
-                key={usp.title}
-                className={`glass-card rounded-2xl p-6 lg:p-8 border ${colors.border} hover:shadow-xl ${colors.glow} transition-all duration-500 relative overflow-hidden`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredCard(index)}
-                onMouseLeave={() => setHoveredCard(null)}
-                style={{
-                  transform: isHovered ? "perspective(1000px) rotateX(2deg) rotateY(-2deg)" : "perspective(1000px) rotateX(0) rotateY(0)",
-                  transformStyle: "preserve-3d"
-                }}
-                whileHover={{ y: -8, scale: 1.02 }}
+              return (
+                <motion.div
+                  key={usp.title}
+                  className={`glass-card rounded-xl md:rounded-2xl p-4 md:p-6 lg:p-8 border ${colors.border} hover:shadow-xl ${colors.glow} transition-all duration-500 relative overflow-hidden`}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredCard(index)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                  style={{
+                    transform: isHovered ? "perspective(1000px) rotateX(2deg) rotateY(-2deg)" : "perspective(1000px) rotateX(0) rotateY(0)",
+                    transformStyle: "preserve-3d"
+                  }}
+                  whileHover={{ y: -8, scale: 1.02 }}
               >
                 {/* Holographic gradient overlay */}
                 <motion.div
@@ -119,40 +119,40 @@ const USPs = () => {
                 />
                 
                 {/* Header */}
-                <div className="flex items-start gap-4 mb-4 relative z-10">
+                <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4 relative z-10">
                   <motion.div 
-                    className={`p-3 rounded-xl ${colors.bg} ${colors.border} border`}
+                    className={`p-2 md:p-3 rounded-lg md:rounded-xl ${colors.bg} ${colors.border} border`}
                     animate={{ rotateY: isHovered ? 360 : 0 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <Icon className={`w-6 h-6 ${colors.text}`} />
+                    <Icon className={`w-5 h-5 md:w-6 md:h-6 ${colors.text}`} />
                   </motion.div>
                   <div>
-                    <h3 className="text-xl font-bold mb-1">{usp.title}</h3>
-                    <p className={`text-sm font-mono ${colors.text}`}>{usp.tagline}</p>
+                    <h3 className="text-lg md:text-xl font-bold mb-0.5 md:mb-1">{usp.title}</h3>
+                    <p className={`text-xs md:text-sm font-mono ${colors.text}`}>{usp.tagline}</p>
                   </div>
                 </div>
 
                 {/* Copy */}
-                <p className="text-muted-foreground mb-6 relative z-10">{usp.copy}</p>
+                <p className="text-sm md:text-base text-muted-foreground mb-4 md:mb-6 relative z-10">{usp.copy}</p>
 
                 {/* Points */}
-                <div className="space-y-4 relative z-10">
+                <div className="space-y-3 md:space-y-4 relative z-10">
                   {usp.points.map((point, pIndex) => {
                     const PointIcon = point.icon;
                     return (
                       <motion.div
                         key={point.label}
-                        className="flex items-start gap-3"
+                        className="flex items-start gap-2 md:gap-3"
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 + pIndex * 0.1 }}
                       >
-                        <PointIcon className={`w-4 h-4 ${colors.text} mt-1 flex-shrink-0`} />
+                        <PointIcon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${colors.text} mt-0.5 md:mt-1 flex-shrink-0`} />
                         <div>
-                          <span className="font-semibold text-foreground">{point.label}:</span>{" "}
-                          <span className="text-muted-foreground text-sm">{point.desc}</span>
+                          <span className="font-semibold text-foreground text-sm md:text-base">{point.label}:</span>{" "}
+                          <span className="text-muted-foreground text-xs md:text-sm">{point.desc}</span>
                         </div>
                       </motion.div>
                     );

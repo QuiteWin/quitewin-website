@@ -117,11 +117,11 @@ const Hero = () => {
       </div>
 
       {/* Fixed Logo at Top Left - Outside animated container */}
-      <div className="fixed top-6 left-6 z-50">
+      <div className="fixed top-4 left-4 md:top-6 md:left-6 z-50">
         <div className="relative group cursor-pointer">
-          {/* Revolving brand name */}
+          {/* Revolving brand name - Hidden on mobile */}
           <motion.svg
-            className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)]"
+            className="absolute -inset-4 w-[calc(100%+2rem)] h-[calc(100%+2rem)] hidden md:block"
             viewBox="0 0 100 100"
             animate={{ rotate: 360 }}
             transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
@@ -171,7 +171,7 @@ const Hero = () => {
           {/* Logo container - data attribute for easter egg targeting */}
           <div 
             data-easter-egg="logo"
-            className="relative w-16 h-16 md:w-20 md:h-20 rounded-full overflow-hidden border-2 border-amber-500/40 bg-background/50 backdrop-blur-sm shadow-lg shadow-amber-500/20 cursor-pointer"
+            className="relative w-12 h-12 md:w-16 lg:w-20 md:h-16 lg:h-20 rounded-full overflow-hidden border-2 border-amber-500/40 bg-background/50 backdrop-blur-sm shadow-lg shadow-amber-500/20 cursor-pointer"
           >
             <img 
               src={quitewinLogo} 
@@ -182,8 +182,8 @@ const Hero = () => {
         </div>
       </div>
 
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+      <div className="container mx-auto px-4 md:px-6 relative z-10 pt-16 md:pt-0">
+        <div className="flex flex-col lg:flex-row items-center gap-8 md:gap-12 lg:gap-20">
           {/* Left content */}
           <motion.div
             className="flex-1 text-center lg:text-left"
@@ -192,7 +192,7 @@ const Hero = () => {
             transition={heroAnim.transition}
           >
             {/* Main headline with FallingText - Terminal Glitch Effect */}
-            <div className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+            <div className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight mb-4 md:mb-6">
               <FallingText
                 text="The Invisible Edge."
                 highlightWords={["Invisible"]}
@@ -223,7 +223,7 @@ const Hero = () => {
 
             {/* Subheadline */}
             <motion.p
-              className="text-xl md:text-2xl text-muted-foreground max-w-2xl mb-4"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground max-w-2xl mb-4 px-2 md:px-0"
               initial={subheadAnim.initial}
               animate={subheadAnim.animate}
               transition={subheadAnim.transition}
@@ -238,37 +238,37 @@ const Hero = () => {
 
             {/* CTAs with MagnetButton - Primary Shimmer + Outline */}
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start"
+              className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start px-2 md:px-0"
               initial={ctaAnim.initial}
               animate={ctaAnim.animate}
               transition={ctaAnim.transition}
             >
               <MagnetButton strength={0.2}>
                 <motion.button
-                  className="btn-shimmer flex items-center justify-center gap-3 text-lg"
+                  className="btn-shimmer flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg w-full sm:w-auto"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Download className="w-5 h-5" />
+                  <Download className="w-4 h-4 md:w-5 md:h-5" />
                   Get the Silent Advantage
                 </motion.button>
               </MagnetButton>
               <MagnetButton strength={0.2}>
                 <motion.button
-                  className="px-8 py-4 rounded-xl border-2 border-neon-purple/50 text-foreground hover:border-neon-purple hover:bg-neon-purple/10 transition-all duration-300 flex items-center justify-center gap-3 text-lg font-medium"
+                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl border-2 border-neon-purple/50 text-foreground hover:border-neon-purple hover:bg-neon-purple/10 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-medium w-full sm:w-auto"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Heart className="w-5 h-5" />
+                  <Heart className="w-4 h-4 md:w-5 md:h-5" />
                   Watch Stealth Demo
                 </motion.button>
               </MagnetButton>
             </motion.div>
           </motion.div>
 
-          {/* Right - Live Users Panel with Session above */}
+          {/* Right - Live Users Panel with Session above - Hidden on mobile */}
           <motion.div
-            className="flex-shrink-0 flex flex-col items-end gap-3"
+            className="hidden lg:flex flex-shrink-0 flex-col items-end gap-3"
             initial={rightPanelAnim.initial}
             animate={rightPanelAnim.animate}
             transition={rightPanelAnim.transition}
