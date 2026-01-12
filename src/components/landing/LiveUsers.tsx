@@ -99,7 +99,7 @@ const LiveUsers = () => {
 
   return (
     <motion.div
-      className="glass-card p-8 rounded-2xl min-w-[320px]"
+      className="glass-card p-4 md:p-6 lg:p-8 rounded-2xl min-w-[280px] md:min-w-[320px]"
       initial={{ opacity: 0, x: 50 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ delay: 0.5, duration: 0.8 }}

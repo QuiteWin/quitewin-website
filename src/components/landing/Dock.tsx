@@ -106,13 +106,13 @@ const Dock = () => {
 
   return (
     <motion.div
-      className="w-full flex justify-center py-8 hidden md:flex"
+      className="w-full flex justify-center py-6 md:py-8 hidden md:flex"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3, duration: 0.5, type: "spring" }}
     >
       <motion.div
-        className="flex items-end gap-4 px-4 pb-3 pt-2 rounded-2xl glass-card overflow-visible"
+        className="flex items-end gap-2 md:gap-4 px-3 md:px-4 pb-2 md:pb-3 pt-2 rounded-2xl glass-card overflow-visible"
         onMouseMove={(e) => mouseX.set(e.clientX)}
         onMouseLeave={() => mouseX.set(Infinity)}
         style={{

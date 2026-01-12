@@ -39,15 +39,15 @@ const Footer = () => {
           <h3 className="text-lg font-bold text-center mb-8 text-muted-foreground">
             Technical Specifications
           </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {techSpecs.map((spec) => (
-              <div key={spec.category} className="glass-card p-4 rounded-xl text-center">
-                <h4 className="text-sm font-mono text-neon-purple mb-3">{spec.category}</h4>
-                <div className="flex flex-wrap justify-center gap-2">
+              <div key={spec.category} className="glass-card p-3 md:p-4 rounded-xl text-center">
+                <h4 className="text-xs md:text-sm font-mono text-neon-purple mb-2 md:mb-3">{spec.category}</h4>
+                <div className="flex flex-wrap justify-center gap-1.5 md:gap-2">
                   {spec.items.map((item) => (
                     <span
                       key={item}
-                      className="px-3 py-1 rounded-full text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
+                      className="px-2 md:px-3 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-mono bg-muted/50 text-muted-foreground border border-border/50"
                     >
                       {item}
                     </span>
@@ -126,7 +126,7 @@ const Footer = () => {
 
           {/* Platform Badges */}
           <motion.div
-            className="flex items-center gap-4"
+            className="flex items-center gap-2 md:gap-4 flex-wrap justify-center md:justify-end"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -135,7 +135,7 @@ const Footer = () => {
             {["Windows", "macOS", "Linux"].map((platform) => (
               <div
                 key={platform}
-                className="px-4 py-2 rounded-lg glass-card text-sm font-mono text-muted-foreground"
+                className="px-3 md:px-4 py-1.5 md:py-2 rounded-lg glass-card text-xs md:text-sm font-mono text-muted-foreground"
               >
                 {platform}
               </div>
@@ -153,17 +153,17 @@ const Footer = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
         >
           {/* Trust Signals */}
-          <div className="flex flex-wrap items-center justify-center gap-4 mb-6">
-            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+          <div className="flex flex-wrap items-center justify-center gap-2 md:gap-4 mb-4 md:mb-6">
+            <span className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
               Indie Built
             </span>
-            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+            <span className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
               Privacy First
             </span>
-            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+            <span className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
               No VCs
             </span>
-            <span className="px-4 py-2 rounded-full text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
+            <span className="px-3 md:px-4 py-1.5 md:py-2 rounded-full text-[10px] md:text-xs font-mono bg-muted/30 text-muted-foreground border border-border/30">
               Just Code
             </span>
           </div>

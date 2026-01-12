@@ -6,43 +6,43 @@ const VisibilityDemo = () => {
   const [viewMode, setViewMode] = useState<"my-view" | "screen-share">("my-view");
 
   return (
-    <section id="visibility-demo" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-6">
+    <section id="visibility-demo" className="py-16 md:py-24 relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
         <motion.div
-          className="text-center mb-12"
+          className="text-center mb-8 md:mb-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <span className="text-xs font-mono text-neon-purple uppercase tracking-widest mb-4 block">
+          <span className="text-xs font-mono text-neon-purple uppercase tracking-widest mb-3 md:mb-4 block">
             The Reveal
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4">
             <span className="text-gradient-hero">What You See</span>
             <span className="text-foreground"> vs </span>
             <span className="text-gradient-green">What They See</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-2">
+          <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto mb-2 px-2">
             <span className="text-neon-green font-semibold">OS-Level Invisibility.</span>{" "}
             Engineered to be strictly invisible to Zoom, Teams, and Google Meet.
           </p>
-          <p className="text-sm font-mono text-muted-foreground/60">
+          <p className="text-xs md:text-sm font-mono text-muted-foreground/60">
             If they can't see it, they can't detect it.
           </p>
         </motion.div>
 
         {/* Toggle Switch */}
-        <div className="flex justify-center mb-12">
+        <div className="flex justify-center mb-8 md:mb-12">
           <motion.div
-            className="glass-card p-1.5 rounded-full flex gap-1"
+            className="glass-card p-1 md:p-1.5 rounded-full flex gap-1"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
           >
             <button
               onClick={() => setViewMode("my-view")}
-              className={`relative px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+              className={`relative px-3 py-2 md:px-6 md:py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-1.5 md:gap-2 text-sm md:text-base ${
                 viewMode === "my-view"
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground/80"
@@ -55,12 +55,12 @@ const VisibilityDemo = () => {
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <Eye className="w-4 h-4 relative z-10" />
+              <Eye className="w-3.5 h-3.5 md:w-4 md:h-4 relative z-10" />
               <span className="relative z-10">My View</span>
             </button>
             <button
               onClick={() => setViewMode("screen-share")}
-              className={`relative px-6 py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+              className={`relative px-3 py-2 md:px-6 md:py-3 rounded-full font-medium transition-all duration-300 flex items-center gap-1.5 md:gap-2 text-sm md:text-base ${
                 viewMode === "screen-share"
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground/80"
@@ -73,8 +73,9 @@ const VisibilityDemo = () => {
                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
                 />
               )}
-              <Users className="w-4 h-4 relative z-10" />
-              <span className="relative z-10">Screen Share View</span>
+              <Users className="w-3.5 h-3.5 md:w-4 md:h-4 relative z-10" />
+              <span className="relative z-10 hidden sm:inline">Screen Share View</span>
+              <span className="relative z-10 sm:hidden">Their View</span>
             </button>
           </motion.div>
         </div>
@@ -122,7 +123,7 @@ const VisibilityDemo = () => {
             <AnimatePresence>
               {viewMode === "my-view" && (
                 <motion.div
-                  className="absolute top-8 right-8 w-72"
+                  className="absolute top-4 right-4 md:top-8 md:right-8 w-48 md:w-72"
                   initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
                   animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                   exit={{ 
@@ -135,10 +136,10 @@ const VisibilityDemo = () => {
                 >
                   <div className="ghost-window rounded-2xl overflow-hidden">
                     {/* HUD Header */}
-                    <div className="flex items-center justify-between px-4 py-3 border-b border-neon-purple/20">
-                      <div className="flex items-center gap-2">
-                        <EyeOff className="w-4 h-4 text-neon-purple" />
-                        <span className="font-mono text-sm text-neon-purple font-semibold">
+                    <div className="flex items-center justify-between px-2 py-2 md:px-4 md:py-3 border-b border-neon-purple/20">
+                      <div className="flex items-center gap-1 md:gap-2">
+                        <EyeOff className="w-3 h-3 md:w-4 md:h-4 text-neon-purple" />
+                        <span className="font-mono text-xs md:text-sm text-neon-purple font-semibold">
                           QuiteWin
                         </span>
                       </div>

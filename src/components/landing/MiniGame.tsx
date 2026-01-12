@@ -160,9 +160,9 @@ const MiniGame = () => {
     }, 5000);
     return () => clearInterval(interval);
   }, [gameState, generateSafeZones]);
-  return <section id="mini-game" className="py-24 relative overflow-hidden">
-      <div className="container mx-auto px-6">
-        <motion.div className="text-center mb-12" initial={{
+  return <section id="mini-game" className="py-16 md:py-24 relative overflow-hidden">
+      <div className="container mx-auto px-4 md:px-6">
+        <motion.div className="text-center mb-8 md:mb-12" initial={{
         opacity: 0,
         y: 30
       }} whileInView={{
@@ -171,26 +171,26 @@ const MiniGame = () => {
       }} viewport={{
         once: true
       }}>
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card text-neon-amber font-mono text-sm mb-6">
-            <Gamepad2 className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 px-3 md:px-4 py-1.5 md:py-2 rounded-full glass-card text-neon-amber font-mono text-xs md:text-sm mb-4 md:mb-6">
+            <Gamepad2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
             INTERACT WITH ME   
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 md:mb-4">
             <span className="text-gradient-hero">Stay Invisible</span>
           </h2>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto px-2">
             Drag the HUD into safe zones to avoid the screen share scan. 
             Experience the stealth in action.
           </p>
         </motion.div>
 
         {/* Game Container */}
-        <div className="max-w-lg mx-auto">
-          <motion.div ref={containerRef} className="relative h-72 rounded-2xl glass-card overflow-hidden" style={{
+        <div className="max-w-sm sm:max-w-md md:max-w-lg mx-auto">
+          <motion.div ref={containerRef} className="relative h-56 sm:h-64 md:h-72 rounded-xl md:rounded-2xl glass-card overflow-hidden touch-none" style={{
           boxShadow: gameState === "playing" ? "0 0 40px hsl(330 90% 66% / 0.2)" : "none"
         }}>
             {/* Drag area (excludes the score/time HUD row) */}
-            <div ref={dragAreaRef} className="absolute inset-0 top-14 left-3 right-3 bottom-3" />
+            <div ref={dragAreaRef} className="absolute inset-0 top-12 sm:top-14 left-2 right-2 bottom-2 sm:left-3 sm:right-3 sm:bottom-3" />
             {/* Safe Zones */}
             <AnimatePresence>
               {gameState === "playing" && safeZones.map((zone, index) => <motion.div key={index} className="absolute rounded-lg border-2 border-dashed border-neon-green/40" initial={{
@@ -243,7 +243,7 @@ const MiniGame = () => {
 
             {/* Game States */}
             <AnimatePresence>
-              {gameState === "idle" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/80" initial={{
+              {gameState === "idle" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-3 md:gap-4 bg-background/80" initial={{
               opacity: 0
             }} animate={{
               opacity: 1
@@ -251,38 +251,38 @@ const MiniGame = () => {
               opacity: 0
             }}>
                   <MagnetButton>
-                    <button onClick={startGame} className="px-8 py-4 rounded-xl font-semibold text-lg btn-cyber-green">
+                    <button onClick={startGame} className="px-6 py-3 md:px-8 md:py-4 rounded-xl font-semibold text-base md:text-lg btn-cyber-green">
                       Start Game
                     </button>
                   </MagnetButton>
-                  <p className="text-sm text-muted-foreground">Avoid the scan for 15 seconds</p>
+                  <p className="text-xs md:text-sm text-muted-foreground">Avoid the scan for 15 seconds</p>
                 </motion.div>}
 
-              {gameState === "won" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90 z-20" initial={{
+              {gameState === "won" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-3 md:gap-4 bg-background/90 z-20" initial={{
               opacity: 0,
               scale: 0.9
             }} animate={{
               opacity: 1,
               scale: 1
             }}>
-                  <Trophy className="w-16 h-16 text-neon-green" />
-                  <h3 className="text-2xl font-bold text-neon-green">Still Invisible!</h3>
-                  <p className="text-muted-foreground">Score: {score}</p>
-                  <button onClick={startGame} className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30">
-                    <RefreshCw className="w-4 h-4" />
+                  <Trophy className="w-12 h-12 md:w-16 md:h-16 text-neon-green" />
+                  <h3 className="text-xl md:text-2xl font-bold text-neon-green">Still Invisible!</h3>
+                  <p className="text-sm md:text-base text-muted-foreground">Score: {score}</p>
+                  <button onClick={startGame} className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 rounded-lg glass-card text-sm md:text-base text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30">
+                    <RefreshCw className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     Play Again
                   </button>
                 </motion.div>}
 
-              {gameState === "lost" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-4 bg-background/90 z-20" initial={{
+              {gameState === "lost" && <motion.div className="absolute inset-0 flex flex-col items-center justify-center gap-3 md:gap-4 bg-background/90 z-20" initial={{
               opacity: 0,
               scale: 0.9
             }} animate={{
               opacity: 1,
               scale: 1
             }}>
-                  <X className="w-16 h-16 text-destructive" />
-                  <motion.h3 className="text-2xl font-bold text-destructive" initial={{
+                  <X className="w-12 h-12 md:w-16 md:h-16 text-destructive" />
+                  <motion.h3 className="text-xl md:text-2xl font-bold text-destructive" initial={{
                 opacity: 1
               }} animate={{
                 opacity: [1, 0],
@@ -294,21 +294,21 @@ const MiniGame = () => {
               }}>
                     Caught!
                   </motion.h3>
-                  <p className="text-muted-foreground">Score: {score}</p>
-                  <button onClick={startGame} className="flex items-center gap-2 px-6 py-3 rounded-lg glass-card text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30">
-                    <RefreshCw className="w-4 h-4" />
+                  <p className="text-sm md:text-base text-muted-foreground">Score: {score}</p>
+                  <button onClick={startGame} className="flex items-center gap-2 px-4 py-2 md:px-6 md:py-3 rounded-lg glass-card text-sm md:text-base text-foreground hover:text-neon-purple transition-colors cursor-pointer relative z-30">
+                    <RefreshCw className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     Try Again
                   </button>
                 </motion.div>}
             </AnimatePresence>
 
             {/* HUD - Score & Time */}
-            {gameState === "playing" && <div className="absolute top-3 left-3 right-3 flex justify-between">
-                <div className="px-3 py-1 rounded-lg glass-card text-sm font-mono">
+            {gameState === "playing" && <div className="absolute top-2 left-2 right-2 sm:top-3 sm:left-3 sm:right-3 flex justify-between">
+                <div className="px-2 py-1 md:px-3 rounded-lg glass-card text-xs md:text-sm font-mono">
                   <span className="text-muted-foreground">Score: </span>
                   <span className="text-neon-green">{score}</span>
                 </div>
-                <div className="px-3 py-1 rounded-lg glass-card text-sm font-mono">
+                <div className="px-2 py-1 md:px-3 rounded-lg glass-card text-xs md:text-sm font-mono">
                   <span className="text-muted-foreground">Time: </span>
                   <span className={timeLeft <= 5 ? "text-destructive" : "text-neon-amber"}>
                     {timeLeft}s
@@ -318,7 +318,7 @@ const MiniGame = () => {
           </motion.div>
 
           {/* Instructions */}
-          <motion.div className="mt-6 text-center text-sm text-muted-foreground" initial={{
+          <motion.div className="mt-4 md:mt-6 text-center text-xs md:text-sm text-muted-foreground px-2" initial={{
           opacity: 0
         }} whileInView={{
           opacity: 1
