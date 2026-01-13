@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Youtube, Instagram, Shield } from "lucide-react";
+import { Youtube, Instagram, Shield, Coffee } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
@@ -269,7 +269,38 @@ const Hero = () => {
                   Instagram
                 </motion.a>
               </MagnetButton>
+              <MagnetButton strength={0.2}>
+                <motion.a
+                  href="https://buymeacoffee.com/quitewin"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl border-2 border-neon-amber/50 text-foreground hover:border-neon-amber hover:bg-neon-amber/10 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-medium w-full sm:w-auto"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Coffee className="w-4 h-4 md:w-5 md:h-5" />
+                  Buy
+                </motion.a>
+              </MagnetButton>
             </motion.div>
+            
+            {/* Payment info note */}
+            <motion.p
+              className="text-xs text-muted-foreground/70 mt-3 px-2 md:px-0 text-center lg:text-left"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.3, duration: 0.5 }}
+            >
+              💳 Use link for USD/Card payments • 🇮🇳 For INR, DM on{" "}
+              <a 
+                href="https://www.instagram.com/quitewin_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-neon-pink hover:underline"
+              >
+                Instagram
+              </a>
+            </motion.p>
           </motion.div>
 
           {/* Right - Live Users Panel with Session above - Hidden on mobile */}
