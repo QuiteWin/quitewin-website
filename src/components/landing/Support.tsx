@@ -102,14 +102,17 @@ const Support = () => {
 
               {/* CTA Button */}
               <MagnetButton strength={0.15} className="w-full">
-                <motion.button
+                <motion.a
+                  href="https://buymeacoffee.com/quitewin"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-full btn-cyber-amber flex items-center justify-center gap-3"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <Coffee className="w-5 h-5" />
                   Support Development
-                </motion.button>
+                </motion.a>
               </MagnetButton>
 
               {/* Trust badge */}
