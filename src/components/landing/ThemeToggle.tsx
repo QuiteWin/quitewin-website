@@ -20,7 +20,7 @@ const ThemeToggle = () => {
   return (
     <motion.button
       onClick={() => setIsDark(!isDark)}
-      className="fixed top-6 right-6 z-50 w-12 h-12 rounded-full glass-card flex items-center justify-center overflow-hidden"
+      className="fixed top-4 right-4 md:top-6 md:right-6 z-50 w-10 h-10 md:w-12 md:h-12 rounded-full glass-card flex items-center justify-center overflow-hidden"
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.95 }}
       style={{
