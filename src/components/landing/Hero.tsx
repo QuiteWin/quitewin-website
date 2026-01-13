@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Youtube, Shield } from "lucide-react";
+import { Youtube, Instagram, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
@@ -253,7 +253,20 @@ const Hero = () => {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Youtube className="w-4 h-4 md:w-5 md:h-5" />
-                  Watch on YouTube
+                  YouTube
+                </motion.a>
+              </MagnetButton>
+              <MagnetButton strength={0.2}>
+                <motion.a
+                  href="https://www.instagram.com/quitewin_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl border-2 border-neon-pink/50 text-foreground hover:border-neon-pink hover:bg-neon-pink/10 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-medium w-full sm:w-auto"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Instagram className="w-4 h-4 md:w-5 md:h-5" />
+                  Instagram
                 </motion.a>
               </MagnetButton>
             </motion.div>
