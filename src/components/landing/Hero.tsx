@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Download, Heart, Shield } from "lucide-react";
+import { Download, Youtube, Shield } from "lucide-react";
 import LiveUsers from "./LiveUsers";
 import MagnetButton from "./MagnetButton";
 import FallingText from "./FallingText";
@@ -236,7 +236,7 @@ const Hero = () => {
 
             {/* Taglines - Removed, integrated into subheadline */}
 
-            {/* CTAs with MagnetButton - Primary Shimmer + Outline */}
+            {/* CTA with MagnetButton - YouTube Channel */}
             <motion.div
               className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start px-2 md:px-0"
               initial={ctaAnim.initial}
@@ -244,24 +244,17 @@ const Hero = () => {
               transition={ctaAnim.transition}
             >
               <MagnetButton strength={0.2}>
-                <motion.button
+                <motion.a
+                  href="https://youtube.com/@quitewin?si=cn9FwkE2BcVslxZx"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-shimmer flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg w-full sm:w-auto"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <Download className="w-4 h-4 md:w-5 md:h-5" />
-                  Get the Silent Advantage
-                </motion.button>
-              </MagnetButton>
-              <MagnetButton strength={0.2}>
-                <motion.button
-                  className="px-6 py-3 md:px-8 md:py-4 rounded-xl border-2 border-neon-purple/50 text-foreground hover:border-neon-purple hover:bg-neon-purple/10 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-medium w-full sm:w-auto"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Heart className="w-4 h-4 md:w-5 md:h-5" />
-                  Watch Stealth Demo
-                </motion.button>
+                  <Youtube className="w-4 h-4 md:w-5 md:h-5" />
+                  Watch on YouTube
+                </motion.a>
               </MagnetButton>
             </motion.div>
           </motion.div>
