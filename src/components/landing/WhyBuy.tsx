@@ -122,19 +122,6 @@ const WhyBuy = () => {
               QuiteWin isn't about taking shortcuts—it's about removing the barriers between you and your best professional self. It handles the manual, the stressful, and the organizational, so you can focus on what matters: <span className="text-foreground font-medium">the conversation</span>.
             </p>
 
-            {/* CTA */}
-            <div className="flex justify-center">
-              <MagnetButton strength={0.2}>
-                <motion.button
-                  className="btn-shimmer flex items-center justify-center gap-3 text-lg"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Download className="w-5 h-5" />
-                  Unlock Beta Access Now
-                </motion.button>
-              </MagnetButton>
-            </div>
           </motion.div>
         </motion.div>
       </div>
