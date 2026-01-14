@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Youtube, Instagram, Shield, Coffee } from "lucide-react";
 import LiveUsers from "./LiveUsers";
@@ -8,6 +9,15 @@ import { useSilenceMode } from "./SilenceMode";
 import { useSessionCodename } from "@/hooks/useSessionCodename";
 import { useRandomAnimation } from "@/hooks/useRandomAnimation";
 import quitewinLogo from "@/assets/quitewin-logo.png";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
 // Session Codename component inline
 const SessionCodename = () => {
@@ -58,12 +68,23 @@ const SilenceMessage = () => {
 };
 
 const Hero = () => {
+  const [showBuyDialog, setShowBuyDialog] = useState(false);
   const heroAnim = useRandomAnimation();
   const badgeAnim = useRandomAnimation(0.2);
   const subheadAnim = useRandomAnimation(0.8);
   const taglineAnim = useRandomAnimation(0.9);
   const ctaAnim = useRandomAnimation(1.1);
   const rightPanelAnim = useRandomAnimation(0.5);
+
+  const handleBuyClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowBuyDialog(true);
+  };
+
+  const proceedToBuy = () => {
+    setShowBuyDialog(false);
+    window.open("https://buymeacoffee.com/quitewin", "_blank");
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -270,17 +291,15 @@ const Hero = () => {
                 </motion.a>
               </MagnetButton>
               <MagnetButton strength={0.2}>
-                <motion.a
-                  href="https://buymeacoffee.com/quitewin"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <motion.button
+                  onClick={handleBuyClick}
                   className="px-6 py-3 md:px-8 md:py-4 rounded-xl border-2 border-neon-amber/50 text-foreground hover:border-neon-amber hover:bg-neon-amber/10 transition-all duration-300 flex items-center justify-center gap-2 md:gap-3 text-sm md:text-lg font-medium w-full sm:w-auto"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <Coffee className="w-4 h-4 md:w-5 md:h-5" />
                   Buy
-                </motion.a>
+                </motion.button>
               </MagnetButton>
             </motion.div>
             
@@ -331,6 +350,49 @@ const Hero = () => {
           </motion.div>
         </div>
       </div>
+
+      {/* Buy Confirmation Dialog */}
+      <Dialog open={showBuyDialog} onOpenChange={setShowBuyDialog}>
+        <DialogContent className="glass-card border-neon-amber/30">
+          <DialogHeader>
+            <DialogTitle className="text-xl font-bold flex items-center gap-2">
+              <Coffee className="w-5 h-5 text-neon-amber" />
+              Payment Information
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground pt-2">
+              <span className="block mb-3">
+                💳 <span className="text-foreground font-medium">Only proceed</span> if you are paying using <span className="text-neon-green font-semibold">Credit Card</span> or in <span className="text-neon-green font-semibold">USD</span>.
+              </span>
+              <span className="block">
+                🇮🇳 For <span className="text-neon-pink font-semibold">INR payments</span>, please DM us on{" "}
+                <a 
+                  href="https://www.instagram.com/quitewin_?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-neon-pink hover:underline font-semibold"
+                >
+                  Instagram
+                </a>
+              </span>
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row gap-2 mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setShowBuyDialog(false)}
+              className="border-muted-foreground/30"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={proceedToBuy}
+              className="bg-neon-amber hover:bg-neon-amber/80 text-background font-semibold"
+            >
+              Proceed with USD/Card
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
