@@ -288,12 +288,14 @@ export const BabyGhost = memo(({ onStateChange }: BabyGhostProps) => {
       if (!button) return;
       
       const buttonText = button.textContent?.toLowerCase() || '';
+      const isBuyButton = buttonText.includes('buy');
       const isCelebrationButton = 
         buttonText.includes('download') ||
         buttonText.includes('fuel') ||
         buttonText.includes('support') ||
         buttonText.includes('donate') ||
-        buttonText.includes('beta');
+        buttonText.includes('beta') ||
+        isBuyButton;
       
       if (isCelebrationButton) {
         // Clear any existing timers
@@ -314,6 +316,11 @@ export const BabyGhost = memo(({ onStateChange }: BabyGhostProps) => {
         setMood('celebrating');
         setIsCelebrating(true);
         
+        // Emit custom event for buy button click
+        if (isBuyButton) {
+          window.dispatchEvent(new CustomEvent('ghostBuyClick'));
+        }
+        
         celebrateTimerRef.current = window.setTimeout(() => {
           setIsCelebrating(false);
           setGhostState('roaming');
@@ -325,6 +332,44 @@ export const BabyGhost = memo(({ onStateChange }: BabyGhostProps) => {
     window.addEventListener('click', handleSpecialClick);
     return () => window.removeEventListener('click', handleSpecialClick);
   }, [x, y]);
+
+  // React when hovering near buy button
+  useEffect(() => {
+    const checkBuyButtonProximity = () => {
+      const buyButtons = document.querySelectorAll('button');
+      buyButtons.forEach(button => {
+        const buttonText = button.textContent?.toLowerCase() || '';
+        if (buttonText.includes('buy')) {
+          const rect = button.getBoundingClientRect();
+          const buttonCenterX = rect.left + rect.width / 2;
+          const buttonCenterY = rect.top + rect.height / 2;
+          const dx = mouseX - buttonCenterX;
+          const dy = mouseY - buttonCenterY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 150 && ghostState === 'roaming') {
+            // Move near the buy button
+            if (stateTimerRef.current) clearTimeout(stateTimerRef.current);
+            
+            const nearPos = {
+              x: rect.left + rect.width / 2 - 20,
+              y: rect.top - 50,
+            };
+            setPosition(nearPos);
+            x.set(nearPos.x);
+            y.set(nearPos.y);
+            setMood('excited');
+            
+            // Emit event for robot
+            window.dispatchEvent(new CustomEvent('ghostNearBuy'));
+          }
+        }
+      });
+    };
+
+    const interval = setInterval(checkBuyButtonProximity, 500);
+    return () => clearInterval(interval);
+  }, [mouseX, mouseY, ghostState, x, y]);
   
   // Notify parent of state changes
   useEffect(() => {
