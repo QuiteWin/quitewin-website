@@ -3,13 +3,14 @@ import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    const stored = localStorage.getItem("quitewin-theme");
+    return stored ? stored === "dark" : true; // Default to dark
+  });
 
   useEffect(() => {
-    const stored = localStorage.getItem("quitewin-theme");
-    if (stored) {
-      setIsDark(stored === "dark");
-    }
+    // Ensure dark mode is applied on initial load
+    document.documentElement.classList.toggle("light-mode", !isDark);
   }, []);
 
   useEffect(() => {
