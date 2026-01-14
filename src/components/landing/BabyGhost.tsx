@@ -389,7 +389,7 @@ export const BabyGhost = memo(({ onStateChange }: BabyGhostProps) => {
     <AnimatePresence>
       {!isHidden && (
         <motion.div
-          className="fixed pointer-events-none z-[60]"
+          className="fixed pointer-events-none z-[100]"
           style={{ x, y }}
           initial={{ opacity: 0, scale: 0 }}
           animate={{ 
