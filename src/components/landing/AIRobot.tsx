@@ -26,6 +26,8 @@ const CHAT_BUBBLES = {
   celebrate: ['🎉 QuietWin!', 'Stealth mode!', 'Privacy FTW!', 'You got this!'],
   scan: ['Scanning...', 'All clear!', '🔍 Checking', 'Safe zone!'],
   product: ['Buy now!', '50% off!', 'Try beta!', 'Join us!', 'Game time!'],
+  buyHover: ['Buy! 💰', '🛒 Buy!', 'Get it!', 'Buy now!'],
+  thankYou: ['Thank you! 🙏', '💖 Thanks!', 'You rock!', 'Amazing! 🎉', 'Woohoo! 🎊'],
 };
 
 export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotProps) => {
@@ -94,6 +96,38 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
       showChat('play');
     }
   }, [ghostState, ghostMood, isVisible]);
+
+  // React to buy button events
+  useEffect(() => {
+    if (!isVisible) return;
+
+    const handleBuyClick = () => {
+      setRobotState('dancing');
+      setMood('excited');
+      showChat('thankYou');
+      
+      // Return to normal after dancing
+      setTimeout(() => {
+        setRobotState('celebrating');
+        setMood('happy');
+      }, 3000);
+    };
+
+    const handleNearBuy = () => {
+      if (robotState !== 'dancing' && robotState !== 'celebrating') {
+        showChat('buyHover');
+        setMood('excited');
+      }
+    };
+
+    window.addEventListener('ghostBuyClick', handleBuyClick);
+    window.addEventListener('ghostNearBuy', handleNearBuy);
+    
+    return () => {
+      window.removeEventListener('ghostBuyClick', handleBuyClick);
+      window.removeEventListener('ghostNearBuy', handleNearBuy);
+    };
+  }, [isVisible, robotState]);
 
   // State machine for robot behaviors
   useEffect(() => {
