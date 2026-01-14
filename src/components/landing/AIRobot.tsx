@@ -270,7 +270,7 @@ export const AIRobot = memo(({ ghostPosition, ghostState, ghostMood }: AIRobotPr
 
   return (
     <motion.div
-      className="fixed pointer-events-none z-40"
+      className="fixed pointer-events-none z-[100]"
       initial={{ opacity: 0, scale: 0 }}
       animate={{ 
         opacity: robotState === 'stealth' ? 0.5 : 1, 
