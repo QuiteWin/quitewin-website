@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { Github, MessageCircle } from "lucide-react";
 import { useMemo } from "react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
 
@@ -99,29 +98,6 @@ const Footer = () => {
               <span className="font-bold text-xl"><span className={colors.accent}>Q</span><span className={colors.base}>uite</span><span className={colors.accent}>W</span><span className={colors.base}>in</span></span>
             </div>
 
-            {/* Social links */}
-            <div className="flex items-center gap-4">
-              <motion.a
-                href="https://github.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg glass-card flex items-center justify-center hover:neon-glow-purple transition-all"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Github className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
-              </motion.a>
-              <motion.a
-                href="https://discord.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-10 h-10 rounded-lg glass-card flex items-center justify-center hover:neon-glow-purple transition-all"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <MessageCircle className="w-5 h-5 text-muted-foreground hover:text-foreground transition-colors" />
-              </motion.a>
-            </div>
           </motion.div>
 
           {/* Platform Badges */}
