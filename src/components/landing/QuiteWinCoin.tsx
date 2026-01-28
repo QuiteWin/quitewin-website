@@ -126,34 +126,7 @@ const QuiteWinCoin = () => {
     return () => document.removeEventListener("click", handleGlobalClick);
   }, []);
 
-  // Random loss events (after loss threshold)
-  useEffect(() => {
-    if (totalClicks < LOSS_START_CLICKS || coins < 100) return;
-
-    // 5% chance per click after threshold to trigger a loss event
-    const lossChance = Math.random();
-    if (lossChance > 0.05) return;
-
-    const roll = Math.random() * 100;
-    let lossType: LossType = "none";
-
-    if (roll < LOSS_CONFIG.all.chance) {
-      lossType = "all";
-    } else if (roll < LOSS_CONFIG.all.chance + LOSS_CONFIG.half.chance) {
-      lossType = "half";
-    } else if (roll < LOSS_CONFIG.all.chance + LOSS_CONFIG.half.chance + LOSS_CONFIG.quarter.chance) {
-      lossType = "quarter";
-    }
-
-    if (lossType !== "none") {
-      const lossAmount = Math.floor(coins * LOSS_CONFIG[lossType].percent);
-      const message = LOSS_MESSAGES[Math.floor(Math.random() * LOSS_MESSAGES.length)];
-      setLossEvent({ type: lossType, amount: lossAmount, message });
-      setCoins((prev) => Math.max(0, prev - lossAmount));
-
-      setTimeout(() => setLossEvent(null), 4000);
-    }
-  }, [totalClicks, coins]);
+  // REMOVED: Random loss events on clicks - losses now ONLY happen during spins
 
   // Passive income
   useEffect(() => {
