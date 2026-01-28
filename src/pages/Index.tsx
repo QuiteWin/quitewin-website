@@ -45,6 +45,7 @@ const TrustProof = lazy(() => import("@/components/landing/TrustProof"));
 const PhilosophicalClose = lazy(() => import("@/components/landing/PhilosophicalClose"));
 const MiniGame = lazy(() => import("@/components/landing/MiniGame"));
 const SecurityLayers = lazy(() => import("@/components/landing/SecurityLayers"));
+const QuiteWinCoin = lazy(() => import("@/components/landing/QuiteWinCoin"));
 
 // Heavy optional elements - load last
 const GhostRobotDuo = lazy(() => import("@/components/landing/GhostRobotDuo"));
@@ -233,6 +234,7 @@ const Index = () => {
                       <MiniGame />
                       <UseCases />
                       <TrustProof />
+                      <QuiteWinCoin />
                     </Suspense>
                     
                     {/* 9. Footer */}
