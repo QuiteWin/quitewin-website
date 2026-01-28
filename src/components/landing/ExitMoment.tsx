@@ -8,6 +8,9 @@ const ExitMoment = () => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
         setIsExiting(true);
+      } else if (document.visibilityState === "visible") {
+        // Immediately reset when returning to the page
+        setIsExiting(false);
       }
     };
 
@@ -23,14 +26,6 @@ const ExitMoment = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
-
-  // Reset when returning to the page
-  useEffect(() => {
-    if (isExiting && document.visibilityState === "visible") {
-      const timer = setTimeout(() => setIsExiting(false), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [isExiting]);
 
   return (
     <AnimatePresence>
