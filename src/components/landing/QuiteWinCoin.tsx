@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Timer, Skull, TrendingDown } from "lucide-react";
+import { Sparkles, Timer, TrendingDown } from "lucide-react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
 
 type CritType = "normal" | "sr" | "ssr" | "ur";
@@ -21,29 +21,47 @@ interface GlobalFloatingCoin {
   y: number;
 }
 
-// Beginner's luck: first 20 clicks have boosted rates
+// Beginner's luck: first 20 clicks have MASSIVELY boosted rates
 const BEGINNER_CRIT_CONFIG = {
-  normal: { multiplier: 1, chance: 40, color: "text-muted-foreground", label: "" },
-  sr: { multiplier: 5, chance: 35, color: "text-neon-cyan", label: "SR CRIT!" },
-  ssr: { multiplier: 100, chance: 20, color: "text-neon-pink", label: "SSR CRIT!" },
-  ur: { multiplier: 1000, chance: 5, color: "text-neon-amber", label: "UR CRIT!" },
+  normal: { multiplier: 1, chance: 15, color: "text-muted-foreground", label: "" },
+  sr: { multiplier: 5, chance: 30, color: "text-neon-cyan", label: "5x CRIT!" },
+  ssr: { multiplier: 100, chance: 35, color: "text-neon-pink", label: "100x MEGA!" },
+  ur: { multiplier: 1000, chance: 20, color: "text-neon-amber", label: "1000x JACKPOT!" },
+};
+
+// Beginner SPIN rates - even more generous!
+const BEGINNER_SPIN_CONFIG = {
+  normal: { multiplier: 10, chance: 10, color: "text-muted-foreground", label: "10x" },
+  sr: { multiplier: 50, chance: 35, color: "text-neon-cyan", label: "50x NICE!" },
+  ssr: { multiplier: 500, chance: 35, color: "text-neon-pink", label: "500x AMAZING!" },
+  ur: { multiplier: 5000, chance: 20, color: "text-neon-amber", label: "5000x LEGENDARY!" },
 };
 
 // Normal rates after beginner phase
 const NORMAL_CRIT_CONFIG = {
   normal: { multiplier: 1, chance: 70, color: "text-muted-foreground", label: "" },
-  sr: { multiplier: 5, chance: 20, color: "text-neon-cyan", label: "SR CRIT!" },
-  ssr: { multiplier: 100, chance: 8, color: "text-neon-pink", label: "SSR CRIT!" },
-  ur: { multiplier: 1000, chance: 2, color: "text-neon-amber", label: "UR CRIT!" },
+  sr: { multiplier: 5, chance: 20, color: "text-neon-cyan", label: "5x CRIT!" },
+  ssr: { multiplier: 100, chance: 8, color: "text-neon-pink", label: "100x MEGA!" },
+  ur: { multiplier: 1000, chance: 2, color: "text-neon-amber", label: "1000x JACKPOT!" },
 };
 
-// Loss chances (starts after 30 clicks)
+// Loss chances (starts after 30 clicks) - More dramatic!
 const LOSS_CONFIG = {
-  none: { chance: 75, percent: 0, label: "" },
-  quarter: { chance: 15, percent: 0.25, label: "TAX! -25%" },
-  half: { chance: 8, percent: 0.5, label: "CRASH! -50%" },
-  all: { chance: 2, percent: 1, label: "WIPEOUT! -100%" },
+  none: { chance: 60, percent: 0, label: "", emoji: "" },
+  quarter: { chance: 20, percent: 0.25, label: "TAX AUDIT!", emoji: "💸" },
+  half: { chance: 12, percent: 0.5, label: "MARKET CRASH!", emoji: "📉" },
+  all: { chance: 8, percent: 1, label: "WIPEOUT!", emoji: "💀" },
 };
+
+// Loss messages for drama
+const LOSS_MESSAGES = [
+  "The crypto gods are angry!",
+  "Your wallet was hacked!",
+  "Rug pull detected!",
+  "The IRS has entered the chat...",
+  "Diamond hands? More like paper hands!",
+  "Should've HODLed differently...",
+];
 
 const SPIN_COST = 500;
 const BEGINNER_CLICKS = 20;
@@ -67,7 +85,7 @@ const QuiteWinCoin = () => {
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinResult, setSpinResult] = useState<CritType | null>(null);
   const [lastSpinAmount, setLastSpinAmount] = useState(0);
-  const [lossEvent, setLossEvent] = useState<{ type: LossType; amount: number } | null>(null);
+  const [lossEvent, setLossEvent] = useState<{ type: LossType; amount: number; message: string } | null>(null);
   const [isBeginnerPhase, setIsBeginnerPhase] = useState(true);
 
   // Save to localStorage
@@ -129,10 +147,11 @@ const QuiteWinCoin = () => {
 
     if (lossType !== "none") {
       const lossAmount = Math.floor(coins * LOSS_CONFIG[lossType].percent);
-      setLossEvent({ type: lossType, amount: lossAmount });
+      const message = LOSS_MESSAGES[Math.floor(Math.random() * LOSS_MESSAGES.length)];
+      setLossEvent({ type: lossType, amount: lossAmount, message });
       setCoins((prev) => Math.max(0, prev - lossAmount));
 
-      setTimeout(() => setLossEvent(null), 3000);
+      setTimeout(() => setLossEvent(null), 4000);
     }
   }, [totalClicks, coins]);
 
@@ -189,24 +208,26 @@ const QuiteWinCoin = () => {
 
     // Simulate spinning - can also lose on spin!
     setTimeout(() => {
-      // 20% chance to lose on spin after beginner phase
-      const shouldLose = !isBeginnerPhase && Math.random() < 0.2;
+      // 30% chance to lose on spin after beginner phase (more dramatic!)
+      const shouldLose = !isBeginnerPhase && Math.random() < 0.3;
       
       if (shouldLose) {
         const lossRoll = Math.random();
         let lossType: LossType = "quarter";
-        if (lossRoll < 0.1) lossType = "all";
-        else if (lossRoll < 0.3) lossType = "half";
+        if (lossRoll < 0.15) lossType = "all";
+        else if (lossRoll < 0.4) lossType = "half";
         
         const lossAmount = Math.floor(coins * LOSS_CONFIG[lossType].percent);
-        setLossEvent({ type: lossType, amount: lossAmount });
+        const message = LOSS_MESSAGES[Math.floor(Math.random() * LOSS_MESSAGES.length)];
+        setLossEvent({ type: lossType, amount: lossAmount, message });
         setCoins((prev) => Math.max(0, prev - lossAmount));
         setLastSpinAmount(-lossAmount);
         setSpinResult("normal");
       } else {
         const result = getCritType();
-        const config = isBeginnerPhase ? BEGINNER_CRIT_CONFIG : NORMAL_CRIT_CONFIG;
-        const earned = config[result].multiplier * 10;
+        // Use special spin config for beginners!
+        const config = isBeginnerPhase ? BEGINNER_SPIN_CONFIG : NORMAL_CRIT_CONFIG;
+        const earned = isBeginnerPhase ? config[result].multiplier : config[result].multiplier * 10;
         setSpinResult(result);
         setLastSpinAmount(earned);
         setCoins((prev) => prev + earned);
@@ -246,24 +267,59 @@ const QuiteWinCoin = () => {
       <section className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto">
-          {/* Loss Event Overlay */}
+          {/* Loss Event Overlay - More Dramatic! */}
           <AnimatePresence>
             {lossEvent && (
               <motion.div
-                className="fixed inset-0 z-50 flex items-center justify-center pointer-events-none"
+                className="fixed inset-0 z-[150] flex items-center justify-center pointer-events-none"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
               >
+                {/* Screen shake effect */}
                 <motion.div
-                  className="bg-red-500/20 backdrop-blur-sm rounded-2xl p-8 border border-red-500/50 text-center"
-                  initial={{ scale: 0.5, rotate: -10 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  exit={{ scale: 0.5, opacity: 0 }}
+                  className="absolute inset-0 bg-destructive/10"
+                  animate={{ 
+                    x: [0, -10, 10, -10, 10, 0],
+                    opacity: [0.3, 0.5, 0.3]
+                  }}
+                  transition={{ duration: 0.5 }}
+                />
+                <motion.div
+                  className="bg-destructive/30 backdrop-blur-md rounded-2xl p-8 border-2 border-destructive/70 text-center shadow-2xl shadow-destructive/30"
+                  initial={{ scale: 0.3, rotate: -20, y: 100 }}
+                  animate={{ 
+                    scale: [0.3, 1.2, 1], 
+                    rotate: [-20, 10, 0],
+                    y: [100, -20, 0]
+                  }}
+                  exit={{ scale: 0, rotate: 20, opacity: 0 }}
+                  transition={{ duration: 0.5, type: "spring" }}
                 >
-                  <Skull className="w-16 h-16 text-red-500 mx-auto mb-4" />
-                  <p className="text-3xl font-bold text-red-500">{LOSS_CONFIG[lossEvent.type].label}</p>
-                  <p className="text-2xl font-mono text-red-400 mt-2">-{lossEvent.amount.toLocaleString()}</p>
+                  <motion.div
+                    animate={{ rotate: [0, -10, 10, -10, 0] }}
+                    transition={{ duration: 0.3, repeat: 2 }}
+                  >
+                    <span className="text-6xl">{LOSS_CONFIG[lossEvent.type].emoji}</span>
+                  </motion.div>
+                  <motion.p 
+                    className="text-4xl font-bold text-destructive mt-4"
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 0.5, repeat: Infinity }}
+                  >
+                    {LOSS_CONFIG[lossEvent.type].label}
+                  </motion.p>
+                  <p className="text-lg text-muted-foreground mt-2 italic">
+                    {lossEvent.message}
+                  </p>
+                  <motion.p 
+                    className="text-3xl font-mono text-destructive mt-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    -{lossEvent.amount.toLocaleString()} 💸
+                  </motion.p>
                 </motion.div>
               </motion.div>
             )}
