@@ -12,6 +12,7 @@ import ModeBar from "@/components/landing/ModeBar";
 import LoadingScreen from "@/components/landing/LoadingScreen";
 import SectionLoader from "@/components/landing/SectionLoader";
 import useRandomTheme from "@/hooks/useRandomTheme";
+import GlobalCoinClicker from "@/components/landing/GlobalCoinClicker";
 
 // Premium interaction components
 import { CursorGlow } from "@/components/landing/CursorAwareness";
@@ -116,9 +117,10 @@ const Index = () => {
                 </AnimatePresence>
 
                 <main className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
+                  {/* Global coin clicker - always mounted for +1 animation on every click */}
+                  <GlobalCoinClicker />
+                  
                   {/* Signature page breath effect */}
-                  <PageBreath />
-                  <SectionPulse />
                   
                   {/* Cursor awareness glow */}
                   <CursorGlow />
