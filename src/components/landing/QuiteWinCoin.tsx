@@ -15,6 +15,12 @@ interface FloatingNumber {
   isLoss?: boolean;
 }
 
+interface GlobalFloatingCoin {
+  id: number;
+  x: number;
+  y: number;
+}
+
 // Beginner's luck: first 20 clicks have boosted rates
 const BEGINNER_CRIT_CONFIG = {
   normal: { multiplier: 1, chance: 40, color: "text-muted-foreground", label: "" },
@@ -57,6 +63,7 @@ const QuiteWinCoin = () => {
     return saved ? parseInt(saved, 10) : 0;
   });
   const [floatingNumbers, setFloatingNumbers] = useState<FloatingNumber[]>([]);
+  const [globalFloatingCoins, setGlobalFloatingCoins] = useState<GlobalFloatingCoin[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinResult, setSpinResult] = useState<CritType | null>(null);
   const [lastSpinAmount, setLastSpinAmount] = useState(0);
@@ -77,11 +84,24 @@ const QuiteWinCoin = () => {
     setIsBeginnerPhase(totalClicks < BEGINNER_CLICKS);
   }, [totalClicks]);
 
-  // Global click listener - every click on page adds 1 coin
+  // Global click listener - every click on page adds 1 coin with animation
   useEffect(() => {
-    const handleGlobalClick = () => {
+    const handleGlobalClick = (e: MouseEvent) => {
       setCoins((prev) => prev + 1);
       setTotalClicks((prev) => prev + 1);
+      
+      // Create floating +1 at click position
+      const newFloating: GlobalFloatingCoin = {
+        id: Date.now() + Math.random(),
+        x: e.clientX,
+        y: e.clientY,
+      };
+      
+      setGlobalFloatingCoins((prev) => [...prev, newFloating]);
+      
+      setTimeout(() => {
+        setGlobalFloatingCoins((prev) => prev.filter((n) => n.id !== newFloating.id));
+      }, 1000);
     };
 
     document.addEventListener("click", handleGlobalClick);
@@ -205,7 +225,25 @@ const QuiteWinCoin = () => {
   const currentConfig = isBeginnerPhase ? BEGINNER_CRIT_CONFIG : NORMAL_CRIT_CONFIG;
 
   return (
-    <section className="py-20 relative overflow-hidden">
+    <>
+      {/* Global Floating +1 Coins */}
+      <AnimatePresence>
+        {globalFloatingCoins.map((coin) => (
+          <motion.div
+            key={coin.id}
+            className="fixed pointer-events-none z-[200] font-bold text-lg text-neon-amber drop-shadow-[0_0_8px_hsl(var(--neon-amber))]"
+            style={{ left: coin.x, top: coin.y }}
+            initial={{ opacity: 1, y: 0, scale: 1, x: -10 }}
+            animate={{ opacity: 0, y: -60, scale: 1.2 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            +1 🪙
+          </motion.div>
+        ))}
+      </AnimatePresence>
+      
+      <section className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto">
           {/* Loss Event Overlay */}
@@ -478,6 +516,7 @@ const QuiteWinCoin = () => {
         </div>
       </div>
     </section>
+    </>
   );
 };
 
