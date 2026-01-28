@@ -141,11 +141,11 @@ export const useAmbientProvider = () => {
       idleTimerRef.current = window.setTimeout(() => {
         idleStartRef.current = Date.now();
         setState(prev => ({ ...prev, isIdle: true }));
-      }, 5000);
+      }, 60000); // 60 seconds idle timeout
       
       focusTimerRef.current = window.setTimeout(() => {
         setState(prev => ({ ...prev, isFocusMode: true }));
-      }, 7000);
+      }, 90000); // 90 seconds focus mode timeout
     }, 60); // Throttle to ~16fps
 
     window.addEventListener('mousemove', handleMouseMove, { passive: true });
@@ -188,9 +188,9 @@ export const useAmbientProvider = () => {
         if (scrollDepth > 0.3) {
           focusTimerRef.current = window.setTimeout(() => {
             setState(prev => ({ ...prev, isFocusMode: true }));
-          }, 2000);
+          }, 30000); // 30 seconds after deep scroll
         }
-      }, 5000);
+      }, 60000); // 60 seconds idle timeout
     }, 100); // Throttle to ~10fps
 
     window.addEventListener('scroll', handleScroll, { passive: true });
