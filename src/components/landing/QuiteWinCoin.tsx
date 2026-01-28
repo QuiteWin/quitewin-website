@@ -103,8 +103,13 @@ const QuiteWinCoin = () => {
   }, [totalClicks]);
 
   // Global click listener - every click on page adds 1 coin with animation
+  // Using CAPTURE phase to ensure we catch ALL clicks before any element can stop propagation
   useEffect(() => {
     const handleGlobalClick = (e: MouseEvent) => {
+      // Ignore clicks on interactive elements that shouldn't trigger coins
+      const target = e.target as HTMLElement;
+      if (target.closest('[data-no-coin]')) return;
+      
       setCoins((prev) => prev + 1);
       setTotalClicks((prev) => prev + 1);
       
@@ -122,8 +127,9 @@ const QuiteWinCoin = () => {
       }, 1000);
     };
 
-    document.addEventListener("click", handleGlobalClick);
-    return () => document.removeEventListener("click", handleGlobalClick);
+    // Use CAPTURE phase to catch clicks before any stopPropagation
+    document.addEventListener("click", handleGlobalClick, true);
+    return () => document.removeEventListener("click", handleGlobalClick, true);
   }, []);
 
   // REMOVED: Random loss events on clicks - losses now ONLY happen during spins
