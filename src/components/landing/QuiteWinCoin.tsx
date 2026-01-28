@@ -14,10 +14,10 @@ interface FloatingNumber {
 }
 
 const CRIT_CONFIG = {
-  normal: { multiplier: 1, chance: 87.5, color: "text-muted-foreground", label: "" },
-  sr: { multiplier: 5, chance: 10, color: "text-neon-cyan", label: "SR CRIT!" },
-  ssr: { multiplier: 100, chance: 2, color: "text-neon-pink", label: "SSR CRIT!" },
-  ur: { multiplier: 1000, chance: 0.5, color: "text-neon-amber", label: "UR CRIT!" },
+  normal: { multiplier: 1, chance: 70, color: "text-muted-foreground", label: "" },
+  sr: { multiplier: 5, chance: 20, color: "text-neon-cyan", label: "SR CRIT!" },
+  ssr: { multiplier: 100, chance: 8, color: "text-neon-pink", label: "SSR CRIT!" },
+  ur: { multiplier: 1000, chance: 2, color: "text-neon-amber", label: "UR CRIT!" },
 };
 
 const SPIN_COST = 500;
@@ -44,6 +44,16 @@ const QuiteWinCoin = () => {
   useEffect(() => {
     localStorage.setItem("quitewin-pulls", totalPulls.toString());
   }, [totalPulls]);
+
+  // Global click listener - every click on page adds 1 coin
+  useEffect(() => {
+    const handleGlobalClick = () => {
+      setCoins((prev) => prev + 1);
+    };
+
+    document.addEventListener("click", handleGlobalClick);
+    return () => document.removeEventListener("click", handleGlobalClick);
+  }, []);
 
   // Passive income
   useEffect(() => {
@@ -195,25 +205,25 @@ const QuiteWinCoin = () => {
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-muted-foreground/50" />
                 <span>
-                  <strong>Base Click:</strong> +1 Coin for every click, but some yield more.
+                  <strong>Every Click:</strong> +1 Coin for any interaction on the page!
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-neon-cyan" />
                 <span>
-                  <strong className="text-neon-cyan">SR Crit (10%):</strong> 5x Multiplier
+                  <strong className="text-neon-cyan">SR Crit (20%):</strong> 5x Multiplier
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-neon-pink" />
                 <span>
-                  <strong className="text-neon-pink">SSR Crit (2%):</strong> 100x Multiplier
+                  <strong className="text-neon-pink">SSR Crit (8%):</strong> 100x Multiplier
                 </span>
               </div>
               <div className="flex items-center gap-3">
                 <div className="w-3 h-3 rounded-full bg-neon-amber" />
                 <span>
-                  <strong className="text-neon-amber">UR Crit (0.5%):</strong> 1000x Multiplier
+                  <strong className="text-neon-amber">UR Crit (2%):</strong> 1000x Multiplier
                 </span>
               </div>
               <div className="flex items-center gap-3">
