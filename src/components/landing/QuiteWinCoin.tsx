@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Timer, TrendingDown } from "lucide-react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
@@ -226,22 +227,25 @@ const QuiteWinCoin = () => {
 
   return (
     <>
-      {/* Global Floating +1 Coins */}
-      <AnimatePresence>
-        {globalFloatingCoins.map((coin) => (
-          <motion.div
-            key={coin.id}
-            className="fixed pointer-events-none z-[200] font-bold text-lg text-neon-amber drop-shadow-[0_0_8px_hsl(var(--neon-amber))]"
-            style={{ left: coin.x, top: coin.y }}
-            initial={{ opacity: 1, y: 0, scale: 1, x: -10 }}
-            animate={{ opacity: 0, y: -60, scale: 1.2 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            +1 🪙
-          </motion.div>
-        ))}
-      </AnimatePresence>
+      {/* Global Floating +1 Coins - Rendered via Portal to bypass overflow:hidden */}
+      {typeof document !== 'undefined' && createPortal(
+        <AnimatePresence>
+          {globalFloatingCoins.map((coin) => (
+            <motion.div
+              key={coin.id}
+              className="fixed pointer-events-none font-bold text-lg text-neon-amber drop-shadow-[0_0_8px_hsl(var(--neon-amber))]"
+              style={{ left: coin.x, top: coin.y, zIndex: 99999 }}
+              initial={{ opacity: 1, y: 0, scale: 1, x: -10 }}
+              animate={{ opacity: 0, y: -60, scale: 1.2 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              +1 🪙
+            </motion.div>
+          ))}
+        </AnimatePresence>,
+        document.body
+      )}
       
       <section className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-6">
