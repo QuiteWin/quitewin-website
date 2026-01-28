@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
-import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Timer, TrendingDown } from "lucide-react";
 import quitewinLogo from "@/assets/quitewin-logo.png";
+import { COIN_UPDATE_EVENT } from "./GlobalCoinClicker";
 
 type CritType = "normal" | "sr" | "ssr" | "ur";
 type LossType = "none" | "quarter" | "half" | "all";
@@ -16,11 +16,6 @@ interface FloatingNumber {
   isLoss?: boolean;
 }
 
-interface GlobalFloatingCoin {
-  id: number;
-  x: number;
-  y: number;
-}
 
 // Beginner's luck: first 20 clicks have MASSIVELY boosted rates
 const BEGINNER_CRIT_CONFIG = {
@@ -82,7 +77,6 @@ const QuiteWinCoin = () => {
     return saved ? parseInt(saved, 10) : 0;
   });
   const [floatingNumbers, setFloatingNumbers] = useState<FloatingNumber[]>([]);
-  const [globalFloatingCoins, setGlobalFloatingCoins] = useState<GlobalFloatingCoin[]>([]);
   const [isSpinning, setIsSpinning] = useState(false);
   const [spinResult, setSpinResult] = useState<CritType | null>(null);
   const [lastSpinAmount, setLastSpinAmount] = useState(0);
@@ -103,34 +97,17 @@ const QuiteWinCoin = () => {
     setIsBeginnerPhase(totalClicks < BEGINNER_CLICKS);
   }, [totalClicks]);
 
-  // Global click listener - every click on page adds 1 coin with animation
-  // Using CAPTURE phase to ensure we catch ALL clicks before any element can stop propagation
+  // Listen for coin updates from GlobalCoinClicker
   useEffect(() => {
-    const handleGlobalClick = (e: MouseEvent) => {
-      // Ignore clicks on interactive elements that shouldn't trigger coins
-      const target = e.target as HTMLElement;
-      if (target.closest('[data-no-coin]')) return;
-      
-      setCoins((prev) => prev + 1);
-      setTotalClicks((prev) => prev + 1);
-      
-      // Create floating +1 at click position
-      const newFloating: GlobalFloatingCoin = {
-        id: Date.now() + Math.random(),
-        x: e.clientX,
-        y: e.clientY,
-      };
-      
-      setGlobalFloatingCoins((prev) => [...prev, newFloating]);
-      
-      setTimeout(() => {
-        setGlobalFloatingCoins((prev) => prev.filter((n) => n.id !== newFloating.id));
-      }, 1000);
+    const handleCoinUpdate = () => {
+      const currentCoins = parseInt(localStorage.getItem("quitewin-coins") || "0", 10);
+      const currentClicks = parseInt(localStorage.getItem("quitewin-clicks") || "0", 10);
+      setCoins(currentCoins);
+      setTotalClicks(currentClicks);
     };
 
-    // Use CAPTURE phase to catch clicks before any stopPropagation
-    document.addEventListener("click", handleGlobalClick, true);
-    return () => document.removeEventListener("click", handleGlobalClick, true);
+    window.addEventListener(COIN_UPDATE_EVENT, handleCoinUpdate);
+    return () => window.removeEventListener(COIN_UPDATE_EVENT, handleCoinUpdate);
   }, []);
 
   // REMOVED: Random loss events on clicks - losses now ONLY happen during spins
@@ -227,26 +204,6 @@ const QuiteWinCoin = () => {
 
   return (
     <>
-      {/* Global Floating +1 Coins - Rendered via Portal to bypass overflow:hidden */}
-      {typeof document !== 'undefined' && createPortal(
-        <AnimatePresence>
-          {globalFloatingCoins.map((coin) => (
-            <motion.div
-              key={coin.id}
-              className="fixed pointer-events-none font-bold text-lg text-neon-amber drop-shadow-[0_0_8px_hsl(var(--neon-amber))]"
-              style={{ left: coin.x, top: coin.y, zIndex: 99999 }}
-              initial={{ opacity: 1, y: 0, scale: 1, x: -10 }}
-              animate={{ opacity: 0, y: -60, scale: 1.2 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            >
-              +1 🪙
-            </motion.div>
-          ))}
-        </AnimatePresence>,
-        document.body
-      )}
-      
       <section className="py-20 relative overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="max-w-2xl mx-auto">
